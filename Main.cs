@@ -1,4 +1,5 @@
 using System.Security.Cryptography.X509Certificates;
+using TheSandwichMakersHardwareStoreSolution.Classes;
 
 namespace TheSandwichMakersHardwareStoreSolution
 {
@@ -6,6 +7,8 @@ namespace TheSandwichMakersHardwareStoreSolution
     {
         public LoginFormControl LoginFormControl { get; }
         public MainControl MainControl { get; }
+        public List<Role> GetRoles() => MainControl.GetRoles();
+        public List<Department> GetDepartments() => MainControl.GetDepartments();
 
         public Main()
         {

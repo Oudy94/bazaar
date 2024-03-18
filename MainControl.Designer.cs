@@ -71,7 +71,6 @@
             tabPageEmployee = new TabPage();
             dtGrVEmployees = new DataGridView();
             groupBoxManageDepartments = new GroupBox();
-            btnAssignEmployeeToDepartment = new Button();
             btnEditDepartment = new Button();
             txtBoxDepartmentName = new TextBox();
             btnRemoveDepartment = new Button();
@@ -89,7 +88,7 @@
             txtBoxEmployeeHourlyWage = new TextBox();
             label3 = new Label();
             btnEmployeeAttachImage = new Button();
-            label2 = new Label();
+            lblImage = new Label();
             cmbBoxEmployeeRole = new ComboBox();
             label1 = new Label();
             txtBoxEmployeePswd = new TextBox();
@@ -147,6 +146,7 @@
             lstBoxEveningShiftEmployees = new ListBox();
             lstBoxNoShiftEmployees = new ListBox();
             lstBoxMorningShiftEmployees = new ListBox();
+            label50 = new Label();
             tabControMain.SuspendLayout();
             tabPageMain.SuspendLayout();
             groupBox4.SuspendLayout();
@@ -588,6 +588,7 @@
             // 
             // tabPageEmployee
             // 
+            tabPageEmployee.Controls.Add(label50);
             tabPageEmployee.Controls.Add(dtGrVEmployees);
             tabPageEmployee.Controls.Add(groupBoxManageDepartments);
             tabPageEmployee.Controls.Add(listBoxDepartments);
@@ -616,7 +617,6 @@
             // 
             // groupBoxManageDepartments
             // 
-            groupBoxManageDepartments.Controls.Add(btnAssignEmployeeToDepartment);
             groupBoxManageDepartments.Controls.Add(btnEditDepartment);
             groupBoxManageDepartments.Controls.Add(txtBoxDepartmentName);
             groupBoxManageDepartments.Controls.Add(btnRemoveDepartment);
@@ -629,21 +629,11 @@
             groupBoxManageDepartments.TabStop = false;
             groupBoxManageDepartments.Text = "Manage Departments";
             // 
-            // btnAssignEmployeeToDepartment
-            // 
-            btnAssignEmployeeToDepartment.Location = new Point(0, 190);
-            btnAssignEmployeeToDepartment.Name = "btnAssignEmployeeToDepartment";
-            btnAssignEmployeeToDepartment.Size = new Size(218, 23);
-            btnAssignEmployeeToDepartment.TabIndex = 22;
-            btnAssignEmployeeToDepartment.Text = "Assign Employee To Department";
-            btnAssignEmployeeToDepartment.UseVisualStyleBackColor = true;
-            btnAssignEmployeeToDepartment.Click += btnAssignEmployeeToDepartment_Click;
-            // 
             // btnEditDepartment
             // 
-            btnEditDepartment.Location = new Point(30, 119);
+            btnEditDepartment.Location = new Point(27, 146);
             btnEditDepartment.Name = "btnEditDepartment";
-            btnEditDepartment.Size = new Size(139, 23);
+            btnEditDepartment.Size = new Size(177, 23);
             btnEditDepartment.TabIndex = 21;
             btnEditDepartment.Text = "Edit Department";
             btnEditDepartment.UseVisualStyleBackColor = true;
@@ -651,16 +641,16 @@
             // 
             // txtBoxDepartmentName
             // 
-            txtBoxDepartmentName.Location = new Point(30, 46);
+            txtBoxDepartmentName.Location = new Point(12, 48);
             txtBoxDepartmentName.Name = "txtBoxDepartmentName";
-            txtBoxDepartmentName.Size = new Size(139, 25);
+            txtBoxDepartmentName.Size = new Size(201, 25);
             txtBoxDepartmentName.TabIndex = 18;
             // 
             // btnRemoveDepartment
             // 
-            btnRemoveDepartment.Location = new Point(30, 148);
+            btnRemoveDepartment.Location = new Point(27, 175);
             btnRemoveDepartment.Name = "btnRemoveDepartment";
-            btnRemoveDepartment.Size = new Size(139, 23);
+            btnRemoveDepartment.Size = new Size(177, 23);
             btnRemoveDepartment.TabIndex = 20;
             btnRemoveDepartment.Text = "Remove Department";
             btnRemoveDepartment.UseVisualStyleBackColor = true;
@@ -669,7 +659,7 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(30, 28);
+            label5.Location = new Point(12, 28);
             label5.Name = "label5";
             label5.Size = new Size(43, 17);
             label5.TabIndex = 17;
@@ -677,9 +667,9 @@
             // 
             // btnNewDepartment
             // 
-            btnNewDepartment.Location = new Point(30, 90);
+            btnNewDepartment.Location = new Point(27, 117);
             btnNewDepartment.Name = "btnNewDepartment";
-            btnNewDepartment.Size = new Size(139, 23);
+            btnNewDepartment.Size = new Size(177, 23);
             btnNewDepartment.TabIndex = 19;
             btnNewDepartment.Text = "New Department";
             btnNewDepartment.UseVisualStyleBackColor = true;
@@ -689,9 +679,9 @@
             // 
             listBoxDepartments.FormattingEnabled = true;
             listBoxDepartments.ItemHeight = 17;
-            listBoxDepartments.Location = new Point(708, 249);
+            listBoxDepartments.Location = new Point(708, 266);
             listBoxDepartments.Name = "listBoxDepartments";
-            listBoxDepartments.Size = new Size(224, 242);
+            listBoxDepartments.Size = new Size(224, 225);
             listBoxDepartments.TabIndex = 1;
             listBoxDepartments.SelectedIndexChanged += listBoxDepartments_SelectedIndexChanged;
             // 
@@ -707,7 +697,7 @@
             groupBoxManageEmployees.Controls.Add(txtBoxEmployeeHourlyWage);
             groupBoxManageEmployees.Controls.Add(label3);
             groupBoxManageEmployees.Controls.Add(btnEmployeeAttachImage);
-            groupBoxManageEmployees.Controls.Add(label2);
+            groupBoxManageEmployees.Controls.Add(lblImage);
             groupBoxManageEmployees.Controls.Add(cmbBoxEmployeeRole);
             groupBoxManageEmployees.Controls.Add(label1);
             groupBoxManageEmployees.Controls.Add(txtBoxEmployeePswd);
@@ -725,15 +715,15 @@
             // 
             // txtBoxEmployeeAddress
             // 
-            txtBoxEmployeeAddress.Location = new Point(18, 170);
+            txtBoxEmployeeAddress.Location = new Point(6, 170);
             txtBoxEmployeeAddress.Name = "txtBoxEmployeeAddress";
-            txtBoxEmployeeAddress.Size = new Size(139, 25);
+            txtBoxEmployeeAddress.Size = new Size(152, 25);
             txtBoxEmployeeAddress.TabIndex = 18;
             // 
             // label49
             // 
             label49.AutoSize = true;
-            label49.Location = new Point(18, 152);
+            label49.Location = new Point(6, 152);
             label49.Name = "label49";
             label49.Size = new Size(56, 17);
             label49.TabIndex = 17;
@@ -741,9 +731,9 @@
             // 
             // btnEditEmployee
             // 
-            btnEditEmployee.Location = new Point(18, 404);
+            btnEditEmployee.Location = new Point(6, 416);
             btnEditEmployee.Name = "btnEditEmployee";
-            btnEditEmployee.Size = new Size(139, 23);
+            btnEditEmployee.Size = new Size(152, 23);
             btnEditEmployee.TabIndex = 16;
             btnEditEmployee.Text = "Edit Employee";
             btnEditEmployee.UseVisualStyleBackColor = true;
@@ -751,9 +741,9 @@
             // 
             // btnRemoveEmployee
             // 
-            btnRemoveEmployee.Location = new Point(18, 433);
+            btnRemoveEmployee.Location = new Point(6, 445);
             btnRemoveEmployee.Name = "btnRemoveEmployee";
-            btnRemoveEmployee.Size = new Size(139, 23);
+            btnRemoveEmployee.Size = new Size(152, 23);
             btnRemoveEmployee.TabIndex = 15;
             btnRemoveEmployee.Text = "Remove Employee";
             btnRemoveEmployee.UseVisualStyleBackColor = true;
@@ -761,9 +751,9 @@
             // 
             // btnNewEmployee
             // 
-            btnNewEmployee.Location = new Point(18, 375);
+            btnNewEmployee.Location = new Point(6, 387);
             btnNewEmployee.Name = "btnNewEmployee";
-            btnNewEmployee.Size = new Size(139, 23);
+            btnNewEmployee.Size = new Size(152, 23);
             btnNewEmployee.TabIndex = 14;
             btnNewEmployee.Text = "New Employee";
             btnNewEmployee.UseVisualStyleBackColor = true;
@@ -772,15 +762,15 @@
             // cmbBoxEmployeeIsActive
             // 
             cmbBoxEmployeeIsActive.FormattingEnabled = true;
-            cmbBoxEmployeeIsActive.Location = new Point(18, 347);
+            cmbBoxEmployeeIsActive.Location = new Point(6, 347);
             cmbBoxEmployeeIsActive.Name = "cmbBoxEmployeeIsActive";
-            cmbBoxEmployeeIsActive.Size = new Size(139, 25);
+            cmbBoxEmployeeIsActive.Size = new Size(152, 25);
             cmbBoxEmployeeIsActive.TabIndex = 13;
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(18, 327);
+            label4.Location = new Point(6, 327);
             label4.Name = "label4";
             label4.Size = new Size(55, 17);
             label4.TabIndex = 12;
@@ -788,15 +778,15 @@
             // 
             // txtBoxEmployeeHourlyWage
             // 
-            txtBoxEmployeeHourlyWage.Location = new Point(18, 301);
+            txtBoxEmployeeHourlyWage.Location = new Point(6, 301);
             txtBoxEmployeeHourlyWage.Name = "txtBoxEmployeeHourlyWage";
-            txtBoxEmployeeHourlyWage.Size = new Size(139, 25);
+            txtBoxEmployeeHourlyWage.Size = new Size(152, 25);
             txtBoxEmployeeHourlyWage.TabIndex = 11;
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(18, 283);
+            label3.Location = new Point(6, 283);
             label3.Name = "label3";
             label3.Size = new Size(83, 17);
             label3.TabIndex = 10;
@@ -804,35 +794,35 @@
             // 
             // btnEmployeeAttachImage
             // 
-            btnEmployeeAttachImage.Location = new Point(18, 258);
+            btnEmployeeAttachImage.Location = new Point(6, 258);
             btnEmployeeAttachImage.Name = "btnEmployeeAttachImage";
-            btnEmployeeAttachImage.Size = new Size(139, 23);
+            btnEmployeeAttachImage.Size = new Size(152, 23);
             btnEmployeeAttachImage.TabIndex = 9;
             btnEmployeeAttachImage.Text = "Attach Image";
             btnEmployeeAttachImage.UseVisualStyleBackColor = true;
             btnEmployeeAttachImage.Click += btnEmployeeAttachImage_Click;
             // 
-            // label2
+            // lblImage
             // 
-            label2.AutoSize = true;
-            label2.Location = new Point(18, 240);
-            label2.Name = "label2";
-            label2.Size = new Size(44, 17);
-            label2.TabIndex = 8;
-            label2.Text = "Image";
+            lblImage.AutoSize = true;
+            lblImage.Location = new Point(6, 240);
+            lblImage.Name = "lblImage";
+            lblImage.Size = new Size(44, 17);
+            lblImage.TabIndex = 8;
+            lblImage.Text = "Image";
             // 
             // cmbBoxEmployeeRole
             // 
             cmbBoxEmployeeRole.FormattingEnabled = true;
-            cmbBoxEmployeeRole.Location = new Point(18, 214);
+            cmbBoxEmployeeRole.Location = new Point(6, 214);
             cmbBoxEmployeeRole.Name = "cmbBoxEmployeeRole";
-            cmbBoxEmployeeRole.Size = new Size(139, 25);
+            cmbBoxEmployeeRole.Size = new Size(152, 25);
             cmbBoxEmployeeRole.TabIndex = 7;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(18, 196);
+            label1.Location = new Point(6, 196);
             label1.Name = "label1";
             label1.Size = new Size(34, 17);
             label1.TabIndex = 6;
@@ -840,15 +830,15 @@
             // 
             // txtBoxEmployeePswd
             // 
-            txtBoxEmployeePswd.Location = new Point(18, 125);
+            txtBoxEmployeePswd.Location = new Point(6, 125);
             txtBoxEmployeePswd.Name = "txtBoxEmployeePswd";
-            txtBoxEmployeePswd.Size = new Size(139, 25);
+            txtBoxEmployeePswd.Size = new Size(152, 25);
             txtBoxEmployeePswd.TabIndex = 5;
             // 
             // lblEmployeePswd
             // 
             lblEmployeePswd.AutoSize = true;
-            lblEmployeePswd.Location = new Point(18, 107);
+            lblEmployeePswd.Location = new Point(6, 107);
             lblEmployeePswd.Name = "lblEmployeePswd";
             lblEmployeePswd.Size = new Size(64, 17);
             lblEmployeePswd.TabIndex = 4;
@@ -856,15 +846,15 @@
             // 
             // txtBoxEmployeeEmail
             // 
-            txtBoxEmployeeEmail.Location = new Point(18, 81);
+            txtBoxEmployeeEmail.Location = new Point(6, 81);
             txtBoxEmployeeEmail.Name = "txtBoxEmployeeEmail";
-            txtBoxEmployeeEmail.Size = new Size(139, 25);
+            txtBoxEmployeeEmail.Size = new Size(152, 25);
             txtBoxEmployeeEmail.TabIndex = 3;
             // 
             // lblEmployeeEmail
             // 
             lblEmployeeEmail.AutoSize = true;
-            lblEmployeeEmail.Location = new Point(18, 63);
+            lblEmployeeEmail.Location = new Point(6, 63);
             lblEmployeeEmail.Name = "lblEmployeeEmail";
             lblEmployeeEmail.Size = new Size(39, 17);
             lblEmployeeEmail.TabIndex = 2;
@@ -872,15 +862,15 @@
             // 
             // txtBoxEmployeeName
             // 
-            txtBoxEmployeeName.Location = new Point(18, 37);
+            txtBoxEmployeeName.Location = new Point(6, 37);
             txtBoxEmployeeName.Name = "txtBoxEmployeeName";
-            txtBoxEmployeeName.Size = new Size(139, 25);
+            txtBoxEmployeeName.Size = new Size(152, 25);
             txtBoxEmployeeName.TabIndex = 1;
             // 
             // lblEmployeeName
             // 
             lblEmployeeName.AutoSize = true;
-            lblEmployeeName.Location = new Point(18, 19);
+            lblEmployeeName.Location = new Point(6, 19);
             lblEmployeeName.Name = "lblEmployeeName";
             lblEmployeeName.Size = new Size(43, 17);
             lblEmployeeName.TabIndex = 0;
@@ -1249,9 +1239,9 @@
             tabPageShifts.Controls.Add(lstBoxEveningShiftEmployees);
             tabPageShifts.Controls.Add(lstBoxNoShiftEmployees);
             tabPageShifts.Controls.Add(lstBoxMorningShiftEmployees);
-            tabPageShifts.Location = new Point(4, 24);
+            tabPageShifts.Location = new Point(4, 26);
             tabPageShifts.Name = "tabPageShifts";
-            tabPageShifts.Size = new Size(952, 519);
+            tabPageShifts.Size = new Size(952, 517);
             tabPageShifts.TabIndex = 3;
             tabPageShifts.Text = "Shifts";
             tabPageShifts.UseVisualStyleBackColor = true;
@@ -1362,6 +1352,15 @@
             lstBoxMorningShiftEmployees.Size = new Size(189, 395);
             lstBoxMorningShiftEmployees.TabIndex = 0;
             // 
+            // label50
+            // 
+            label50.AutoSize = true;
+            label50.Location = new Point(708, 246);
+            label50.Name = "label50";
+            label50.Size = new Size(83, 17);
+            label50.TabIndex = 19;
+            label50.Text = "Departments";
+            // 
             // MainControl
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
@@ -1379,6 +1378,7 @@
             groupBox3.ResumeLayout(false);
             groupBox3.PerformLayout();
             tabPageEmployee.ResumeLayout(false);
+            tabPageEmployee.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dtGrVEmployees).EndInit();
             groupBoxManageDepartments.ResumeLayout(false);
             groupBoxManageDepartments.PerformLayout();
@@ -1440,7 +1440,6 @@
         private TabPage tabPageEmployee;
         private DataGridView dtGrVEmployees;
         private GroupBox groupBoxManageDepartments;
-        private Button btnAssignEmployeeToDepartment;
         private Button btnEditDepartment;
         private TextBox txtBoxDepartmentName;
         private Button btnRemoveDepartment;
@@ -1456,7 +1455,7 @@
         private TextBox txtBoxEmployeeHourlyWage;
         private Label label3;
         private Button btnEmployeeAttachImage;
-        private Label label2;
+        private Label lblImage;
         private ComboBox cmbBoxEmployeeRole;
         private Label label1;
         private TextBox txtBoxEmployeePswd;
@@ -1516,5 +1515,6 @@
         private ListBox lstBoxMorningShiftEmployees;
         private TextBox txtBoxEmployeeAddress;
         private Label label49;
+        private Label label50;
     }
 }

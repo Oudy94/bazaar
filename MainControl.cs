@@ -20,7 +20,11 @@ namespace TheSandwichMakersHardwareStoreSolution
         private readonly DatabaseHelper _dbHelper;
         private List<Role> _roles;
         private List<Department> _departments;
+        public List<Role> GetRoles() => _roles;
+        public List<Department> GetDepartments() => _departments;
         private string _currentImageUrl = string.Empty;
+
+
 
         public MainControl()
         {
@@ -30,6 +34,12 @@ namespace TheSandwichMakersHardwareStoreSolution
             RefreshEmployeesGrid();
         }
 
+        // Validation for Employee Role
+
+        private bool EmployeeHasRequiredRole()
+        {
+            return UserSession.Instance.CurrentEmployee?.Role.Name == "Manager" || UserSession.Instance.CurrentEmployee?.Role.Name == "Owner";
+        }
 
         // Loading data
         private void LoadRolesAndDepartments()
@@ -96,6 +106,7 @@ namespace TheSandwichMakersHardwareStoreSolution
                 try
                 {
                     _currentImageUrl = await UploadImageToFreeImageHost(filePath, "6d207e02198a847aa98d0a2a901485a5");
+                    lblImage.Text = $"Image uploaded! URL: {_currentImageUrl}";
                     MessageBox.Show($"Image uploaded successfully! URL: {_currentImageUrl}", "Upload Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 catch (Exception ex)
@@ -144,6 +155,11 @@ namespace TheSandwichMakersHardwareStoreSolution
         // Managing Employees
         private void btnNewEmployee_Click(object sender, EventArgs e)
         {
+            if (!EmployeeHasRequiredRole())
+            {
+                MessageBox.Show("Only Manager or Owner can perform this action.", "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             if (ValidateEmployeeInput())
             {
                 var role = cmbBoxEmployeeRole.SelectedItem as Role;
@@ -187,6 +203,11 @@ namespace TheSandwichMakersHardwareStoreSolution
 
         private void btnEditEmployee_Click(object sender, EventArgs e)
         {
+            if (!EmployeeHasRequiredRole())
+            {
+                MessageBox.Show("Only Manager or Owner can perform this action.", "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             if (dtGrVEmployees.SelectedRows.Count > 0 && ValidateEmployeeInput())
             {
                 dynamic selectedRow = dtGrVEmployees.SelectedRows[0].DataBoundItem;
@@ -254,6 +275,11 @@ namespace TheSandwichMakersHardwareStoreSolution
 
         private void dtGrVEmployees_SelectionChanged(object sender, EventArgs e)
         {
+            if (!EmployeeHasRequiredRole())
+            {
+                MessageBox.Show("Only Manager or Owner can perform this action.", "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             if (dtGrVEmployees.SelectedRows.Count > 0)
             {
                 var selectedRow = dtGrVEmployees.SelectedRows[0].DataBoundItem;
@@ -265,8 +291,8 @@ namespace TheSandwichMakersHardwareStoreSolution
                 txtBoxEmployeeEmail.Text = selectedEmployee.Email;
                 txtBoxEmployeePswd.Text = selectedEmployee.Password; 
                 txtBoxEmployeeAddress.Text = selectedEmployee.Address;
-                _currentImageUrl = selectedEmployee.Image; 
-
+                _currentImageUrl = selectedEmployee.Image;
+                lblImage.Text = $"Image uploaded! URL: {_currentImageUrl}";
                 listBoxDepartments.SelectedItem = _departments.FirstOrDefault(d => d.Name == selectedEmployee.Department);
                 cmbBoxEmployeeRole.SelectedItem = _roles.FirstOrDefault(r => r.Name == selectedEmployee.Role);
 
@@ -313,9 +339,29 @@ namespace TheSandwichMakersHardwareStoreSolution
                 return false;
             }
 
+            // Department Selected
             if (listBoxDepartments.SelectedItem == null)
             {
                 MessageBox.Show("Please select a department to edit.");
+            }
+
+
+            // Duplicates checking
+            _dbHelper.OpenConnection();
+            bool nameExists = _dbHelper.CheckEmployeeNameExists(txtBoxEmployeeName.Text);
+            bool emailExists = _dbHelper.CheckEmployeeEmailExists(txtBoxEmployeeEmail.Text);
+            _dbHelper.CloseConnection();
+
+            if (nameExists)
+            {
+                MessageBox.Show("An employee with this name already exists.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            if (emailExists)
+            {
+                MessageBox.Show("An employee with this email already exists.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
             }
 
 
@@ -380,6 +426,11 @@ namespace TheSandwichMakersHardwareStoreSolution
         // Adding Deparment
         private void btnNewDepartment_Click(object sender, EventArgs e)
         {
+            if (!EmployeeHasRequiredRole())
+            {
+                MessageBox.Show("Only Manager or Owner can perform this action.", "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             if (!string.IsNullOrWhiteSpace(txtBoxDepartmentName.Text))
             {
                 try
@@ -408,6 +459,11 @@ namespace TheSandwichMakersHardwareStoreSolution
         // Modify the btnEditDepartment_Click event to check for selection
         private void btnEditDepartment_Click(object sender, EventArgs e)
         {
+            if (!EmployeeHasRequiredRole())
+            {
+                MessageBox.Show("Only Manager or Owner can perform this action.", "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             if (listBoxDepartments.SelectedItem is Department selectedDepartment)
             {
                 try
@@ -435,6 +491,11 @@ namespace TheSandwichMakersHardwareStoreSolution
         // Modify the btnRemoveDepartment_Click event to check for selection
         private void btnRemoveDepartment_Click(object sender, EventArgs e)
         {
+            if (!EmployeeHasRequiredRole())
+            {
+                MessageBox.Show("Only Manager or Owner can perform this action.", "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             if (listBoxDepartments.SelectedItem is Department selectedDepartment)
             {
                 DialogResult dialogResult = MessageBox.Show("Are you sure you want to remove this department?", "Remove Department", MessageBoxButtons.YesNo);
@@ -463,11 +524,6 @@ namespace TheSandwichMakersHardwareStoreSolution
             }
         }
 
-
-        private void btnAssignEmployeeToDepartment_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void RefreshDepartmentsList()
         {

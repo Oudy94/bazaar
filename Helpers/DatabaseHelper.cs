@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -44,7 +45,7 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
                 throw new Exception($"Error closing database connection: {ex.Message}");
             }
         }
-
+        /*
         public bool AuthenticateUser(string email, string password)
         {
             try
@@ -60,7 +61,56 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
             {
                 throw new Exception($"Error authenticating user: {ex.Message}", ex);
             }
+        }*/
+
+        public Employee AuthenticateUser(string email, string password, List<Role> roles, List<Department> departments)
+        {
+            Employee authenticatedEmployee = null;
+            try
+            {
+                string query = "SELECT * FROM Employee WHERE Email = @Email AND Password = @Password";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@Email", email);
+                command.Parameters.AddWithValue("@Password", password);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        var role = roles.FirstOrDefault(r => r.Id == reader.GetInt32(reader.GetOrdinal("role")));
+                        var department = departments.FirstOrDefault(d => d.Id == reader.GetInt32(reader.GetOrdinal("department")));
+
+                        if (role != null && department != null)
+                        {
+                            authenticatedEmployee = new Employee(
+                                reader.GetInt32(reader.GetOrdinal("id")),
+                                reader.GetString(reader.GetOrdinal("name")),
+                                reader.GetString(reader.GetOrdinal("email")),
+                                reader.GetString(reader.GetOrdinal("password")), // Should be hashed
+                                role,
+                                reader.IsDBNull(reader.GetOrdinal("image")) ? null : reader.GetString(reader.GetOrdinal("image")),
+                                reader.IsDBNull(reader.GetOrdinal("address")) ? null : reader.GetString(reader.GetOrdinal("address")),
+                                department,
+                                reader.GetDecimal(reader.GetOrdinal("hourly_wage")),
+                                reader.GetBoolean(reader.GetOrdinal("is_active"))
+                            );
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Authentication failed: " + ex.Message);
+            }
+            finally
+            {
+                UserSession.Instance.CurrentEmployee = authenticatedEmployee;
+            }
+
+            return authenticatedEmployee;
         }
+
 
 
         // Role and Departments Management
@@ -281,6 +331,29 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
             }
             return employees;
         }
+
+        public bool CheckEmployeeNameExists(string name)
+        {
+            var query = "SELECT COUNT(*) FROM Employee WHERE name = @Name";
+            using (var cmd = new SqlCommand(query, connection))
+            {
+                cmd.Parameters.AddWithValue("@Name", name);
+                var count = (int)cmd.ExecuteScalar();
+                return count > 0;
+            }
+        }
+
+        public bool CheckEmployeeEmailExists(string email)
+        {
+            var query = "SELECT COUNT(*) FROM Employee WHERE email = @Email";
+            using (var cmd = new SqlCommand(query, connection))
+            {
+                cmd.Parameters.AddWithValue("@Email", email);
+                var count = (int)cmd.ExecuteScalar();
+                return count > 0;
+            }
+        }
+
 
     }
 }

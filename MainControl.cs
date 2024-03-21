@@ -172,10 +172,10 @@ namespace TheSandwichMakersHardwareStoreSolution
 
                 Employee newEmployee = new Employee
                 (
-                    
+
                     txtBoxEmployeeName.Text,
                     txtBoxEmployeeEmail.Text,
-                    txtBoxEmployeePswd.Text, 
+                    txtBoxEmployeePswd.Text,
                     role,
                     _currentImageUrl,
                     txtBoxEmployeeAddress.Text,
@@ -213,7 +213,7 @@ namespace TheSandwichMakersHardwareStoreSolution
                 dynamic selectedRow = dtGrVEmployees.SelectedRows[0].DataBoundItem;
                 int selectedEmployeeId = selectedRow.Id;
                 _dbHelper.OpenConnection();
-                Employee selectedEmployee = _dbHelper.GetEmployeeById(selectedEmployeeId, _roles, _departments); 
+                Employee selectedEmployee = _dbHelper.GetEmployeeById(selectedEmployeeId, _roles, _departments);
 
                 if (selectedEmployee != null)
                 {
@@ -235,7 +235,7 @@ namespace TheSandwichMakersHardwareStoreSolution
                     selectedEmployee.HourlyWage = Convert.ToDecimal(txtBoxEmployeeHourlyWage.Text);
                     selectedEmployee.IsActive = Convert.ToBoolean(cmbBoxEmployeeIsActive.SelectedItem);
 
-                    
+
                     _dbHelper.UpdateEmployee(selectedEmployee);
                     _dbHelper.CloseConnection();
 
@@ -283,13 +283,13 @@ namespace TheSandwichMakersHardwareStoreSolution
             if (dtGrVEmployees.SelectedRows.Count > 0)
             {
                 var selectedRow = dtGrVEmployees.SelectedRows[0].DataBoundItem;
-                dynamic selectedEmployee = selectedRow as dynamic; 
+                dynamic selectedEmployee = selectedRow as dynamic;
 
                 if (selectedEmployee == null) return;
 
                 txtBoxEmployeeName.Text = selectedEmployee.Name;
                 txtBoxEmployeeEmail.Text = selectedEmployee.Email;
-                txtBoxEmployeePswd.Text = selectedEmployee.Password; 
+                txtBoxEmployeePswd.Text = selectedEmployee.Password;
                 txtBoxEmployeeAddress.Text = selectedEmployee.Address;
                 _currentImageUrl = selectedEmployee.Image;
                 lblImage.Text = $"Image uploaded! URL: {_currentImageUrl}";
@@ -391,7 +391,7 @@ namespace TheSandwichMakersHardwareStoreSolution
                     Department = e.Department.Name,
                     HourlyWage = e.HourlyWage,
                     RegisterDate = e.RegisterDate,
-                    IsActive = e.IsActive ? "Yes" : "No" 
+                    IsActive = e.IsActive ? "Yes" : "No"
                 }).ToList();
 
                 dtGrVEmployees.DataSource = employeeDisplayData;
@@ -557,6 +557,112 @@ namespace TheSandwichMakersHardwareStoreSolution
             }
         }
 
-        
+
+        private StockManager stockManager = new StockManager();
+
+        private void RefreshProductInfoDisplay()
+        {
+            dataGridView1.DataSource = null;
+            dataGridView1.DataSource = stockManager.itemList;
+        }
+
+
+        private void btnNewProduct_Click(object sender, EventArgs e)
+        {
+            stockManager.AddNewItem(Convert.ToInt16(numericSKU.Value), tbNameProduct.Text, Convert.ToInt16(numericQuantityWarehouse.Value), Convert.ToInt16(numericQuantityStore.Value), cbCatergory.Text, Convert.ToDouble(numericWholesalePrice.Value), Convert.ToDouble(numericSellPrice.Value));
+            RefreshProductInfoDisplay();
+
+        }
+
+        private void btnEditProduct_Click(object sender, EventArgs e)
+        {
+            int id = GetIdSelectedRow();
+            stockManager.EditItem(id, Convert.ToInt16(numericSKU.Value), tbNameProduct.Text, Convert.ToInt16(numericQuantityWarehouse.Value), Convert.ToInt16(numericQuantityStore.Value), cbCatergory.Text, Convert.ToDouble(numericWholesalePrice.Value), Convert.ToDouble(numericSellPrice.Value));
+            RefreshProductInfoDisplay();
+        }
+
+        private void btnRemoveProduct_Click(object sender, EventArgs e)
+        {
+            int id = GetIdSelectedRow();
+            stockManager.RemoveItem(id);
+            RefreshProductInfoDisplay();
+        }
+
+        private int GetIdSelectedRow()
+        {
+            if (dataGridView1.SelectedRows.Count > 0)
+            {
+                int selectedrowindex = dataGridView1.SelectedCells[0].RowIndex;
+                DataGridViewRow selectedRow = dataGridView1.Rows[selectedrowindex];
+                int id = Convert.ToInt32(selectedRow.Cells["Id"].Value);
+                return id;
+            }
+            else
+            {
+                return -1;
+            }
+
+        }
+
+        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        {
+            int id = GetIdSelectedRow();
+            if (id != -1)
+            {
+                Item item = stockManager.GetItemById(id);
+                tbNameProduct.Text = item.Name;
+                numericSKU.Value = item.Sku;
+                numericQuantityWarehouse.Value = item.QuantityWarehouse;
+                numericQuantityStore.Value = item.QuantityStore;
+                cbCatergory.Text = item.Category;
+                numericWholesalePrice.Value = Convert.ToDecimal(item.WholesalePrice);
+                numericSellPrice.Value = Convert.ToDecimal(item.SellPrice);
+            }
+
+        }
+
+        private void btAddShelfRequest_Click(object sender, EventArgs e)
+        {
+            int itemId = GetIdSelectedRow();
+            stockManager.AddShelfRequest(itemId, Convert.ToInt16(numericQuantityShelfRequest.Value));
+            RefreshShelfRequestDisplay();
+        }
+
+        private void btnEditRequest_Click(object sender, EventArgs e)
+        {
+            int id = GetIdSelectedRowShelfRequest();
+            stockManager.EditShelfRequest(id, Convert.ToInt16(numericQuantityShelfRequest.Value));
+            RefreshShelfRequestDisplay();
+        }
+
+        private void btnFulfillRequest_Click(object sender, EventArgs e)
+        {
+            int id = GetIdSelectedRowShelfRequest();
+            stockManager.FulFillShelfRequest(id);
+            RefreshShelfRequestDisplay();
+            RefreshProductInfoDisplay();
+        }
+
+        public void RefreshShelfRequestDisplay()
+        {
+            dataGridView2.DataSource = null;
+            dataGridView2.DataSource = stockManager.shelfRequests;
+        }
+
+        private int GetIdSelectedRowShelfRequest()
+        {
+            if (dataGridView1.SelectedRows.Count > 0)
+            {
+                int selectedrowindex = dataGridView2.SelectedCells[0].RowIndex;
+                DataGridViewRow selectedRow = dataGridView2.Rows[selectedrowindex];
+                int id = Convert.ToInt32(selectedRow.Cells["Id"].Value);
+                return id;
+            }
+            else
+            {
+                return -1;
+            }
+
+        }
     }
 }

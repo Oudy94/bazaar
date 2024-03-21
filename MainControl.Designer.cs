@@ -69,6 +69,7 @@
             label18 = new Label();
             comboBox3 = new ComboBox();
             tabPageEmployee = new TabPage();
+            label50 = new Label();
             dtGrVEmployees = new DataGridView();
             groupBoxManageDepartments = new GroupBox();
             btnEditDepartment = new Button();
@@ -99,39 +100,31 @@
             lblEmployeeName = new Label();
             tabPageStock = new TabPage();
             groupBox2 = new GroupBox();
-            listBox1 = new ListBox();
-            radioButton3 = new RadioButton();
-            radioButton4 = new RadioButton();
+            dataGridView2 = new DataGridView();
+            numericQuantityShelfRequest = new NumericUpDown();
             btnEditRequest = new Button();
             btnFulfillRequest = new Button();
-            button3 = new Button();
+            btAddShelfRequest = new Button();
             label21 = new Label();
-            comboBox1 = new ComboBox();
-            label22 = new Label();
-            textBox12 = new TextBox();
             label23 = new Label();
             dataGridView1 = new DataGridView();
             groupBox1 = new GroupBox();
-            textBox7 = new TextBox();
-            label17 = new Label();
-            radioButton2 = new RadioButton();
-            radioButton1 = new RadioButton();
-            textBox6 = new TextBox();
-            label12 = new Label();
-            textBox5 = new TextBox();
+            numericQuantityStore = new NumericUpDown();
+            label2 = new Label();
+            numericQuantityWarehouse = new NumericUpDown();
+            numericSellPrice = new NumericUpDown();
+            numericWholesalePrice = new NumericUpDown();
+            numericSKU = new NumericUpDown();
             label10 = new Label();
             btnEditProduct = new Button();
             btnRemoveProduct = new Button();
             btnNewProduct = new Button();
-            textBox1 = new TextBox();
             label11 = new Label();
-            comboBox2 = new ComboBox();
+            cbCatergory = new ComboBox();
             label13 = new Label();
-            textBox2 = new TextBox();
             label14 = new Label();
-            textBox3 = new TextBox();
             label15 = new Label();
-            textBox4 = new TextBox();
+            tbNameProduct = new TextBox();
             label16 = new Label();
             tabPageShifts = new TabPage();
             dateTimePicker1 = new DateTimePicker();
@@ -146,7 +139,6 @@
             lstBoxEveningShiftEmployees = new ListBox();
             lstBoxNoShiftEmployees = new ListBox();
             lstBoxMorningShiftEmployees = new ListBox();
-            label50 = new Label();
             tabControMain.SuspendLayout();
             tabPageMain.SuspendLayout();
             groupBox4.SuspendLayout();
@@ -158,8 +150,15 @@
             groupBoxManageEmployees.SuspendLayout();
             tabPageStock.SuspendLayout();
             groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numericQuantityShelfRequest).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numericQuantityStore).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numericQuantityWarehouse).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numericSellPrice).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numericWholesalePrice).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numericSKU).BeginInit();
             tabPageShifts.SuspendLayout();
             SuspendLayout();
             // 
@@ -593,12 +592,21 @@
             tabPageEmployee.Controls.Add(groupBoxManageDepartments);
             tabPageEmployee.Controls.Add(listBoxDepartments);
             tabPageEmployee.Controls.Add(groupBoxManageEmployees);
-            tabPageEmployee.Location = new Point(4, 26);
+            tabPageEmployee.Location = new Point(4, 24);
             tabPageEmployee.Name = "tabPageEmployee";
-            tabPageEmployee.Size = new Size(952, 517);
+            tabPageEmployee.Size = new Size(952, 519);
             tabPageEmployee.TabIndex = 1;
             tabPageEmployee.Text = "Employee & Departments";
             tabPageEmployee.UseVisualStyleBackColor = true;
+            // 
+            // label50
+            // 
+            label50.AutoSize = true;
+            label50.Location = new Point(708, 246);
+            label50.Name = "label50";
+            label50.Size = new Size(83, 17);
+            label50.TabIndex = 19;
+            label50.Text = "Departments";
             // 
             // dtGrVEmployees
             // 
@@ -881,25 +889,21 @@
             tabPageStock.Controls.Add(groupBox2);
             tabPageStock.Controls.Add(dataGridView1);
             tabPageStock.Controls.Add(groupBox1);
-            tabPageStock.Location = new Point(4, 24);
+            tabPageStock.Location = new Point(4, 26);
             tabPageStock.Name = "tabPageStock";
-            tabPageStock.Size = new Size(952, 519);
+            tabPageStock.Size = new Size(952, 517);
             tabPageStock.TabIndex = 2;
             tabPageStock.Text = "Stock";
             tabPageStock.UseVisualStyleBackColor = true;
             // 
             // groupBox2
             // 
-            groupBox2.Controls.Add(listBox1);
-            groupBox2.Controls.Add(radioButton3);
-            groupBox2.Controls.Add(radioButton4);
+            groupBox2.Controls.Add(dataGridView2);
+            groupBox2.Controls.Add(numericQuantityShelfRequest);
             groupBox2.Controls.Add(btnEditRequest);
             groupBox2.Controls.Add(btnFulfillRequest);
-            groupBox2.Controls.Add(button3);
+            groupBox2.Controls.Add(btAddShelfRequest);
             groupBox2.Controls.Add(label21);
-            groupBox2.Controls.Add(comboBox1);
-            groupBox2.Controls.Add(label22);
-            groupBox2.Controls.Add(textBox12);
             groupBox2.Controls.Add(label23);
             groupBox2.Location = new Point(750, 12);
             groupBox2.Name = "groupBox2";
@@ -908,101 +912,67 @@
             groupBox2.TabStop = false;
             groupBox2.Text = "Manage Shelf Requests";
             // 
-            // listBox1
+            // dataGridView2
             // 
-            listBox1.FormattingEnabled = true;
-            listBox1.ItemHeight = 17;
-            listBox1.Location = new Point(17, 274);
-            listBox1.Name = "listBox1";
-            listBox1.Size = new Size(142, 191);
-            listBox1.TabIndex = 23;
+            dataGridView2.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView2.Location = new Point(6, 204);
+            dataGridView2.Name = "dataGridView2";
+            dataGridView2.ReadOnly = true;
+            dataGridView2.RowTemplate.Height = 25;
+            dataGridView2.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridView2.Size = new Size(174, 284);
+            dataGridView2.TabIndex = 25;
             // 
-            // radioButton3
+            // numericQuantityShelfRequest
             // 
-            radioButton3.AutoSize = true;
-            radioButton3.Location = new Point(107, 123);
-            radioButton3.Name = "radioButton3";
-            radioButton3.Size = new Size(57, 21);
-            radioButton3.TabIndex = 22;
-            radioButton3.TabStop = true;
-            radioButton3.Text = "Store";
-            radioButton3.UseVisualStyleBackColor = true;
-            // 
-            // radioButton4
-            // 
-            radioButton4.AutoSize = true;
-            radioButton4.Location = new Point(17, 123);
-            radioButton4.Name = "radioButton4";
-            radioButton4.Size = new Size(91, 21);
-            radioButton4.TabIndex = 21;
-            radioButton4.TabStop = true;
-            radioButton4.Text = "Warehouse";
-            radioButton4.UseVisualStyleBackColor = true;
+            numericQuantityShelfRequest.Location = new Point(20, 47);
+            numericQuantityShelfRequest.Name = "numericQuantityShelfRequest";
+            numericQuantityShelfRequest.Size = new Size(139, 25);
+            numericQuantityShelfRequest.TabIndex = 24;
             // 
             // btnEditRequest
             // 
-            btnEditRequest.Location = new Point(20, 177);
+            btnEditRequest.Location = new Point(20, 109);
             btnEditRequest.Name = "btnEditRequest";
             btnEditRequest.Size = new Size(139, 23);
             btnEditRequest.TabIndex = 16;
             btnEditRequest.Text = "Edit Request";
             btnEditRequest.UseVisualStyleBackColor = true;
+            btnEditRequest.Click += btnEditRequest_Click;
             // 
             // btnFulfillRequest
             // 
-            btnFulfillRequest.Location = new Point(20, 206);
+            btnFulfillRequest.Location = new Point(20, 138);
             btnFulfillRequest.Name = "btnFulfillRequest";
             btnFulfillRequest.Size = new Size(139, 23);
             btnFulfillRequest.TabIndex = 15;
             btnFulfillRequest.Text = "Fulfill Request";
             btnFulfillRequest.UseVisualStyleBackColor = true;
+            btnFulfillRequest.Click += btnFulfillRequest_Click;
             // 
-            // button3
+            // btAddShelfRequest
             // 
-            button3.Location = new Point(20, 148);
-            button3.Name = "button3";
-            button3.Size = new Size(139, 23);
-            button3.TabIndex = 14;
-            button3.Text = "New Request";
-            button3.UseVisualStyleBackColor = true;
+            btAddShelfRequest.Location = new Point(20, 80);
+            btAddShelfRequest.Name = "btAddShelfRequest";
+            btAddShelfRequest.Size = new Size(139, 23);
+            btAddShelfRequest.TabIndex = 14;
+            btAddShelfRequest.Text = "New Request";
+            btAddShelfRequest.UseVisualStyleBackColor = true;
+            btAddShelfRequest.Click += btAddShelfRequest_Click;
             // 
             // label21
             // 
             label21.AutoSize = true;
-            label21.Location = new Point(17, 245);
+            label21.Location = new Point(17, 177);
             label21.Name = "label21";
             label21.Size = new Size(93, 17);
             label21.TabIndex = 10;
             label21.Text = "Shelf Requests";
             // 
-            // comboBox1
-            // 
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(18, 46);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(139, 25);
-            comboBox1.TabIndex = 7;
-            // 
-            // label22
-            // 
-            label22.AutoSize = true;
-            label22.Location = new Point(18, 28);
-            label22.Name = "label22";
-            label22.Size = new Size(53, 17);
-            label22.TabIndex = 6;
-            label22.Text = "Product";
-            // 
-            // textBox12
-            // 
-            textBox12.Location = new Point(18, 90);
-            textBox12.Name = "textBox12";
-            textBox12.Size = new Size(139, 25);
-            textBox12.TabIndex = 5;
-            // 
             // label23
             // 
             label23.AutoSize = true;
-            label23.Location = new Point(17, 72);
+            label23.Location = new Point(17, 21);
             label23.Name = "label23";
             label23.Size = new Size(56, 17);
             label23.TabIndex = 4;
@@ -1012,33 +982,33 @@
             // 
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView1.Location = new Point(215, 12);
+            dataGridView1.MultiSelect = false;
             dataGridView1.Name = "dataGridView1";
+            dataGridView1.ReadOnly = true;
             dataGridView1.RowTemplate.Height = 25;
+            dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView1.Size = new Size(520, 494);
             dataGridView1.TabIndex = 4;
+            dataGridView1.SelectionChanged += dataGridView1_SelectionChanged;
             // 
             // groupBox1
             // 
-            groupBox1.Controls.Add(textBox7);
-            groupBox1.Controls.Add(label17);
-            groupBox1.Controls.Add(radioButton2);
-            groupBox1.Controls.Add(radioButton1);
-            groupBox1.Controls.Add(textBox6);
-            groupBox1.Controls.Add(label12);
-            groupBox1.Controls.Add(textBox5);
+            groupBox1.Controls.Add(numericQuantityStore);
+            groupBox1.Controls.Add(label2);
+            groupBox1.Controls.Add(numericQuantityWarehouse);
+            groupBox1.Controls.Add(numericSellPrice);
+            groupBox1.Controls.Add(numericWholesalePrice);
+            groupBox1.Controls.Add(numericSKU);
             groupBox1.Controls.Add(label10);
             groupBox1.Controls.Add(btnEditProduct);
             groupBox1.Controls.Add(btnRemoveProduct);
             groupBox1.Controls.Add(btnNewProduct);
-            groupBox1.Controls.Add(textBox1);
             groupBox1.Controls.Add(label11);
-            groupBox1.Controls.Add(comboBox2);
+            groupBox1.Controls.Add(cbCatergory);
             groupBox1.Controls.Add(label13);
-            groupBox1.Controls.Add(textBox2);
             groupBox1.Controls.Add(label14);
-            groupBox1.Controls.Add(textBox3);
             groupBox1.Controls.Add(label15);
-            groupBox1.Controls.Add(textBox4);
+            groupBox1.Controls.Add(tbNameProduct);
             groupBox1.Controls.Add(label16);
             groupBox1.Location = new Point(14, 12);
             groupBox1.Name = "groupBox1";
@@ -1047,71 +1017,59 @@
             groupBox1.TabStop = false;
             groupBox1.Text = "Manage Products";
             // 
-            // textBox7
+            // numericQuantityStore
             // 
-            textBox7.Location = new Point(18, 178);
-            textBox7.Name = "textBox7";
-            textBox7.Size = new Size(139, 25);
-            textBox7.TabIndex = 24;
+            numericQuantityStore.Location = new Point(18, 187);
+            numericQuantityStore.Name = "numericQuantityStore";
+            numericQuantityStore.Size = new Size(140, 25);
+            numericQuantityStore.TabIndex = 31;
             // 
-            // label17
+            // label2
             // 
-            label17.AutoSize = true;
-            label17.Location = new Point(18, 160);
-            label17.Name = "label17";
-            label17.Size = new Size(57, 17);
-            label17.TabIndex = 23;
-            label17.Text = "Location";
+            label2.AutoSize = true;
+            label2.Location = new Point(18, 167);
+            label2.Name = "label2";
+            label2.Size = new Size(91, 17);
+            label2.TabIndex = 30;
+            label2.Text = "Quantity Store";
             // 
-            // radioButton2
+            // numericQuantityWarehouse
             // 
-            radioButton2.AutoSize = true;
-            radioButton2.Location = new Point(107, 384);
-            radioButton2.Name = "radioButton2";
-            radioButton2.Size = new Size(57, 21);
-            radioButton2.TabIndex = 22;
-            radioButton2.TabStop = true;
-            radioButton2.Text = "Store";
-            radioButton2.UseVisualStyleBackColor = true;
+            numericQuantityWarehouse.Location = new Point(18, 136);
+            numericQuantityWarehouse.Name = "numericQuantityWarehouse";
+            numericQuantityWarehouse.Size = new Size(140, 25);
+            numericQuantityWarehouse.TabIndex = 29;
             // 
-            // radioButton1
+            // numericSellPrice
             // 
-            radioButton1.AutoSize = true;
-            radioButton1.Location = new Point(17, 384);
-            radioButton1.Name = "radioButton1";
-            radioButton1.Size = new Size(91, 21);
-            radioButton1.TabIndex = 21;
-            radioButton1.TabStop = true;
-            radioButton1.Text = "Warehouse";
-            radioButton1.UseVisualStyleBackColor = true;
+            numericSellPrice.DecimalPlaces = 2;
+            numericSellPrice.Location = new Point(18, 329);
+            numericSellPrice.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
+            numericSellPrice.Name = "numericSellPrice";
+            numericSellPrice.Size = new Size(140, 25);
+            numericSellPrice.TabIndex = 28;
             // 
-            // textBox6
+            // numericWholesalePrice
             // 
-            textBox6.Location = new Point(18, 354);
-            textBox6.Name = "textBox6";
-            textBox6.Size = new Size(139, 25);
-            textBox6.TabIndex = 20;
+            numericWholesalePrice.DecimalPlaces = 2;
+            numericWholesalePrice.Location = new Point(18, 285);
+            numericWholesalePrice.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
+            numericWholesalePrice.Name = "numericWholesalePrice";
+            numericWholesalePrice.Size = new Size(140, 25);
+            numericWholesalePrice.TabIndex = 27;
             // 
-            // label12
+            // numericSKU
             // 
-            label12.AutoSize = true;
-            label12.Location = new Point(18, 336);
-            label12.Name = "label12";
-            label12.Size = new Size(56, 17);
-            label12.TabIndex = 19;
-            label12.Text = "Supplier";
-            // 
-            // textBox5
-            // 
-            textBox5.Location = new Point(18, 307);
-            textBox5.Name = "textBox5";
-            textBox5.Size = new Size(139, 25);
-            textBox5.TabIndex = 18;
+            numericSKU.Location = new Point(18, 92);
+            numericSKU.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
+            numericSKU.Name = "numericSKU";
+            numericSKU.Size = new Size(140, 25);
+            numericSKU.TabIndex = 26;
             // 
             // label10
             // 
             label10.AutoSize = true;
-            label10.Location = new Point(18, 289);
+            label10.Location = new Point(19, 309);
             label10.Name = "label10";
             label10.Size = new Size(60, 17);
             label10.TabIndex = 17;
@@ -1119,86 +1077,69 @@
             // 
             // btnEditProduct
             // 
-            btnEditProduct.Location = new Point(18, 436);
+            btnEditProduct.Location = new Point(18, 392);
             btnEditProduct.Name = "btnEditProduct";
-            btnEditProduct.Size = new Size(139, 23);
+            btnEditProduct.Size = new Size(140, 23);
             btnEditProduct.TabIndex = 16;
             btnEditProduct.Text = "Edit Product";
             btnEditProduct.UseVisualStyleBackColor = true;
+            btnEditProduct.Click += btnEditProduct_Click;
             // 
             // btnRemoveProduct
             // 
-            btnRemoveProduct.Location = new Point(18, 465);
+            btnRemoveProduct.Location = new Point(18, 421);
             btnRemoveProduct.Name = "btnRemoveProduct";
-            btnRemoveProduct.Size = new Size(139, 23);
+            btnRemoveProduct.Size = new Size(140, 23);
             btnRemoveProduct.TabIndex = 15;
             btnRemoveProduct.Text = "Remove Product";
             btnRemoveProduct.UseVisualStyleBackColor = true;
+            btnRemoveProduct.Click += btnRemoveProduct_Click;
             // 
             // btnNewProduct
             // 
-            btnNewProduct.Location = new Point(18, 407);
+            btnNewProduct.Location = new Point(18, 363);
             btnNewProduct.Name = "btnNewProduct";
-            btnNewProduct.Size = new Size(139, 23);
+            btnNewProduct.Size = new Size(140, 23);
             btnNewProduct.TabIndex = 14;
             btnNewProduct.Text = "New Product";
             btnNewProduct.UseVisualStyleBackColor = true;
-            // 
-            // textBox1
-            // 
-            textBox1.Location = new Point(18, 263);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(139, 25);
-            textBox1.TabIndex = 11;
+            btnNewProduct.Click += btnNewProduct_Click;
             // 
             // label11
             // 
             label11.AutoSize = true;
-            label11.Location = new Point(18, 245);
+            label11.Location = new Point(19, 265);
             label11.Name = "label11";
             label11.Size = new Size(100, 17);
             label11.TabIndex = 10;
             label11.Text = "Wholesale Price";
             // 
-            // comboBox2
+            // cbCatergory
             // 
-            comboBox2.FormattingEnabled = true;
-            comboBox2.Location = new Point(18, 219);
-            comboBox2.Name = "comboBox2";
-            comboBox2.Size = new Size(139, 25);
-            comboBox2.TabIndex = 7;
+            cbCatergory.FormattingEnabled = true;
+            cbCatergory.Items.AddRange(new object[] { "Books", "Electronic", "Media", "Videogames" });
+            cbCatergory.Location = new Point(18, 237);
+            cbCatergory.Name = "cbCatergory";
+            cbCatergory.Size = new Size(140, 25);
+            cbCatergory.TabIndex = 7;
             // 
             // label13
             // 
             label13.AutoSize = true;
-            label13.Location = new Point(18, 201);
+            label13.Location = new Point(18, 217);
             label13.Name = "label13";
             label13.Size = new Size(61, 17);
             label13.TabIndex = 6;
             label13.Text = "Category";
-            // 
-            // textBox2
-            // 
-            textBox2.Location = new Point(18, 134);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(139, 25);
-            textBox2.TabIndex = 5;
             // 
             // label14
             // 
             label14.AutoSize = true;
             label14.Location = new Point(18, 116);
             label14.Name = "label14";
-            label14.Size = new Size(56, 17);
+            label14.Size = new Size(125, 17);
             label14.TabIndex = 4;
-            label14.Text = "Quantity";
-            // 
-            // textBox3
-            // 
-            textBox3.Location = new Point(18, 90);
-            textBox3.Name = "textBox3";
-            textBox3.Size = new Size(139, 25);
-            textBox3.TabIndex = 3;
+            label14.Text = "Quantity Warehouse";
             // 
             // label15
             // 
@@ -1209,12 +1150,12 @@
             label15.TabIndex = 2;
             label15.Text = "SKU";
             // 
-            // textBox4
+            // tbNameProduct
             // 
-            textBox4.Location = new Point(18, 46);
-            textBox4.Name = "textBox4";
-            textBox4.Size = new Size(139, 25);
-            textBox4.TabIndex = 1;
+            tbNameProduct.Location = new Point(18, 46);
+            tbNameProduct.Name = "tbNameProduct";
+            tbNameProduct.Size = new Size(140, 25);
+            tbNameProduct.TabIndex = 1;
             // 
             // label16
             // 
@@ -1239,9 +1180,9 @@
             tabPageShifts.Controls.Add(lstBoxEveningShiftEmployees);
             tabPageShifts.Controls.Add(lstBoxNoShiftEmployees);
             tabPageShifts.Controls.Add(lstBoxMorningShiftEmployees);
-            tabPageShifts.Location = new Point(4, 26);
+            tabPageShifts.Location = new Point(4, 24);
             tabPageShifts.Name = "tabPageShifts";
-            tabPageShifts.Size = new Size(952, 517);
+            tabPageShifts.Size = new Size(952, 519);
             tabPageShifts.TabIndex = 3;
             tabPageShifts.Text = "Shifts";
             tabPageShifts.UseVisualStyleBackColor = true;
@@ -1352,15 +1293,6 @@
             lstBoxMorningShiftEmployees.Size = new Size(189, 395);
             lstBoxMorningShiftEmployees.TabIndex = 0;
             // 
-            // label50
-            // 
-            label50.AutoSize = true;
-            label50.Location = new Point(708, 246);
-            label50.Name = "label50";
-            label50.Size = new Size(83, 17);
-            label50.TabIndex = 19;
-            label50.Text = "Departments";
-            // 
             // MainControl
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
@@ -1387,9 +1319,16 @@
             tabPageStock.ResumeLayout(false);
             groupBox2.ResumeLayout(false);
             groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridView2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numericQuantityShelfRequest).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numericQuantityStore).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numericQuantityWarehouse).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numericSellPrice).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numericWholesalePrice).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numericSKU).EndInit();
             tabPageShifts.ResumeLayout(false);
             tabPageShifts.PerformLayout();
             ResumeLayout(false);
@@ -1466,39 +1405,23 @@
         private Label lblEmployeeName;
         private TabPage tabPageStock;
         private GroupBox groupBox2;
-        private ListBox listBox1;
-        private RadioButton radioButton3;
-        private RadioButton radioButton4;
         private Button btnEditRequest;
         private Button btnFulfillRequest;
-        private Button button3;
+        private Button btAddShelfRequest;
         private Label label21;
-        private ComboBox comboBox1;
-        private Label label22;
-        private TextBox textBox12;
         private Label label23;
         private DataGridView dataGridView1;
         private GroupBox groupBox1;
-        private TextBox textBox7;
-        private Label label17;
-        private RadioButton radioButton2;
-        private RadioButton radioButton1;
-        private TextBox textBox6;
-        private Label label12;
-        private TextBox textBox5;
         private Label label10;
         private Button btnEditProduct;
         private Button btnRemoveProduct;
         private Button btnNewProduct;
-        private TextBox textBox1;
         private Label label11;
-        private ComboBox comboBox2;
+        private ComboBox cbCatergory;
         private Label label13;
-        private TextBox textBox2;
         private Label label14;
-        private TextBox textBox3;
         private Label label15;
-        private TextBox textBox4;
+        private TextBox tbNameProduct;
         private Label label16;
         private TabPage tabPageShifts;
         private DateTimePicker dateTimePicker1;
@@ -1516,5 +1439,13 @@
         private TextBox txtBoxEmployeeAddress;
         private Label label49;
         private Label label50;
+        private NumericUpDown numericQuantityWarehouse;
+        private NumericUpDown numericSellPrice;
+        private NumericUpDown numericWholesalePrice;
+        private NumericUpDown numericSKU;
+        private NumericUpDown numericQuantityStore;
+        private Label label2;
+        private NumericUpDown numericQuantityShelfRequest;
+        private DataGridView dataGridView2;
     }
 }

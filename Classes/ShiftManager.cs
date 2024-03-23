@@ -22,9 +22,6 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
             this.ShiftDateDict = new Dictionary<DateOnly, (Shift, Shift)>();
 
             this._dbHelper = new DatabaseHelper();
-
-            //LoadShiftDataFromDatabase();
-            //LoadShiftEmployeeDataFromDatabase();
         }
 
         public void LoadShiftDataFromDatabase()

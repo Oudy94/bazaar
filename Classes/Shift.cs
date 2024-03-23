@@ -9,7 +9,7 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
 {
     public class Shift
     {
-        public static int nextId = 1;
+        private static int nextId = 1;
 
         public int Id { get; set; }
         public DateOnly Date { get; set; }
@@ -23,7 +23,7 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
             this.ShiftType = shiftType;
             EmployeeDict = new Dictionary<int, Employee>();
 
-            nextId = id;
+            nextId = id + 1;
         }
 
         public Shift(DateOnly date, ShiftTypeEnum shiftType)

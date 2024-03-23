@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TheSandwichMakersHardwareStoreSolution.Classes;
+using TheSandwichMakersHardwareStoreSolution.Enums;
 
 namespace TheSandwichMakersHardwareStoreSolution.Helpers
 {
@@ -352,6 +353,84 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
                 var count = (int)cmd.ExecuteScalar();
                 return count > 0;
             }
+        }
+
+        public void AddShift(Shift shift)
+        {
+            string query = "INSERT INTO shift (id, date, shift_type) VALUES (@Id, @Date, @ShiftType)";
+
+            using (SqlCommand cmd = new SqlCommand(query, connection))
+            {
+                cmd.Parameters.AddWithValue("@id", shift.Id);
+                cmd.Parameters.AddWithValue("@date", new DateTime(shift.Date.Year, shift.Date.Month, shift.Date.Day));
+                cmd.Parameters.AddWithValue("@ShiftType", (int)shift.ShiftType + 1);
+
+                cmd.ExecuteNonQuery();
+            }
+        }
+        public void AddShiftEmployee(int shiftId, int employeeId)
+        {
+            string query = "INSERT INTO shift_employee (shift_id, employee_id) VALUES (@ShiftId, @EmployeeId)";
+
+            using (SqlCommand cmd = new SqlCommand(query, connection))
+            {
+                cmd.Parameters.AddWithValue("@ShiftId", shiftId);
+                cmd.Parameters.AddWithValue("@EmployeeId", employeeId);
+
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public List<Shift> RetrieveShiftsData()
+        {
+            string query = "SELECT * FROM shift";
+
+            List<Shift> shifts = new List<Shift>();
+
+            using (SqlCommand cmd = new SqlCommand(query, connection))
+            {
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        DateTime dateTime = reader.GetDateTime(reader.GetOrdinal("date"));
+                        DateOnly date = new DateOnly(dateTime.Year, dateTime.Month, dateTime.Day);
+
+                        Shift shift = new Shift
+                        (
+                            reader.GetInt32(reader.GetOrdinal("id")),
+                            date,
+                            (ShiftTypeEnum)reader.GetInt32(reader.GetOrdinal("shift_type")) - 1
+                        );
+
+                        shifts.Add(shift);
+                    }
+                }
+            }
+
+            return shifts;
+        }
+
+        public List<(int, int)> RetrieveShiftEmployeeList()
+        {
+            List<(int, int)> shiftEmployee = new List<(int, int)>();
+
+            string query = "SELECT shift_id, employee_id FROM shift_employee";
+
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        int shiftId = reader.GetInt32("shift_id");
+                        int employeeId = reader.GetInt32("employee_id");
+                        shiftEmployee.Add((shiftId, employeeId));
+                    }
+                }
+            }
+
+            return shiftEmployee;
         }
     }
 }

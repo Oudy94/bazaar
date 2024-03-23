@@ -25,13 +25,18 @@ namespace TheSandwichMakersHardwareStoreSolution
         public List<Department> GetDepartments() => _departments;
         private string _currentImageUrl = string.Empty;
 
-
+        public ShiftManager ShiftManager { get; set; }
+        public EmployeeManager EmployeeManager { get; set; }
 
         public MainControl()
         {
             InitializeComponent();
             _dbHelper = new DatabaseHelper();
+            this.ShiftManager = new ShiftManager();
+            this.EmployeeManager = new EmployeeManager(this.ShiftManager);
+
             LoadRolesAndDepartments();
+            LoadEmployees();
             RefreshEmployeesGrid();
         }
 
@@ -81,6 +86,23 @@ namespace TheSandwichMakersHardwareStoreSolution
             }
         }
 
+        public void LoadEmployees()
+        {
+            try
+            {
+                _dbHelper.OpenConnection();
+                List<Employee> employees = _dbHelper.GetEmployees(_roles, _departments);
+
+                foreach (Employee employee in employees)
+                {
+                    EmployeeManager.AddEmployee(employee);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
 
         // Employee Tab
 
@@ -376,8 +398,10 @@ namespace TheSandwichMakersHardwareStoreSolution
         {
             try
             {
-                _dbHelper.OpenConnection();
-                var employees = _dbHelper.GetEmployees(_roles, _departments);
+                //_dbHelper.OpenConnection();
+                //var employees = _dbHelper.GetEmployees(_roles, _departments);
+
+                var employees = EmployeeManager.GetEmployees();
 
                 // Project the employee data into a new format for display
                 var employeeDisplayData = employees.Select(e => new
@@ -663,7 +687,135 @@ namespace TheSandwichMakersHardwareStoreSolution
             {
                 return -1;
             }
+        }
 
+        private void tabControMain_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (tabControMain.SelectedTab == tabPageShifts)
+            {
+                RefreshShiftUI();
+            }
+        }
+
+        private void btnAssignMorning_Click(object sender, EventArgs e)
+        {
+            if (!ValidateShiftInput(lstBoxNoShiftEmployees))
+            {
+                return;
+            }
+
+            Employee employee = (Employee)lstBoxNoShiftEmployees.SelectedItem;
+            DateTime dateTime = dtpShift.Value;
+            DateOnly date = new DateOnly(dateTime.Year, dateTime.Month, dateTime.Day);
+
+            ShiftManager.AssignEmployeeToShift(employee, date, ShiftTypeEnum.Morning);
+            RefreshShiftUI();
+        }
+
+        private void btnAssignEvening_Click(object sender, EventArgs e)
+        {
+            if (!ValidateShiftInput(lstBoxNoShiftEmployees))
+            {
+                return;
+            }
+
+            Employee employee = (Employee)lstBoxNoShiftEmployees.SelectedItem;
+            DateTime dateTime = dtpShift.Value;
+            DateOnly date = new DateOnly(dateTime.Year, dateTime.Month, dateTime.Day);
+
+            ShiftManager.AssignEmployeeToShift(employee, date, ShiftTypeEnum.Evening);
+            RefreshShiftUI();
+        }
+
+        private void btnUnassignMorningShift_Click(object sender, EventArgs e)
+        {
+            if (!ValidateShiftInput(lstBoxMorningShiftEmployees))
+            {
+                return;
+            }
+
+            Employee employee = (Employee)lstBoxMorningShiftEmployees.SelectedItem;
+            DateTime dateTime = dtpShift.Value;
+            DateOnly date = new DateOnly(dateTime.Year, dateTime.Month, dateTime.Day);
+
+            ShiftManager.UnassignEmployeeFromShift(employee, date, ShiftTypeEnum.Morning);
+            RefreshShiftUI();
+        }
+
+        private void btnUnassignEveningShift_Click(object sender, EventArgs e)
+        {
+            if (!ValidateShiftInput(lstBoxEveningShiftEmployees))
+            {
+                return;
+            }
+
+            Employee employee = (Employee)lstBoxEveningShiftEmployees.SelectedItem;
+            DateTime dateTime = dtpShift.Value;
+            DateOnly date = new DateOnly(dateTime.Year, dateTime.Month, dateTime.Day);
+
+            ShiftManager.UnassignEmployeeFromShift(employee, date, ShiftTypeEnum.Evening);
+            RefreshShiftUI();
+        }
+
+        public bool ValidateShiftInput(ListBox listBox)
+        {
+            if (listBox.SelectedIndex < 0)
+            {
+                MessageBox.Show("you have to select employee first.");
+                return false;
+            }
+
+            if (dtpShift.Value.Date == DateTime.MinValue)
+            {
+                MessageBox.Show("you have to select correct date.");
+                return false;
+            }
+
+            return true;
+        }
+
+        private void dtpShift_ValueChanged(object sender, EventArgs e)
+        {
+            RefreshShiftUI();
+        }
+
+        public void RefreshShiftUI()
+        {
+            DateTime dateTime = dtpShift.Value;
+            DateOnly date = new DateOnly(dateTime.Year, dateTime.Month, dateTime.Day);
+
+            lstBoxNoShiftEmployees.Items.Clear();
+            foreach (Employee employee in EmployeeManager.GetUnassignedEmployees(date))
+            {
+                lstBoxNoShiftEmployees.Items.Add(employee);
+            }
+
+            lstBoxMorningShiftEmployees.Items.Clear();
+            foreach (Employee employee in EmployeeManager.GetAssignedEmployeed(date, ShiftTypeEnum.Morning))
+            {
+                lstBoxMorningShiftEmployees.Items.Add(employee);
+            }
+
+            lstBoxEveningShiftEmployees.Items.Clear();
+            foreach (Employee employee in EmployeeManager.GetAssignedEmployeed(date, ShiftTypeEnum.Evening))
+            {
+                lstBoxEveningShiftEmployees.Items.Add(employee);
+            }
+        }
+
+        private void btnAutoAssign_Click(object sender, EventArgs e)
+        {
+            if (dtpShift.Value.Date == DateTime.MinValue)
+            {
+                MessageBox.Show("you have to select correct date.");
+                return;
+            }
+
+            DateTime dateTime = dtpShift.Value;
+            DateOnly date = new DateOnly(dateTime.Year, dateTime.Month, dateTime.Day);
+
+            ShiftManager.AutoAssignShift(date, EmployeeManager.GetUnassignedEmployees(date));
+            RefreshShiftUI();
         }
     }
 }

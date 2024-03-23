@@ -127,13 +127,14 @@
             tbNameProduct = new TextBox();
             label16 = new Label();
             tabPageShifts = new TabPage();
-            dateTimePicker1 = new DateTimePicker();
+            btnUnassignEveningShift = new Button();
+            dtpShift = new DateTimePicker();
             label9 = new Label();
             label8 = new Label();
             label7 = new Label();
             label6 = new Label();
             btnAutoAssign = new Button();
-            btnUnassign = new Button();
+            btnUnassignMorningShift = new Button();
             btnAssignEvening = new Button();
             btnAssignMorning = new Button();
             lstBoxEveningShiftEmployees = new ListBox();
@@ -173,6 +174,7 @@
             tabControMain.SelectedIndex = 0;
             tabControMain.Size = new Size(960, 547);
             tabControMain.TabIndex = 1;
+            tabControMain.SelectedIndexChanged += tabControMain_SelectedIndexChanged;
             // 
             // tabPageMain
             // 
@@ -1168,13 +1170,14 @@
             // 
             // tabPageShifts
             // 
-            tabPageShifts.Controls.Add(dateTimePicker1);
+            tabPageShifts.Controls.Add(btnUnassignEveningShift);
+            tabPageShifts.Controls.Add(dtpShift);
             tabPageShifts.Controls.Add(label9);
             tabPageShifts.Controls.Add(label8);
             tabPageShifts.Controls.Add(label7);
             tabPageShifts.Controls.Add(label6);
             tabPageShifts.Controls.Add(btnAutoAssign);
-            tabPageShifts.Controls.Add(btnUnassign);
+            tabPageShifts.Controls.Add(btnUnassignMorningShift);
             tabPageShifts.Controls.Add(btnAssignEvening);
             tabPageShifts.Controls.Add(btnAssignMorning);
             tabPageShifts.Controls.Add(lstBoxEveningShiftEmployees);
@@ -1187,12 +1190,23 @@
             tabPageShifts.Text = "Shifts";
             tabPageShifts.UseVisualStyleBackColor = true;
             // 
-            // dateTimePicker1
+            // btnUnassignEveningShift
             // 
-            dateTimePicker1.Location = new Point(286, 64);
-            dateTimePicker1.Name = "dateTimePicker1";
-            dateTimePicker1.Size = new Size(200, 25);
-            dateTimePicker1.TabIndex = 11;
+            btnUnassignEveningShift.Location = new Point(307, 390);
+            btnUnassignEveningShift.Name = "btnUnassignEveningShift";
+            btnUnassignEveningShift.Size = new Size(153, 40);
+            btnUnassignEveningShift.TabIndex = 12;
+            btnUnassignEveningShift.Text = "Unassign Evening Shift";
+            btnUnassignEveningShift.UseVisualStyleBackColor = true;
+            btnUnassignEveningShift.Click += btnUnassignEveningShift_Click;
+            // 
+            // dtpShift
+            // 
+            dtpShift.Location = new Point(286, 64);
+            dtpShift.Name = "dtpShift";
+            dtpShift.Size = new Size(221, 25);
+            dtpShift.TabIndex = 11;
+            dtpShift.ValueChanged += dtpShift_ValueChanged;
             // 
             // label9
             // 
@@ -1232,39 +1246,43 @@
             // 
             // btnAutoAssign
             // 
-            btnAutoAssign.Location = new Point(307, 173);
+            btnAutoAssign.Location = new Point(307, 135);
             btnAutoAssign.Name = "btnAutoAssign";
             btnAutoAssign.Size = new Size(153, 40);
             btnAutoAssign.TabIndex = 6;
             btnAutoAssign.Text = "Auto Assign";
             btnAutoAssign.UseVisualStyleBackColor = true;
+            btnAutoAssign.Click += btnAutoAssign_Click;
             // 
-            // btnUnassign
+            // btnUnassignMorningShift
             // 
-            btnUnassign.Location = new Point(307, 392);
-            btnUnassign.Name = "btnUnassign";
-            btnUnassign.Size = new Size(153, 40);
-            btnUnassign.TabIndex = 5;
-            btnUnassign.Text = "Unassign";
-            btnUnassign.UseVisualStyleBackColor = true;
+            btnUnassignMorningShift.Location = new Point(307, 344);
+            btnUnassignMorningShift.Name = "btnUnassignMorningShift";
+            btnUnassignMorningShift.Size = new Size(153, 40);
+            btnUnassignMorningShift.TabIndex = 5;
+            btnUnassignMorningShift.Text = "Unassign Morning Shift";
+            btnUnassignMorningShift.UseVisualStyleBackColor = true;
+            btnUnassignMorningShift.Click += btnUnassignMorningShift_Click;
             // 
             // btnAssignEvening
             // 
-            btnAssignEvening.Location = new Point(307, 304);
+            btnAssignEvening.Location = new Point(307, 265);
             btnAssignEvening.Name = "btnAssignEvening";
             btnAssignEvening.Size = new Size(153, 40);
             btnAssignEvening.TabIndex = 4;
             btnAssignEvening.Text = "Assign Evening Shift";
             btnAssignEvening.UseVisualStyleBackColor = true;
+            btnAssignEvening.Click += btnAssignEvening_Click;
             // 
             // btnAssignMorning
             // 
-            btnAssignMorning.Location = new Point(307, 258);
+            btnAssignMorning.Location = new Point(307, 219);
             btnAssignMorning.Name = "btnAssignMorning";
             btnAssignMorning.Size = new Size(153, 40);
             btnAssignMorning.TabIndex = 3;
             btnAssignMorning.Text = "Assign Morning Shift";
             btnAssignMorning.UseVisualStyleBackColor = true;
+            btnAssignMorning.Click += btnAssignMorning_Click;
             // 
             // lstBoxEveningShiftEmployees
             // 
@@ -1424,13 +1442,13 @@
         private TextBox tbNameProduct;
         private Label label16;
         private TabPage tabPageShifts;
-        private DateTimePicker dateTimePicker1;
+        private DateTimePicker dtpShift;
         private Label label9;
         private Label label8;
         private Label label7;
         private Label label6;
         private Button btnAutoAssign;
-        private Button btnUnassign;
+        private Button btnUnassignMorningShift;
         private Button btnAssignEvening;
         private Button btnAssignMorning;
         private ListBox lstBoxEveningShiftEmployees;
@@ -1447,5 +1465,6 @@
         private Label label2;
         private NumericUpDown numericQuantityShelfRequest;
         private DataGridView dataGridView2;
+        private Button btnUnassignEveningShift;
     }
 }

@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TheSandwichMakersHardwareStoreSolution.Classes;
+using TheSandwichMakersHardwareStoreSolution.Enums;
 using TheSandwichMakersHardwareStoreSolution.Helpers;
 
 namespace TheSandwichMakersHardwareStoreSolution

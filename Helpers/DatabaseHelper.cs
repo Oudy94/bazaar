@@ -11,7 +11,7 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
 {
     public class DatabaseHelper
     {
-        private readonly string connectionString = "Server=mssqlstud.fhict.local;Database=dbi530788_hardware;User Id=dbi530788_hardware;Password=hardware;"; //HERE ADD YOUR OWN CONNECTION STRING!!
+        private readonly string connectionString = ""; //HERE ADD YOUR OWN CONNECTION STRING!!
         private SqlConnection connection;
 
         public DatabaseHelper()
@@ -68,7 +68,7 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
             Employee authenticatedEmployee = null;
             try
             {
-                string query = "SELECT * FROM Employee WHERE Email = @Email AND Password = @Password";
+                string query = "SELECT * FROM employee WHERE email = @Email AND password = @Password";
                 SqlCommand command = new SqlCommand(query, connection);
                 command.Parameters.AddWithValue("@Email", email);
                 command.Parameters.AddWithValue("@Password", password);
@@ -117,7 +117,7 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
         public List<Role> GetRoles()
         {
             var roles = new List<Role>();
-            string query = "SELECT id, name FROM RoleList";
+            string query = "SELECT id, name FROM role_list";
             using (SqlCommand cmd = new SqlCommand(query, connection))
             {
                 using (SqlDataReader reader = cmd.ExecuteReader())
@@ -138,7 +138,7 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
         public List<Department> GetDepartments()
         {
             var departments = new List<Department>();
-            string query = "SELECT id, name FROM DepartmentList";
+            string query = "SELECT id, name FROM department_list";
             using (SqlCommand cmd = new SqlCommand(query, connection))
             {
                 using (SqlDataReader reader = cmd.ExecuteReader())
@@ -159,31 +159,31 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
 
         public void AddDepartment(string departmentName)
         {
-            string query = "INSERT INTO DepartmentList (name) VALUES (@name)";
+            string query = "INSERT INTO department_list (name) VALUES (@Name)";
             using (SqlCommand cmd = new SqlCommand(query, connection))
             {
-                cmd.Parameters.AddWithValue("@name", departmentName);
+                cmd.Parameters.AddWithValue("@Name", departmentName);
                 cmd.ExecuteNonQuery();
             }
         }
 
         public void UpdateDepartment(int departmentId, string newDepartmentName)
         {
-            string query = "UPDATE DepartmentList SET name = @name WHERE id = @id";
+            string query = "UPDATE department_list SET name = @Name WHERE id = @Id";
             using (SqlCommand cmd = new SqlCommand(query, connection))
             {
-                cmd.Parameters.AddWithValue("@name", newDepartmentName);
-                cmd.Parameters.AddWithValue("@id", departmentId);
+                cmd.Parameters.AddWithValue("@Name", newDepartmentName);
+                cmd.Parameters.AddWithValue("@Id", departmentId);
                 cmd.ExecuteNonQuery();
             }
         }
 
         public void RemoveDepartment(int departmentId)
         {
-            string query = "DELETE FROM DepartmentList WHERE id = @id";
+            string query = "DELETE FROM department_list WHERE id = @Id";
             using (SqlCommand cmd = new SqlCommand(query, connection))
             {
-                cmd.Parameters.AddWithValue("@id", departmentId);
+                cmd.Parameters.AddWithValue("@Id", departmentId);
                 cmd.ExecuteNonQuery();
             }
         }
@@ -215,7 +215,7 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
         // Method to update an existing employee
         public void UpdateEmployee(Employee employee)
         {
-            string query = @"UPDATE Employee 
+            string query = @"UPDATE employee 
                          SET name = @Name, 
                              email = @Email, 
                              password = @Password, 
@@ -248,7 +248,7 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
         // Method to delete an employee (soft delete by setting is_active to false)
         public void DeleteEmployee(int employeeId)
         {
-            string query = "UPDATE Employee SET is_active = 0 WHERE id = @Id";
+            string query = "UPDATE employee SET is_active = 0 WHERE id = @Id";
             using (SqlCommand cmd = new SqlCommand(query, connection))
             {
                 cmd.Parameters.AddWithValue("@Id", employeeId);
@@ -259,9 +259,9 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
         // Get employye by id
         public Employee GetEmployeeById(int employeeId, List<Role> roles, List<Department> departments)
         {
-            string query = "SELECT e.*, r.Id as RoleId, r.Name as RoleName, d.Id as DepartmentId, d.Name as DepartmentName FROM Employee e " +
-                           "INNER JOIN RoleList r ON e.role = r.Id " +
-                           "INNER JOIN DepartmentList d ON e.department = d.Id " +
+            string query = "SELECT e.*, r.Id as RoleId, r.name as RoleName, d.id as DepartmentId, d.name as DepartmentName FROM employee e " +
+                           "INNER JOIN role_list r ON e.role = r.id " +
+                           "INNER JOIN department_list d ON e.department = d.id " +
                            "WHERE e.id = @EmployeeId";
 
             using (SqlCommand cmd = new SqlCommand(query, connection))
@@ -298,9 +298,9 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
         public List<Employee> GetEmployees(List<Role> roles, List<Department> departments)
         {
             List<Employee> employees = new List<Employee>();
-            string query = "SELECT e.*, r.Id as RoleId, r.Name as RoleName, d.Id as DepartmentId, d.Name as DepartmentName FROM Employee e " +
-                           "INNER JOIN RoleList r ON e.role = r.Id " +
-                           "INNER JOIN DepartmentList d ON e.department = d.Id";
+            string query = "SELECT e.*, r.id as RoleId, r.name as RoleName, d.id as DepartmentId, d.name as DepartmentName FROM employee e " +
+                           "INNER JOIN role_list r ON e.role = r.id " +
+                           "INNER JOIN department_list d ON e.department = d.id";
 
             using (SqlCommand cmd = new SqlCommand(query, connection))
             {
@@ -334,7 +334,7 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
 
         public bool CheckEmployeeNameExists(string name)
         {
-            var query = "SELECT COUNT(*) FROM Employee WHERE name = @Name";
+            var query = "SELECT COUNT(*) FROM employee WHERE name = @Name";
             using (var cmd = new SqlCommand(query, connection))
             {
                 cmd.Parameters.AddWithValue("@Name", name);
@@ -345,7 +345,7 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
 
         public bool CheckEmployeeEmailExists(string email)
         {
-            var query = "SELECT COUNT(*) FROM Employee WHERE email = @Email";
+            var query = "SELECT COUNT(*) FROM employee WHERE email = @Email";
             using (var cmd = new SqlCommand(query, connection))
             {
                 cmd.Parameters.AddWithValue("@Email", email);
@@ -353,7 +353,5 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
                 return count > 0;
             }
         }
-
-
     }
 }

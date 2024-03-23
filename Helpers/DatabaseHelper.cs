@@ -432,5 +432,156 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
 
             return shiftEmployee;
         }
+
+        public void AddItem(Item item)
+        {
+            string query = "INSERT INTO item (id, sku, name, quantity_warehouse, quantity_store, category, wholesale_price, sell_price) " +
+                "VALUES (@Id, @Sku, @Name, @QuantityWarehouse, @QuantityStore, @Category, @WholePrice, @SellPrice)";
+
+            using (SqlCommand cmd = new SqlCommand(query, connection))
+            {
+                cmd.Parameters.AddWithValue("@Id", item.Id);
+                cmd.Parameters.AddWithValue("@Sku", item.Sku);
+                cmd.Parameters.AddWithValue("@Name", item.Name);
+                cmd.Parameters.AddWithValue("@QuantityWarehouse", item.QuantityWarehouse);
+                cmd.Parameters.AddWithValue("@QuantityStore", item.QuantityStore);
+                cmd.Parameters.AddWithValue("@Category",(int)item.Category + 1);
+                cmd.Parameters.AddWithValue("@WholePrice", item.WholesalePrice);
+                cmd.Parameters.AddWithValue("@SellPrice", item.SellPrice);
+
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void UpdateItem(Item item)
+        {
+            string query = "UPDATE item SET sku = @Sku, name = @Name, quantity_warehouse = @QuantityWarehouse, " +
+                           "quantity_store = @QuantityStore, category = @Category, wholesale_price = @WholePrice, " +
+                           "sell_price = @SellPrice WHERE id = @Id";
+
+            using (SqlCommand cmd = new SqlCommand(query, connection))
+            {
+                cmd.Parameters.AddWithValue("@Sku", item.Sku);
+                cmd.Parameters.AddWithValue("@Name", item.Name);
+                cmd.Parameters.AddWithValue("@QuantityWarehouse", item.QuantityWarehouse);
+                cmd.Parameters.AddWithValue("@QuantityStore", item.QuantityStore);
+                cmd.Parameters.AddWithValue("@Category", (int)item.Category + 1);
+                cmd.Parameters.AddWithValue("@WholePrice", item.WholesalePrice);
+                cmd.Parameters.AddWithValue("@SellPrice", item.SellPrice);
+                cmd.Parameters.AddWithValue("@Id", item.Id);
+
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void RemoveItem(int itemId)
+        {
+            string query = "DELETE FROM item WHERE id = @ItemId";
+
+            using (SqlCommand cmd = new SqlCommand(query, connection))
+            {
+                cmd.Parameters.AddWithValue("@ItemId", itemId);
+
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public List<Item> RetrieveItems()
+        {
+            List<Item> items = new List<Item>();
+
+            string query = "SELECT id, sku, name, quantity_warehouse, quantity_store, category, wholesale_price, sell_price FROM item";
+
+            using (SqlCommand cmd = new SqlCommand(query, connection))
+            {
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Item item = new Item
+                        (
+                            reader.GetInt32(reader.GetOrdinal("id")),
+                            reader.GetInt32(reader.GetOrdinal("sku")),
+                            reader.GetString(reader.GetOrdinal("name")),
+                            reader.GetInt32(reader.GetOrdinal("quantity_warehouse")),
+                            reader.GetInt32(reader.GetOrdinal("quantity_store")),
+                            (CategoryEnum)reader.GetInt32(reader.GetOrdinal("category")) - 1,
+                            reader.GetDouble(reader.GetOrdinal("wholesale_price")),
+                            reader.GetDouble(reader.GetOrdinal("sell_price"))
+                        );
+                        items.Add(item);
+                    }
+                }
+            }
+
+            return items;
+        }
+
+        public void AddShelfRequest(ShelfRequest shelfRequest)
+        {
+            string query = "INSERT INTO shelf_request (id, item_id, quantity) " +
+                "VALUES (@Id, @ItemId, @Quantity)";
+
+            using (SqlCommand cmd = new SqlCommand(query, connection))
+            {
+                cmd.Parameters.AddWithValue("@Id", shelfRequest.Id);
+                cmd.Parameters.AddWithValue("@ItemId", shelfRequest.ItemId);
+                cmd.Parameters.AddWithValue("@Quantity", shelfRequest.Quantity);
+
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void UpdateShelfRequest(ShelfRequest shelfRequest)
+        {
+            string query = "UPDATE shelf_request SET item_id = @ItemId, quantity = @Quantity WHERE id = @Id";
+
+            using (SqlCommand cmd = new SqlCommand(query, connection))
+            {
+                cmd.Parameters.AddWithValue("@ItemId", shelfRequest.ItemId);
+                cmd.Parameters.AddWithValue("@Quantity", shelfRequest.Quantity);
+                cmd.Parameters.AddWithValue("@Id", shelfRequest.Id);
+
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void RemoveShelfRequest(int shelfRequestId)
+        {
+            string query = "DELETE FROM shelf_request WHERE id = @ShelfRequestId";
+
+            using (SqlCommand cmd = new SqlCommand(query, connection))
+            {
+                cmd.Parameters.AddWithValue("@ShelfRequestId", shelfRequestId);
+
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public List<ShelfRequest> RetrieveShelfRequests()
+        {
+            List<ShelfRequest> shelfRequests = new List<ShelfRequest>();
+
+            string query = "SELECT id, item_id, quantity FROM shelf_request";
+
+            using (SqlCommand cmd = new SqlCommand(query, connection))
+            {
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        ShelfRequest shelfRequest = new ShelfRequest
+                        (
+                            reader.GetInt32(reader.GetOrdinal("id")),
+                            reader.GetInt32(reader.GetOrdinal("item_id")),
+                            reader.GetInt32(reader.GetOrdinal("quantity"))
+                        );
+                        shelfRequests.Add(shelfRequest);
+                    }
+                }
+            }
+
+            return shelfRequests;
+        }
     }
 }

@@ -27,6 +27,7 @@ namespace TheSandwichMakersHardwareStoreSolution
 
         public ShiftManager ShiftManager { get; set; }
         public EmployeeManager EmployeeManager { get; set; }
+        private StockManager StockManager { get; set; }
 
         public MainControl()
         {
@@ -34,6 +35,7 @@ namespace TheSandwichMakersHardwareStoreSolution
             _dbHelper = new DatabaseHelper();
             this.ShiftManager = new ShiftManager();
             this.EmployeeManager = new EmployeeManager(this.ShiftManager);
+            this.StockManager = new StockManager();
 
             LoadRolesAndDepartments();
             LoadEmployees();
@@ -41,6 +43,9 @@ namespace TheSandwichMakersHardwareStoreSolution
 
             ShiftManager.LoadShiftDataFromDatabase();
             ShiftManager.LoadShiftEmployeeDataFromDatabase(EmployeeManager.EmployeeDict);
+
+            StockManager.LoadItemsFromDatabase();
+            StockManager.LoadShelfRequestFromDatabase();
         }
 
         // Validation for Employee Role
@@ -585,19 +590,16 @@ namespace TheSandwichMakersHardwareStoreSolution
             }
         }
 
-
-        private StockManager stockManager = new StockManager();
-
         private void RefreshProductInfoDisplay()
         {
             dataGridView1.DataSource = null;
-            dataGridView1.DataSource = stockManager.itemList;
+            dataGridView1.DataSource = StockManager.itemList;
         }
 
 
         private void btnNewProduct_Click(object sender, EventArgs e)
         {
-            stockManager.AddNewItem(Convert.ToInt16(numericSKU.Value), tbNameProduct.Text, Convert.ToInt16(numericQuantityWarehouse.Value), Convert.ToInt16(numericQuantityStore.Value), cbCatergory.Text, Convert.ToDouble(numericWholesalePrice.Value), Convert.ToDouble(numericSellPrice.Value));
+            StockManager.AddNewItem(Convert.ToInt16(numericSKU.Value), tbNameProduct.Text, Convert.ToInt16(numericQuantityWarehouse.Value), Convert.ToInt16(numericQuantityStore.Value), (CategoryEnum)cbCatergory.SelectedIndex, Convert.ToDouble(numericWholesalePrice.Value), Convert.ToDouble(numericSellPrice.Value));
             RefreshProductInfoDisplay();
 
         }
@@ -605,14 +607,14 @@ namespace TheSandwichMakersHardwareStoreSolution
         private void btnEditProduct_Click(object sender, EventArgs e)
         {
             int id = GetIdSelectedRow();
-            stockManager.EditItem(id, Convert.ToInt16(numericSKU.Value), tbNameProduct.Text, Convert.ToInt16(numericQuantityWarehouse.Value), Convert.ToInt16(numericQuantityStore.Value), cbCatergory.Text, Convert.ToDouble(numericWholesalePrice.Value), Convert.ToDouble(numericSellPrice.Value));
+            StockManager.EditItem(id, Convert.ToInt16(numericSKU.Value), tbNameProduct.Text, Convert.ToInt16(numericQuantityWarehouse.Value), Convert.ToInt16(numericQuantityStore.Value), (CategoryEnum)cbCatergory.SelectedIndex, Convert.ToDouble(numericWholesalePrice.Value), Convert.ToDouble(numericSellPrice.Value));
             RefreshProductInfoDisplay();
         }
 
         private void btnRemoveProduct_Click(object sender, EventArgs e)
         {
             int id = GetIdSelectedRow();
-            stockManager.RemoveItem(id);
+            StockManager.RemoveItem(id);
             RefreshProductInfoDisplay();
         }
 
@@ -637,12 +639,12 @@ namespace TheSandwichMakersHardwareStoreSolution
             int id = GetIdSelectedRow();
             if (id != -1)
             {
-                Item item = stockManager.GetItemById(id);
+                Item item = StockManager.GetItemById(id);
                 tbNameProduct.Text = item.Name;
                 numericSKU.Value = item.Sku;
                 numericQuantityWarehouse.Value = item.QuantityWarehouse;
                 numericQuantityStore.Value = item.QuantityStore;
-                cbCatergory.Text = item.Category;
+                cbCatergory.Text = item.Category.ToString();
                 numericWholesalePrice.Value = Convert.ToDecimal(item.WholesalePrice);
                 numericSellPrice.Value = Convert.ToDecimal(item.SellPrice);
             }
@@ -652,21 +654,21 @@ namespace TheSandwichMakersHardwareStoreSolution
         private void btAddShelfRequest_Click(object sender, EventArgs e)
         {
             int itemId = GetIdSelectedRow();
-            stockManager.AddShelfRequest(itemId, Convert.ToInt16(numericQuantityShelfRequest.Value));
+            StockManager.AddShelfRequest(itemId, Convert.ToInt16(numericQuantityShelfRequest.Value));
             RefreshShelfRequestDisplay();
         }
 
         private void btnEditRequest_Click(object sender, EventArgs e)
         {
             int id = GetIdSelectedRowShelfRequest();
-            stockManager.EditShelfRequest(id, Convert.ToInt16(numericQuantityShelfRequest.Value));
+            StockManager.EditShelfRequest(id, Convert.ToInt16(numericQuantityShelfRequest.Value));
             RefreshShelfRequestDisplay();
         }
 
         private void btnFulfillRequest_Click(object sender, EventArgs e)
         {
             int id = GetIdSelectedRowShelfRequest();
-            stockManager.FulFillShelfRequest(id);
+            StockManager.FulFillShelfRequest(id);
             RefreshShelfRequestDisplay();
             RefreshProductInfoDisplay();
         }
@@ -674,7 +676,7 @@ namespace TheSandwichMakersHardwareStoreSolution
         public void RefreshShelfRequestDisplay()
         {
             dataGridView2.DataSource = null;
-            dataGridView2.DataSource = stockManager.shelfRequests;
+            dataGridView2.DataSource = StockManager.shelfRequests;
         }
 
         private int GetIdSelectedRowShelfRequest()
@@ -697,6 +699,11 @@ namespace TheSandwichMakersHardwareStoreSolution
             if (tabControMain.SelectedTab == tabPageShifts)
             {
                 RefreshShiftUI();
+            }
+            else if(tabControMain.SelectedTab == tabPageStock)
+            {
+                RefreshProductInfoDisplay();
+                RefreshShelfRequestDisplay();
             }
         }
 

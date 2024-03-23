@@ -31,7 +31,7 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
             this.Id = nextId++;
             this.Date = date;
             this.ShiftType = shiftType;
-            EmployeeDict = new Dictionary<int, Employee>();
+            this.EmployeeDict = new Dictionary<int, Employee>();
         }
 
         public void AddEmployee(Employee employee)

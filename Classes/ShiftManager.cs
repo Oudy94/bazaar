@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TheSandwichMakersHardwareStoreSolution.Enums;
+using TheSandwichMakersHardwareStoreSolution.Helpers;
 
 namespace TheSandwichMakersHardwareStoreSolution.Classes
 {
@@ -13,10 +14,84 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
         public Dictionary<int, Shift> ShiftDict { get; set; }
         public Dictionary<DateOnly, (Shift, Shift)> ShiftDateDict { get; set; }
 
+        private readonly DatabaseHelper _dbHelper;
+
         public ShiftManager() 
         {
             this.ShiftDict = new Dictionary<int, Shift>();
             this.ShiftDateDict = new Dictionary<DateOnly, (Shift, Shift)>();
+
+            this._dbHelper = new DatabaseHelper();
+
+            //LoadShiftDataFromDatabase();
+            //LoadShiftEmployeeDataFromDatabase();
+        }
+
+        public void LoadShiftDataFromDatabase()
+        {
+            try
+            {
+                _dbHelper.OpenConnection();
+                List<Shift> allShifts = _dbHelper.RetrieveShiftsData();
+
+                foreach (Shift shift in allShifts)
+                {
+                    ShiftDict[shift.Id] = shift;
+
+                    if (!ShiftDateDict.ContainsKey(shift.Date))
+                    {
+                        ShiftDateDict[shift.Date] = (null, null);
+                    }
+
+                    if (shift.ShiftType == ShiftTypeEnum.Morning)
+                    {
+                        ShiftDateDict[shift.Date] = (shift, ShiftDateDict[shift.Date].Item2);
+                    }
+                    else
+                    {
+                        ShiftDateDict[shift.Date] = (ShiftDateDict[shift.Date].Item1, shift);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
+            }
+ 
+        }
+
+        public void LoadShiftEmployeeDataFromDatabase(Dictionary<int, Employee> Employees)
+        {
+            try
+            {
+                _dbHelper.OpenConnection();
+                List<(int, int)> shiftEmployeeList = _dbHelper.RetrieveShiftEmployeeList();
+
+                foreach (var (shiftId, employeeId) in shiftEmployeeList)
+                {
+                    if (ShiftDict.ContainsKey(shiftId))
+                    {
+                        if (Employees.ContainsKey(shiftId))
+                        {
+                            Employee employee = Employees[employeeId];
+                            ShiftDict[shiftId].EmployeeDict.Add(employeeId, employee);
+                        }
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
+            }
+
         }
 
         public void AddShift(Shift shift)
@@ -40,6 +115,7 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
                         ShiftDateDict[shift.Date] = (shift, evening);
                     else
                         ShiftDateDict[shift.Date] = (morning, shift);
+
                 }
                 else
                 {
@@ -51,10 +127,16 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
 
                 this.ShiftDict.Add(shift.Id, shift);
 
+                _dbHelper.OpenConnection();
+                _dbHelper.AddShift(shift);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
+            }
+            finally 
+            { 
+                _dbHelper.CloseConnection(); 
             }
         }
 
@@ -93,19 +175,38 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
 
         public void AssignEmployeeToShift(Employee employee, DateOnly date, ShiftTypeEnum shiftType)
         {
-            if (!ShiftDateDict.ContainsKey(date) || shiftType == ShiftTypeEnum.Morning && ShiftDateDict[date].Item1 == null || shiftType == ShiftTypeEnum.Evening && ShiftDateDict[date].Item2 == null)
+            try
             {
-                Shift shift = new Shift(date, shiftType);
-                AddShift(shift);
-            }
+                Shift shift;
+                if (!ShiftDateDict.ContainsKey(date) || shiftType == ShiftTypeEnum.Morning && ShiftDateDict[date].Item1 == null || shiftType == ShiftTypeEnum.Evening && ShiftDateDict[date].Item2 == null)
+                {
+                    shift = new Shift(date, shiftType);
+                    AddShift(shift);
+                }
+                else
+                {
+                    if (shiftType == ShiftTypeEnum.Morning)
+                    {
+                        shift = ShiftDateDict[date].Item1;
+                    }
+                    else
+                    {
+                        shift = ShiftDateDict[date].Item2;
+                    }
+                }
 
-            if (shiftType == ShiftTypeEnum.Morning)
-            {
-                ShiftDateDict[date].Item1.EmployeeDict.Add(employee.Id, employee);
+                shift.EmployeeDict.Add(employee.Id, employee);
+
+                _dbHelper.OpenConnection();
+                _dbHelper.AddShiftEmployee(shift.Id, employee.Id);
             }
-            else
+            catch(Exception ex)
             {
-                ShiftDateDict[date].Item2.EmployeeDict.Add(employee.Id, employee);
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
             }
         }
 

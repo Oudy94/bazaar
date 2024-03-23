@@ -38,6 +38,9 @@ namespace TheSandwichMakersHardwareStoreSolution
             LoadRolesAndDepartments();
             LoadEmployees();
             RefreshEmployeesGrid();
+
+            ShiftManager.LoadShiftDataFromDatabase();
+            ShiftManager.LoadShiftEmployeeDataFromDatabase(EmployeeManager.EmployeeDict);
         }
 
         // Validation for Employee Role

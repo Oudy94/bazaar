@@ -77,7 +77,9 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
             this.RegisterDate = DateTime.Now;
             this.IsActive = isActive;
         }
+        public override string ToString()
+        {
+            return $"{Name}";
+        }
     }
-
-
 }

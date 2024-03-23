@@ -26,8 +26,9 @@ namespace TheSandwichMakersHardwareStoreSolution
         {
             var roles = main.GetRoles();
             var departments = main.GetDepartments();
+
             MessageBox.Show("Login succefully.");
-            main.HandleLogin("john.doe@example.com");
+            main.HandleLogin("saoud@test.com");
             return;
 
             string email = txtEmail.Text;

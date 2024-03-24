@@ -25,7 +25,7 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
             {
                 if (this.ShiftDict.ContainsKey(shift.Id))
                 {
-                    throw new Exception("Shift with the same Id already exists.");
+                    throw new Exception("Shift with the same ID already exists.");
                 }
 
                 if (ShiftDateDict.ContainsKey(shift.Date))

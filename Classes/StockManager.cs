@@ -10,7 +10,7 @@ using TheSandwichMakersHardwareStoreSolution.Helpers;
 
 namespace TheSandwichMakersHardwareStoreSolution.Classes
 {
-    internal class StockManager
+    public class StockManager
     {
         public List<Item> itemList;
         public List<ShelfRequest> shelfRequests;

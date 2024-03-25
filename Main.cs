@@ -7,8 +7,6 @@ namespace TheSandwichMakersHardwareStoreSolution
     {
         public LoginFormControl LoginFormControl { get; }
         public MainControl MainControl { get; }
-        public List<Role> GetRoles() => MainControl.GetRoles();
-        public List<Department> GetDepartments() => MainControl.GetDepartments();
 
         public Main()
         {
@@ -24,6 +22,7 @@ namespace TheSandwichMakersHardwareStoreSolution
         {
             pnlMain.Controls.Clear();
             pnlMain.Controls.Add(MainControl);
+            MainControl.AuthenticatedEmployee(email);
         }
     }
 }

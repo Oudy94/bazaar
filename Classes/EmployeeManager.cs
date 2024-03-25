@@ -3,19 +3,49 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms.VisualStyles;
 using TheSandwichMakersHardwareStoreSolution.Enums;
+using TheSandwichMakersHardwareStoreSolution.Helpers;
 
 namespace TheSandwichMakersHardwareStoreSolution.Classes
 {
     public class EmployeeManager
     {
         public Dictionary<int, Employee> EmployeeDict { get; set; }
+        public DepartmentManager DepartmentManager { get; set; }
         public ShiftManager ShiftManager { get; set; }
 
-        public EmployeeManager(ShiftManager shiftManager) 
+        private readonly DatabaseHelper _dbHelper;
+
+        public EmployeeManager(DepartmentManager departmentManager, ShiftManager shiftManager) 
         {
             this.EmployeeDict = new Dictionary<int, Employee>();
+            this.DepartmentManager = departmentManager;
             this.ShiftManager = shiftManager;
+
+            this._dbHelper = new DatabaseHelper();
+        }
+
+        public void LoadEmployees()
+        {
+            try
+            {
+                _dbHelper.OpenConnection();
+                List<Employee> employees = _dbHelper.GetEmployees(DepartmentManager);
+
+                foreach (Employee employee in employees)
+                {
+                    EmployeeDict.Add(employee.Id, employee);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
+            }
         }
 
         public void AddEmployee(Employee employee)
@@ -23,11 +53,110 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
             try
             {
                 EmployeeDict.Add(employee.Id, employee);
+
+                _dbHelper.OpenConnection();
+                _dbHelper.AddEmployee(employee);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
+            finally
+            {
+                _dbHelper.CloseConnection();
+            }
+        }
+
+        public Employee GetEmployee(int id)
+        {
+            if (!EmployeeDict.ContainsKey(id))
+            {
+                throw new Exception("Employee not found!");
+            }
+
+            return EmployeeDict[id];
+        }
+
+        public Employee GetEmployee(string email)
+        {
+            foreach(Employee employee in EmployeeDict.Values)
+            {
+                if (employee.Email == email)
+                {
+                    return employee;
+                }
+            }
+
+            return null;
+        }
+
+        public void UpdateEmployee(int id, string name, string email, string password, RoleEnum role, string image, string address, Department department, decimal hourlyWage, bool isActive)
+        {
+            try
+            {
+                Employee employee = GetEmployee(id);
+                employee.Name = name;
+                employee.Email = email;
+                employee.Password = password;
+                employee.Role = role;
+                employee.Image = image ?? employee.Image;
+                employee.Address = address;
+                employee.Department = department;
+                employee.HourlyWage = hourlyWage;
+                employee.IsActive = isActive;
+
+                _dbHelper.OpenConnection();
+                _dbHelper.UpdateEmployee(employee);
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection(); 
+            }
+        }
+
+        public void DeleteEmployee(int id)
+        {
+            try
+            {
+                Employee employee = GetEmployee(id);
+                employee.IsActive = false;
+
+                _dbHelper.OpenConnection();
+                _dbHelper.DeleteEmployee(id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
+            }
+        }
+
+        public bool IsNameUnique(string name)
+        {
+            foreach(Employee employee in EmployeeDict.Values)
+            {
+                if (employee.Name == name) return true;
+            }
+
+            return false;
+        }
+
+        public bool IsEmailUnique(string email)
+        {
+            foreach (Employee employee in EmployeeDict.Values)
+            {
+                if (employee.Email == email) return true;
+            }
+
+            return false;
         }
 
         public List<Employee> GetUnassignedEmployees(DateOnly date)

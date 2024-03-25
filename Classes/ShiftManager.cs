@@ -58,7 +58,6 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
             {
                 _dbHelper.CloseConnection();
             }
- 
         }
 
         public void LoadShiftEmployeeDataFromDatabase(Dictionary<int, Employee> Employees)

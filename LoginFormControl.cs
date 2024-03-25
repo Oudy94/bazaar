@@ -24,12 +24,10 @@ namespace TheSandwichMakersHardwareStoreSolution
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            var roles = main.GetRoles();
-            var departments = main.GetDepartments();
 
-            MessageBox.Show("Login succefully.");
-            main.HandleLogin("saoud@test.com");
-            return;
+            //MessageBox.Show("Login succefully.");
+            //main.HandleLogin("John@test.com");
+            //return;
 
             string email = txtEmail.Text;
             string password = txtPassword.Text;
@@ -45,7 +43,7 @@ namespace TheSandwichMakersHardwareStoreSolution
             try
             {
                 db.OpenConnection();
-                if (db.AuthenticateUser(email, password, roles, departments) != null)
+                if (db.AuthenticateUser(email, password) != false)
                 {
                     MessageBox.Show("Login succefully.");
                     main.HandleLogin(email);

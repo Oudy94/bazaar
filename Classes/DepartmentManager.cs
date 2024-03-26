@@ -10,27 +10,38 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
 {
     public class DepartmentManager
     {
-        public Dictionary<int, Department> DepartmentDict { get; set; }
         private readonly DatabaseHelper _dbHelper;
 
         public DepartmentManager() 
         { 
-            this.DepartmentDict = new Dictionary<int, Department>();
-
             this._dbHelper = new DatabaseHelper();
         }
 
-        public void LoadDepartmentDataFromDatabase()
+        public void AddDepartment(string name)
         {
             try
             {
                 _dbHelper.OpenConnection();
-                List<Department> departments = _dbHelper.RetrieveDepartments();
+                _dbHelper.AddDepartmentToDB(name);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
+            }
+        }
 
-                foreach (Department department in departments)
-                {
-                    DepartmentDict.Add(department.Id, department);
-                }
+        public List<Department> GetDepartments()
+        {
+            List<Department> departments = null;
+
+            try
+            {
+                _dbHelper.OpenConnection();
+                departments = _dbHelper.GetDepartmentsFromDB();
             }
             catch (Exception ex)
             {
@@ -40,52 +51,16 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
             {
                 _dbHelper.CloseConnection();
             }
-        }
 
-        public void AddDepartment(string name)
-        {
-            try
-            {
-                Department department = new Department(name);
-                DepartmentDict.Add(department.Id, department);
-
-                _dbHelper.OpenConnection();
-                _dbHelper.AddDepartment(department);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Problem adding department.");
-            }
-            finally
-            {
-                _dbHelper.CloseConnection();
-            }
-        }
-
-        public Department GetDepartment(int id)
-        {
-            if (!DepartmentDict.ContainsKey(id))
-            {
-                throw new Exception("Department not found!");
-            }
-
-            return DepartmentDict[id];
-        }
-
-        public List<Department> GetDepartments()
-        {
-            return DepartmentDict.Values.ToList();
+            return departments;
         }
 
         public void UpdateDepartment(int id, string name)
         {
             try
             {
-                Department department = GetDepartment(id);
-                department.Name = name;
-
                 _dbHelper.OpenConnection();
-                _dbHelper.UpdateDepartment(department);
+                _dbHelper.UpdateDepartmentInDB(id, name);
 
             }
             catch (Exception ex)
@@ -98,19 +73,12 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
             }
         }
 
-        public void DeleteDeparment(int id)
+        public void RemoveDepartment(int id)
         {
-            if (!DepartmentDict.ContainsKey(id))
-            {
-                throw new Exception("Department not found!");
-            }
-
             try
             {
-                DepartmentDict.Remove(id);
-
                 _dbHelper.OpenConnection();
-                _dbHelper.RemoveDepartment(id);
+                _dbHelper.RemoveDepartmentFromDB(id);
             }
             catch (Exception ex)
             {

@@ -11,32 +11,22 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
 {
     public class EmployeeManager
     {
-        public Dictionary<int, Employee> EmployeeDict { get; set; }
-        public DepartmentManager DepartmentManager { get; set; }
-        public ShiftManager ShiftManager { get; set; }
-
         private readonly DatabaseHelper _dbHelper;
 
-        public EmployeeManager(DepartmentManager departmentManager, ShiftManager shiftManager) 
+        public EmployeeManager() 
         {
-            this.EmployeeDict = new Dictionary<int, Employee>();
-            this.DepartmentManager = departmentManager;
-            this.ShiftManager = shiftManager;
-
             this._dbHelper = new DatabaseHelper();
         }
 
-        public void LoadEmployees()
+        public List<Employee> GetEmployees()
         {
+            List<Employee> employees = new List<Employee>();
+
             try
             {
                 _dbHelper.OpenConnection();
-                List<Employee> employees = _dbHelper.GetEmployees(DepartmentManager);
+                employees = _dbHelper.GetEmployeesFromDB();
 
-                foreach (Employee employee in employees)
-                {
-                    EmployeeDict.Add(employee.Id, employee);
-                }
             }
             catch (Exception ex)
             {
@@ -46,16 +36,16 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
             {
                 _dbHelper.CloseConnection();
             }
+
+            return employees;
         }
 
-        public void AddEmployee(Employee employee)
+        public void AddEmployee(string name, string email, string password, RoleEnum role, string image, string address, Department department, decimal hourlyWage, bool isActive)
         {
             try
             {
-                EmployeeDict.Add(employee.Id, employee);
-
                 _dbHelper.OpenConnection();
-                _dbHelper.AddEmployee(employee);
+                _dbHelper.AddEmployeeToDB(name, email, password, role, image, address, department, hourlyWage, isActive);
             }
             catch (Exception ex)
             {
@@ -67,47 +57,50 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
             }
         }
 
-        public Employee GetEmployee(int id)
+        public Employee GetEmployeeById(int id)
         {
-            if (!EmployeeDict.ContainsKey(id))
+            Employee employee = null;
+
+            try
             {
-                throw new Exception("Employee not found!");
+                _dbHelper.OpenConnection();
+                employee = _dbHelper.GetEmployeeByIdFromDB(id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
             }
 
-            return EmployeeDict[id];
+            return employee;
         }
 
-        public Employee GetEmployee(string email)
+        public Employee GetEmployeeByEmail(string email)
         {
-            foreach(Employee employee in EmployeeDict.Values)
+            try
             {
-                if (employee.Email == email)
-                {
-                    return employee;
-                }
+                _dbHelper.OpenConnection();
+                return _dbHelper.GetEmployeeByEmailFromDB(email);
             }
-
-            return null;
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
+            }
         }
 
         public void UpdateEmployee(int id, string name, string email, string password, RoleEnum role, string image, string address, Department department, decimal hourlyWage, bool isActive)
         {
             try
             {
-                Employee employee = GetEmployee(id);
-                employee.Name = name;
-                employee.Email = email;
-                employee.Password = password;
-                employee.Role = role;
-                employee.Image = image ?? employee.Image;
-                employee.Address = address;
-                employee.Department = department;
-                employee.HourlyWage = hourlyWage;
-                employee.IsActive = isActive;
-
                 _dbHelper.OpenConnection();
-                _dbHelper.UpdateEmployee(employee);
-
+                _dbHelper.UpdateEmployeeInDB(id, name, email, password, role, image, address, department, hourlyWage, isActive);
             }
             catch (Exception ex)
             {
@@ -119,15 +112,12 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
             }
         }
 
-        public void DeleteEmployee(int id)
+        public void DeactivateEmployee(int id)
         {
             try
             {
-                Employee employee = GetEmployee(id);
-                employee.IsActive = false;
-
                 _dbHelper.OpenConnection();
-                _dbHelper.DeleteEmployee(id);
+                _dbHelper.DeactivateEmployeeInDB(id);
             }
             catch (Exception ex)
             {
@@ -139,66 +129,116 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
             }
         }
 
-        public bool IsNameUnique(string name)
+        public bool IsEmployeeNameUnique(string name)
         {
-            foreach(Employee employee in EmployeeDict.Values)
+            try
             {
-                if (employee.Name == name) return true;
+                _dbHelper.OpenConnection();
+                return _dbHelper.IsEmployeeNameUniqueInDB(name);
             }
-
-            return false;
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
+            }
         }
 
-        public bool IsEmailUnique(string email)
+        public bool IsEmployeeEmailUnique(string email)
         {
-            foreach (Employee employee in EmployeeDict.Values)
+            try
             {
-                if (employee.Email == email) return true;
+                _dbHelper.OpenConnection();
+                return _dbHelper.IsEmployeeEmailUniqueInDB(email);
             }
-
-            return false;
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
+            }
         }
 
-        public List<Employee> GetUnassignedEmployees(DateOnly date)
+        public bool IsNameUniqueExceptCurrentEmployee(string name, int id)
+        {
+            try
+            {
+                _dbHelper.OpenConnection();
+                return _dbHelper.IsNameUniqueExceptCurrentEmployeeinDB(name, id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
+            }
+        }
+
+        public bool IsEmailUniqueExceptCurrentEmployee(string email, int id)
+        {
+            try
+            {
+                _dbHelper.OpenConnection();
+                return _dbHelper.IsEmailUniqueExceptCurrentEmployeeInDB(email, id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
+            }
+        }
+
+        public List<Employee> GetUnassignedEmployeesToShiftOnDate(DateOnly date)
         {
             List<Employee> employees = new List<Employee>();
 
-            if (!ShiftManager.ShiftDateDict.ContainsKey(date))
-                return EmployeeDict.Values.ToList();
-
-            Shift morningShift = ShiftManager.ShiftDateDict[date].Item1;
-            Shift eveningShift = ShiftManager.ShiftDateDict[date].Item2;
-
-            foreach (Employee employee in EmployeeDict.Values)
+            try
             {
-                if ((morningShift == null || !morningShift.EmployeeDict.ContainsKey(employee.Id)) &&
-                    (eveningShift == null || !eveningShift.EmployeeDict.ContainsKey(employee.Id)))
-                {
-                    employees.Add(employee);
-                }
+                _dbHelper.OpenConnection();
+                employees = _dbHelper.GetUnassignedEmployeesToShiftFromDB(date);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
             }
 
             return employees;
         }
 
-        public List<Employee> GetEmployees()
+        public List<Employee> GetAssignedEmployeesToShiftOnDate(DateOnly date, ShiftTypeEnum shiftType)
         {
-            return EmployeeDict.Values.ToList();
-        }
+            List<Employee> employees = new List<Employee>();
 
-        public List<Employee> GetAssignedEmployeed(DateOnly date, ShiftTypeEnum shiftType)
-        {
-            if (!ShiftManager.ShiftDateDict.ContainsKey(date) || shiftType == ShiftTypeEnum.Morning && ShiftManager.ShiftDateDict[date].Item1 == null || shiftType == ShiftTypeEnum.Evening && ShiftManager.ShiftDateDict[date].Item2 == null)
-                return new List<Employee>();
+            try
+            {
+                _dbHelper.OpenConnection();
+                employees = _dbHelper.GetAssignedEmployeesToShiftFromDB(date, shiftType);
 
-            if (shiftType == ShiftTypeEnum.Morning)
-            {
-                return ShiftManager.ShiftDateDict[date].Item1.GetEmployees();
             }
-            else
+            catch (Exception ex)
             {
-                return ShiftManager.ShiftDateDict[date].Item2.GetEmployees();
+                MessageBox.Show(ex.Message);
             }
+            finally
+            {
+                _dbHelper.CloseConnection();
+            }
+
+            return employees;
         }
     }
 }

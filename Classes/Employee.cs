@@ -9,7 +9,6 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
 {
     public class Employee
     {
-        private static int nextId = 1;
         // Private fields
         private int id;
         private string name;
@@ -50,13 +49,10 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
             this.HourlyWage = hourlyWage;
             this.RegisterDate = DateTime.Now;
             this.IsActive = isActive;
-
-            nextId = id + 1;
         }
 
         public Employee(string name, string email, string password, RoleEnum role, string image, string address, Department department, decimal hourlyWage, bool isActive)
         {
-            this.Id = nextId++;
             this.Name = name;
             this.Email = email;
             this.Password = password; // ! hash passwords

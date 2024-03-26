@@ -594,9 +594,9 @@
             tabPageEmployee.Controls.Add(groupBoxManageDepartments);
             tabPageEmployee.Controls.Add(listBoxDepartments);
             tabPageEmployee.Controls.Add(groupBoxManageEmployees);
-            tabPageEmployee.Location = new Point(4, 24);
+            tabPageEmployee.Location = new Point(4, 26);
             tabPageEmployee.Name = "tabPageEmployee";
-            tabPageEmployee.Size = new Size(952, 519);
+            tabPageEmployee.Size = new Size(952, 517);
             tabPageEmployee.TabIndex = 1;
             tabPageEmployee.Text = "Employee & Departments";
             tabPageEmployee.UseVisualStyleBackColor = true;

@@ -29,25 +29,23 @@ namespace TheSandwichMakersHardwareStoreSolution
             InitializeComponent();
             this.ShiftManager = new ShiftManager();
             this.DepartmentManager = new DepartmentManager();
-            this.EmployeeManager = new EmployeeManager(this.DepartmentManager, this.ShiftManager);
+            this.EmployeeManager = new EmployeeManager();
             this.StockManager = new StockManager();
 
-            DepartmentManager.LoadDepartmentDataFromDatabase();
+            //DepartmentManager.LoadDepartmentDataFromDatabase();
 
-            EmployeeManager.LoadEmployees();
+            //ShiftManager.LoadShiftDataFromDatabase();
+            //ShiftManager.LoadShiftEmployeeDataFromDatabase(EmployeeManager.GetEmployees());
 
-            ShiftManager.LoadShiftDataFromDatabase();
-            ShiftManager.LoadShiftEmployeeDataFromDatabase(EmployeeManager.EmployeeDict);
-
-            StockManager.LoadItemsFromDatabase();
-            StockManager.LoadShelfRequestFromDatabase();
+            //StockManager.LoadItemsFromDatabase();
+            //StockManager.LoadShelfRequestFromDatabase();
 
             InitializeUiElements();
         }
 
         public void AuthenticatedEmployee(string email)
         {
-            Employee employee = EmployeeManager.GetEmployee(email);
+            Employee employee = EmployeeManager.GetEmployeeByEmail(email);
             UserSession.Instance.CurrentEmployee = employee;
         }
 
@@ -59,41 +57,36 @@ namespace TheSandwichMakersHardwareStoreSolution
 
         private void tabControMain_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(tabControMain.SelectedTab == tabPageShifts)
-            {
-                RefreshShiftUI();
-            }
-            else if (tabControMain.SelectedTab == tabPageStock)
-            {
-                RefreshProductInfoDisplay();
-                RefreshShelfRequestDisplay();
-            }
+        //    if(tabControMain.SelectedTab == tabPageShifts)
+        //    {
+
+        //    }
+        //    else if (tabControMain.SelectedTab == tabPageStock)
+        //    {
+
+        //    }
         }
 
         private void InitializeUiElements()
         {
             RefreshEmployeesGrid();
+            RefreshShiftUI();
+            RefreshProductInfoDisplay();
+            RefreshShelfRequestDisplay();
 
             // Bind roles to the ComboBox
             cmbBoxEmployeeRole.DataSource = Enum.GetValues(typeof(RoleEnum));
-            //cmbBoxEmployeeRole.DisplayMember = "Name";
-            //cmbBoxEmployeeRole.ValueMember = "Id";
-            //var defaultRole = _roles.FirstOrDefault(r => r.Name == "Retailer");
-            //if (defaultRole != null)
-            //{
-            //cmbBoxEmployeeRole.SelectedItem = defaultRole;
-            //}
+            cmbBoxEmployeeRole.SelectedIndex = -1;
 
             // Load Employee Status
             cmbBoxEmployeeIsActive.Items.Add(true);
             cmbBoxEmployeeIsActive.Items.Add(false);
-            //cmbBoxEmployeeIsActive.SelectedIndex = 0;
 
             // Bind departments to the ListBox
-            listBoxDepartments.DataSource = DepartmentManager.DepartmentDict.Values.ToList();
+            listBoxDepartments.DataSource = DepartmentManager.GetDepartments();
             listBoxDepartments.DisplayMember = "Name";
             listBoxDepartments.ValueMember = "Id";
-            //listBoxDepartments.SelectedItem = null;
+            listBoxDepartments.SelectedIndex = -1;
         }
 
         // Attaching Image For User
@@ -174,35 +167,25 @@ namespace TheSandwichMakersHardwareStoreSolution
 
             if (ValidateEmployeeInput())
             {
-                if (EmployeeManager.IsNameUnique(txtBoxEmployeeName.Text))
+                if (!EmployeeManager.IsEmployeeNameUnique(txtBoxEmployeeEmail.Text) || !EmployeeManager.IsEmployeeEmailUnique(txtBoxEmployeeEmail.Text))
                 {
-                    MessageBox.Show("An employee with this name already exists.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("An employee with this name or email already exists.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-
-                if (EmployeeManager.IsEmailUnique(txtBoxEmployeeEmail.Text))
-                {
-                    MessageBox.Show("An employee with this email already exists.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                Employee newEmployee = new Employee
-                (
-
-                    txtBoxEmployeeName.Text,
-                    txtBoxEmployeeEmail.Text,
-                    txtBoxEmployeePswd.Text,
-                    (RoleEnum)cmbBoxEmployeeRole.SelectedItem,
-                    _currentImageUrl,
-                    txtBoxEmployeeAddress.Text,
-                    (Department)listBoxDepartments.SelectedItem,
-                    Convert.ToDecimal(txtBoxEmployeeHourlyWage.Text),
-                    Convert.ToBoolean(cmbBoxEmployeeIsActive.SelectedItem)
-                );
 
                 try
                 {
-                    EmployeeManager.AddEmployee(newEmployee);
+                    EmployeeManager.AddEmployee(
+                        txtBoxEmployeeName.Text,
+                        txtBoxEmployeeEmail.Text,
+                        txtBoxEmployeePswd.Text,
+                        (RoleEnum)cmbBoxEmployeeRole.SelectedItem,
+                        _currentImageUrl,
+                        txtBoxEmployeeAddress.Text,
+                        (Department)listBoxDepartments.SelectedItem,
+                        Convert.ToDecimal(txtBoxEmployeeHourlyWage.Text),
+                        Convert.ToBoolean(cmbBoxEmployeeIsActive.SelectedItem));
+
                     RefreshEmployeesGrid();
                 }
                 catch (Exception ex)
@@ -224,6 +207,12 @@ namespace TheSandwichMakersHardwareStoreSolution
             {
                 dynamic selectedRow = dtGrVEmployees.SelectedRows[0].DataBoundItem;
                 int selectedEmployeeId = selectedRow.Id;
+
+                if (!EmployeeManager.IsNameUniqueExceptCurrentEmployee(txtBoxEmployeeEmail.Text, selectedEmployeeId) || !EmployeeManager.IsEmailUniqueExceptCurrentEmployee(txtBoxEmployeeEmail.Text, selectedEmployeeId))
+                {
+                    MessageBox.Show("An employee with this name or email already exists.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
 
                 try
                 {
@@ -253,7 +242,7 @@ namespace TheSandwichMakersHardwareStoreSolution
 
                     try
                     {
-                        EmployeeManager.DeleteEmployee(selectedEmployeeId);
+                        EmployeeManager.DeactivateEmployee(selectedEmployeeId);
                         RefreshEmployeesGrid();
                     }
                     catch (Exception ex)
@@ -289,7 +278,7 @@ namespace TheSandwichMakersHardwareStoreSolution
                 txtBoxEmployeeAddress.Text = selectedEmployee.Address;
                 _currentImageUrl = selectedEmployee.Image;
                 lblImage.Text = $"Image uploaded! URL: {_currentImageUrl}";
-                listBoxDepartments.SelectedItem = selectedEmployee.Department;
+                listBoxDepartments.SelectedIndex = listBoxDepartments.Items.OfType<Department>().ToList().FindIndex(d => d.Id == selectedEmployee.Department.Id);
                 cmbBoxEmployeeRole.SelectedItem = selectedEmployee.Role;
 
                 txtBoxEmployeeHourlyWage.Text = selectedEmployee.HourlyWage.ToString();
@@ -477,7 +466,7 @@ namespace TheSandwichMakersHardwareStoreSolution
                 {
                     try
                     {
-                        DepartmentManager.DeleteDeparment(selectedDepartment.Id);
+                        DepartmentManager.RemoveDepartment(selectedDepartment.Id);
                         MessageBox.Show("Department removed successfully.");
                     }
                     catch (Exception ex)
@@ -527,7 +516,7 @@ namespace TheSandwichMakersHardwareStoreSolution
         private void RefreshProductInfoDisplay()
         {
             dataGridView1.DataSource = null;
-            dataGridView1.DataSource = StockManager.itemList;
+            dataGridView1.DataSource = StockManager.GetItems();
         }
 
 
@@ -595,14 +584,23 @@ namespace TheSandwichMakersHardwareStoreSolution
         private void btnEditRequest_Click(object sender, EventArgs e)
         {
             int id = GetIdSelectedRowShelfRequest();
-            StockManager.EditShelfRequest(id, Convert.ToInt16(numericQuantityShelfRequest.Value));
+            int itemId = GetIdSelectedRow();
+            StockManager.EditShelfRequest(id, itemId, Convert.ToInt16(numericQuantityShelfRequest.Value));
             RefreshShelfRequestDisplay();
         }
 
         private void btnFulfillRequest_Click(object sender, EventArgs e)
         {
             int id = GetIdSelectedRowShelfRequest();
-            StockManager.FulFillShelfRequest(id);
+            try
+            {
+                StockManager.FulFillShelfRequest(id);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
             RefreshShelfRequestDisplay();
             RefreshProductInfoDisplay();
         }
@@ -610,7 +608,7 @@ namespace TheSandwichMakersHardwareStoreSolution
         public void RefreshShelfRequestDisplay()
         {
             dataGridView2.DataSource = null;
-            dataGridView2.DataSource = StockManager.shelfRequests;
+            dataGridView2.DataSource = StockManager.GetShelfRequests();
         }
 
         private int GetIdSelectedRowShelfRequest()
@@ -716,19 +714,19 @@ namespace TheSandwichMakersHardwareStoreSolution
             DateOnly date = new DateOnly(dateTime.Year, dateTime.Month, dateTime.Day);
 
             lstBoxNoShiftEmployees.Items.Clear();
-            foreach (Employee employee in EmployeeManager.GetUnassignedEmployees(date))
+            foreach (Employee employee in EmployeeManager.GetUnassignedEmployeesToShiftOnDate(date))
             {
                 lstBoxNoShiftEmployees.Items.Add(employee);
             }
 
             lstBoxMorningShiftEmployees.Items.Clear();
-            foreach (Employee employee in EmployeeManager.GetAssignedEmployeed(date, ShiftTypeEnum.Morning))
+            foreach (Employee employee in EmployeeManager.GetAssignedEmployeesToShiftOnDate(date, ShiftTypeEnum.Morning))
             {
                 lstBoxMorningShiftEmployees.Items.Add(employee);
             }
 
             lstBoxEveningShiftEmployees.Items.Clear();
-            foreach (Employee employee in EmployeeManager.GetAssignedEmployeed(date, ShiftTypeEnum.Evening))
+            foreach (Employee employee in EmployeeManager.GetAssignedEmployeesToShiftOnDate(date, ShiftTypeEnum.Evening))
             {
                 lstBoxEveningShiftEmployees.Items.Add(employee);
             }
@@ -745,7 +743,7 @@ namespace TheSandwichMakersHardwareStoreSolution
             DateTime dateTime = dtpShift.Value;
             DateOnly date = new DateOnly(dateTime.Year, dateTime.Month, dateTime.Day);
 
-            ShiftManager.AutoAssignShift(date, EmployeeManager.GetUnassignedEmployees(date));
+            ShiftManager.AutoAssignShift(EmployeeManager.GetUnassignedEmployeesToShiftOnDate(date), date);
             RefreshShiftUI();
         }
     }

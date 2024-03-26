@@ -26,7 +26,7 @@ namespace TheSandwichMakersHardwareStoreSolution
         {
 
             //MessageBox.Show("Login succefully.");
-            //main.HandleLogin("John@test.com");
+            //main.HandleLogin("saoud@test.com");
             //return;
 
             string email = txtEmail.Text;

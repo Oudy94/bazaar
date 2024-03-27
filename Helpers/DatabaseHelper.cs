@@ -455,16 +455,16 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
         }
 
 
-        public bool IsEmployeeNameUniqueInDB(string email)
+        public bool IsEmployeeNameUniqueInDB(string name)
         {
-            string query = "SELECT COUNT(*) FROM employee WHERE email = @Email;";
+            string query = "SELECT COUNT(*) FROM employee WHERE name = @Name;";
 
             using (SqlCommand command = new SqlCommand(query, connection))
             {
-                command.Parameters.AddWithValue("@Email", email);
+                command.Parameters.AddWithValue("@Name", name);
                 int count = (int)command.ExecuteScalar();
 
-                return count > 0;
+                return count == 0;
             }
         }
 
@@ -477,7 +477,7 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
                 command.Parameters.AddWithValue("@Email", email);
                 int count = (int)command.ExecuteScalar();
 
-                return count > 0;
+                return count == 0;
             }
         }
 

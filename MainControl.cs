@@ -167,7 +167,7 @@ namespace TheSandwichMakersHardwareStoreSolution
 
             if (ValidateEmployeeInput())
             {
-                if (!EmployeeManager.IsEmployeeNameUnique(txtBoxEmployeeEmail.Text) || !EmployeeManager.IsEmployeeEmailUnique(txtBoxEmployeeEmail.Text))
+                if (!EmployeeManager.IsEmployeeNameUnique(txtBoxEmployeeName.Text) || !EmployeeManager.IsEmployeeEmailUnique(txtBoxEmployeeEmail.Text))
                 {
                     MessageBox.Show("An employee with this name or email already exists.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
@@ -208,7 +208,7 @@ namespace TheSandwichMakersHardwareStoreSolution
                 dynamic selectedRow = dtGrVEmployees.SelectedRows[0].DataBoundItem;
                 int selectedEmployeeId = selectedRow.Id;
 
-                if (!EmployeeManager.IsNameUniqueExceptCurrentEmployee(txtBoxEmployeeEmail.Text, selectedEmployeeId) || !EmployeeManager.IsEmailUniqueExceptCurrentEmployee(txtBoxEmployeeEmail.Text, selectedEmployeeId))
+                if (!EmployeeManager.IsNameUniqueExceptCurrentEmployee(txtBoxEmployeeName.Text, selectedEmployeeId) || !EmployeeManager.IsEmailUniqueExceptCurrentEmployee(txtBoxEmployeeEmail.Text, selectedEmployeeId))
                 {
                     MessageBox.Show("An employee with this name or email already exists.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;

@@ -1,91 +1,191 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using TheSandwichMakersHardwareStoreSolution.Enums;
+using TheSandwichMakersHardwareStoreSolution.Helpers;
 
 namespace TheSandwichMakersHardwareStoreSolution.Classes
 {
-    internal class StockManager
+    public class StockManager
     {
-        public List<Item> itemList = new List<Item>();
-        public List<ShelfRequest> shelfRequests = new List<ShelfRequest>();
+        private readonly DatabaseHelper _dbHelper;
 
         public int Idcounter = 1;
         public int IdCounterShelf = 1;
-        public void AddNewItem(int sku, string name, int quantitywarehouse, int quantitystore, string category, double wholesaleprice, double sellprice)
+
+        public StockManager()
         {
-            int id = Idcounter;
-            Idcounter += 1;
-            itemList.Add(new Item(id, sku, name, quantitywarehouse, quantitystore, category, wholesaleprice, sellprice));
+            this._dbHelper = new DatabaseHelper();
         }
 
-        public void EditItem(int id, int sku, string name, int quantitywarehouse, int quantitystore, string category, double wholesaleprice, double sellprice)
+        public List<Item> GetItems()
         {
-            foreach (Item item in itemList)
+            List<Item> items = new List <Item>();
+
+            try
             {
-                if (item.Id == id)
-                {
-                    item.Sku = sku;
-                    item.Name = name;
-                    item.QuantityWarehouse = quantitywarehouse;
-                    item.QuantityStore = quantitystore;
-                    item.Category = category;
-                    item.WholesalePrice = wholesaleprice;
-                    item.SellPrice = sellprice;
-                }
+                _dbHelper.OpenConnection();
+                items = _dbHelper.GetItemsFromDB();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
+            }
+
+            return items;
+        }
+
+        public List<ShelfRequest> GetShelfRequests()
+        {
+            List<ShelfRequest> shelfRequests = new List<ShelfRequest>();
+
+            try
+            {
+                _dbHelper.OpenConnection();
+                shelfRequests = _dbHelper.GetShelfRequestFromDB();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
+            }
+
+            return shelfRequests;
+        }
+
+        public void AddNewItem(int sku, string name, int quantitywarehouse, int quantitystore, CategoryEnum category, double wholesaleprice, double sellprice)
+        {
+            try
+            {
+                _dbHelper.OpenConnection();
+                _dbHelper.AddItemToDB(sku, name, quantitywarehouse, quantitystore, category, wholesaleprice, sellprice);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
+            }
+        }
+
+        public void EditItem(int id, int sku, string name, int quantitywarehouse, int quantitystore, CategoryEnum category, double wholesaleprice, double sellprice)
+        {
+            try
+            {
+                _dbHelper.OpenConnection();
+                _dbHelper.UpdateItemInDB(id, sku, name, quantitywarehouse, quantitystore, category, wholesaleprice, sellprice);
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
             }
         }
 
         public void RemoveItem(int id)
         {
-            itemList.RemoveAll(x => x.Id == id);
+            try
+            {
+                _dbHelper.OpenConnection();
+                _dbHelper.RemoveItemFromDB(id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
+            }
         }
 
         public Item GetItemById(int id)
         {
-            Item item = itemList.First(x => x.Id == id);
+            Item item = null;
+            try
+            {
+                _dbHelper.OpenConnection();
+                item = _dbHelper.GetItemByIdFromDB(id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
+            }
+
             return item;
         }
 
         public void AddShelfRequest(int itemId, int quantity)
         {
-            int id = IdCounterShelf;
-            IdCounterShelf += 1;
-            Item item = GetItemById(itemId);
-            int itemSku = item.Sku;
-            string itemName = item.Name;
-            shelfRequests.Add(new ShelfRequest(id, itemId, itemSku, itemName, quantity));
+            try
+            {
+                _dbHelper.OpenConnection();
+                _dbHelper.AddShelfRequestToDB(itemId, quantity);
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
+            }
         }
 
-        public void EditShelfRequest(int id, int quantity)
+        public void EditShelfRequest(int id, int itemId, int quantity)
         {
-            foreach (ShelfRequest shelfRequest in shelfRequests)
+            try
             {
-                if (shelfRequest.Id == id)
-                {
-                    shelfRequest.Quantity = quantity;
-                }
+                _dbHelper.OpenConnection();
+                _dbHelper.UpdateShelfRequest(id, itemId, quantity);
+            }
+            catch(Exception ex) 
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
             }
         }
 
         public void FulFillShelfRequest(int id)
         {
-            foreach (ShelfRequest shelfRequest in shelfRequests)
+            try
             {
-                if (shelfRequest.Id == id)
-                {
-                    foreach(Item item in itemList)
-                    {
-                        if (item.Id == shelfRequest.ItemId)
-                        {
-                            item.QuantityStore += shelfRequest.Quantity;
-                        }
-                    }
-                }
+                //TO-DO: deduct quantity item from warehouse
+                _dbHelper.OpenConnection();
+                _dbHelper.FulFillShelfRequestInDB(id);
             }
-            shelfRequests.RemoveAll(x => x.Id == id);
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
+            }
         }
     }
 }

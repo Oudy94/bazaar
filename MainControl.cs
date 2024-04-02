@@ -9,38 +9,45 @@ namespace TheSandwichMakersHardwareStoreSolution
 {
     public partial class MainControl : UserControl
     {
-
-        private readonly DatabaseHelper _dbHelper;
-        private List<Role> _roles;
-        private List<Department> _departments;
-        public List<Role> GetRoles() => _roles;
-        public List<Department> GetDepartments() => _departments;
-        private string _currentImageUrl = string.Empty;
-
         public ShiftManager ShiftManager { get; set; }
         public EmployeeManager EmployeeManager { get; set; }
+        public StockManager StockManager { get; set; }
+        public DepartmentManager DepartmentManager { get; set; }
+
+        private string _currentImageUrl = string.Empty;
 
         public MainControl()
         {
             InitializeComponent();
-            _dbHelper = new DatabaseHelper();
             this.ShiftManager = new ShiftManager();
-            this.EmployeeManager = new EmployeeManager(this.ShiftManager);
+            this.DepartmentManager = new DepartmentManager();
+            this.EmployeeManager = new EmployeeManager();
+            this.StockManager = new StockManager();
 
-            LoadRolesAndDepartments();
-            LoadEmployees();
-            RefreshEmployeesGrid();
+            //DepartmentManager.LoadDepartmentDataFromDatabase();
+
+            //ShiftManager.LoadShiftDataFromDatabase();
+            //ShiftManager.LoadShiftEmployeeDataFromDatabase(EmployeeManager.GetEmployees());
+
+            //StockManager.LoadItemsFromDatabase();
+            //StockManager.LoadShelfRequestFromDatabase();
+
+            InitializeUiElements();
+        }
+
+        public void AuthenticatedEmployee(string email)
+        {
+            Employee employee = EmployeeManager.GetEmployeeByEmail(email);
+            UserSession.Instance.CurrentEmployee = employee;
         }
 
         // Validation for Employee Role
-
         private bool EmployeeHasRequiredRole()
         {
-            return UserSession.Instance.CurrentEmployee?.Role.Name == "Manager" || UserSession.Instance.CurrentEmployee?.Role.Name == "Owner";
+            return UserSession.Instance.CurrentEmployee?.Role == RoleEnum.Owner || UserSession.Instance.CurrentEmployee?.Role == RoleEnum.Manager;
         }
 
-        // Loading data
-        private void LoadRolesAndDepartments()
+        private void tabControMain_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
             {
@@ -76,24 +83,11 @@ namespace TheSandwichMakersHardwareStoreSolution
                     cmbBoxEmployeeRole.SelectedItem = defaultRole;
                 }
 
-                // Load Employee Status
-                cmbBoxEmployeeIsActive.Items.Add(true);
-                cmbBoxEmployeeIsActive.Items.Add(false);
-                cmbBoxEmployeeIsActive.SelectedIndex = 0; // Default to True
+        //    }
+        //    else if (tabControMain.SelectedTab == tabPageStock)
+        //    {
 
-
-                // Bind departments to the ListBox
-                listBoxDepartments.DataSource = _departments;
-                listBoxDepartments.DisplayMember = "Name";
-                listBoxDepartments.ValueMember = "Id";
-                listBoxDepartments.SelectedItem = null;
-
-                _dbHelper.CloseConnection();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Failed to load roles and departments: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+        //    }
         }
 
         // Main tab
@@ -181,24 +175,25 @@ namespace TheSandwichMakersHardwareStoreSolution
 
         public void LoadEmployees()
         {
-            try
-            {
-                _dbHelper.OpenConnection();
-                List<Employee> employees = _dbHelper.GetEmployees(_roles, _departments);
+            RefreshEmployeesGrid();
+            RefreshShiftUI();
+            RefreshProductInfoDisplay();
+            RefreshShelfRequestDisplay();
 
-                foreach (Employee employee in employees)
-                {
-                    EmployeeManager.AddEmployee(employee);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            // Bind roles to the ComboBox
+            cmbBoxEmployeeRole.DataSource = Enum.GetValues(typeof(RoleEnum));
+            cmbBoxEmployeeRole.SelectedIndex = -1;
+
+            // Load Employee Status
+            cmbBoxEmployeeIsActive.Items.Add(true);
+            cmbBoxEmployeeIsActive.Items.Add(false);
+
+            // Bind departments to the ListBox
+            listBoxDepartments.DataSource = DepartmentManager.GetDepartments();
+            listBoxDepartments.DisplayMember = "Name";
+            listBoxDepartments.ValueMember = "Id";
+            listBoxDepartments.SelectedIndex = -1;
         }
-
-        // Employee Tab
-
 
         // Attaching Image For User
         private async void btnEmployeeAttachImage_Click(object sender, EventArgs e)
@@ -267,7 +262,6 @@ namespace TheSandwichMakersHardwareStoreSolution
             }
         }
 
-
         // Managing Employees
         private void btnNewEmployee_Click(object sender, EventArgs e)
         {
@@ -276,43 +270,33 @@ namespace TheSandwichMakersHardwareStoreSolution
                 MessageBox.Show("Only Manager or Owner can perform this action.", "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+
             if (ValidateEmployeeInput())
             {
-                var role = cmbBoxEmployeeRole.SelectedItem as Role;
-                var department = listBoxDepartments.SelectedItem as Department;
-                if (role == null || department == null)
+                if (!EmployeeManager.IsEmployeeNameUnique(txtBoxEmployeeName.Text) || !EmployeeManager.IsEmployeeEmailUnique(txtBoxEmployeeEmail.Text))
                 {
-                    MessageBox.Show("Please select a valid role and department.");
+                    MessageBox.Show("An employee with this name or email already exists.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
-                Employee newEmployee = new Employee
-                (
-
-                    txtBoxEmployeeName.Text,
-                    txtBoxEmployeeEmail.Text,
-                    txtBoxEmployeePswd.Text,
-                    role,
-                    _currentImageUrl,
-                    txtBoxEmployeeAddress.Text,
-                    department,
-                    Convert.ToDecimal(txtBoxEmployeeHourlyWage.Text),
-                    Convert.ToBoolean(cmbBoxEmployeeIsActive.SelectedItem)
-                );
-
                 try
                 {
-                    _dbHelper.OpenConnection();
-                    _dbHelper.AddEmployee(newEmployee);
+                    EmployeeManager.AddEmployee(
+                        txtBoxEmployeeName.Text,
+                        txtBoxEmployeeEmail.Text,
+                        txtBoxEmployeePswd.Text,
+                        (RoleEnum)cmbBoxEmployeeRole.SelectedItem,
+                        _currentImageUrl,
+                        txtBoxEmployeeAddress.Text,
+                        (Department)listBoxDepartments.SelectedItem,
+                        Convert.ToDecimal(txtBoxEmployeeHourlyWage.Text),
+                        Convert.ToBoolean(cmbBoxEmployeeIsActive.SelectedItem));
+
+                    RefreshEmployeesGrid();
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show($"Failed to add new employee: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                finally
-                {
-                    _dbHelper.CloseConnection();
-                    RefreshEmployeesGrid();
                 }
             }
         }
@@ -324,38 +308,26 @@ namespace TheSandwichMakersHardwareStoreSolution
                 MessageBox.Show("Only Manager or Owner can perform this action.", "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+
             if (dtGrVEmployees.SelectedRows.Count > 0 && ValidateEmployeeInput())
             {
                 dynamic selectedRow = dtGrVEmployees.SelectedRows[0].DataBoundItem;
                 int selectedEmployeeId = selectedRow.Id;
-                _dbHelper.OpenConnection();
-                Employee selectedEmployee = _dbHelper.GetEmployeeById(selectedEmployeeId, _roles, _departments);
 
-                if (selectedEmployee != null)
+                if (!EmployeeManager.IsNameUniqueExceptCurrentEmployee(txtBoxEmployeeName.Text, selectedEmployeeId) || !EmployeeManager.IsEmailUniqueExceptCurrentEmployee(txtBoxEmployeeEmail.Text, selectedEmployeeId))
                 {
-                    var role = cmbBoxEmployeeRole.SelectedItem as Role;
-                    var department = listBoxDepartments.SelectedItem as Department;
-                    if (role == null || department == null)
-                    {
-                        MessageBox.Show("Please select a valid role and department.");
-                        return;
-                    }
+                    MessageBox.Show("An employee with this name or email already exists.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
 
-                    selectedEmployee.Name = txtBoxEmployeeName.Text;
-                    selectedEmployee.Email = txtBoxEmployeeEmail.Text;
-                    selectedEmployee.Password = txtBoxEmployeePswd.Text;
-                    selectedEmployee.Role = role;
-                    selectedEmployee.Image = _currentImageUrl ?? selectedEmployee.Image;
-                    selectedEmployee.Address = txtBoxEmployeeAddress.Text;
-                    selectedEmployee.Department = department;
-                    selectedEmployee.HourlyWage = Convert.ToDecimal(txtBoxEmployeeHourlyWage.Text);
-                    selectedEmployee.IsActive = Convert.ToBoolean(cmbBoxEmployeeIsActive.SelectedItem);
-
-
-                    _dbHelper.UpdateEmployee(selectedEmployee);
-                    _dbHelper.CloseConnection();
-
+                try
+                {
+                    EmployeeManager.UpdateEmployee(selectedEmployeeId, txtBoxEmployeeName.Text, txtBoxEmployeeEmail.Text, txtBoxEmployeePswd.Text, (RoleEnum)cmbBoxEmployeeRole.SelectedItem, _currentImageUrl, txtBoxEmployeeAddress.Text, (Department)listBoxDepartments.SelectedItem, Convert.ToDecimal(txtBoxEmployeeHourlyWage.Text), Convert.ToBoolean(cmbBoxEmployeeIsActive.SelectedItem));
                     RefreshEmployeesGrid();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
                 }
             }
             else
@@ -363,7 +335,6 @@ namespace TheSandwichMakersHardwareStoreSolution
                 MessageBox.Show("Please select an employee to edit.");
             }
         }
-
 
         private void btnRemoveEmployee_Click(object sender, EventArgs e)
         {
@@ -375,11 +346,15 @@ namespace TheSandwichMakersHardwareStoreSolution
                     dynamic selectedRow = dtGrVEmployees.SelectedRows[0].DataBoundItem;
                     int selectedEmployeeId = selectedRow.Id;
 
-                    _dbHelper.OpenConnection();
-                    _dbHelper.DeleteEmployee(selectedEmployeeId); // Assumes DeleteEmployee can accept an ID directly
-                    _dbHelper.CloseConnection();
-
-                    RefreshEmployeesGrid();
+                    try
+                    {
+                        EmployeeManager.DeactivateEmployee(selectedEmployeeId);
+                        RefreshEmployeesGrid();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
                 }
             }
             else
@@ -388,14 +363,14 @@ namespace TheSandwichMakersHardwareStoreSolution
             }
         }
 
-
         private void dtGrVEmployees_SelectionChanged(object sender, EventArgs e)
         {
-            if (!EmployeeHasRequiredRole())
-            {
-                MessageBox.Show("Only Manager or Owner can perform this action.", "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
+            //if (!EmployeeHasRequiredRole())
+            //{
+            //    MessageBox.Show("Only Manager or Owner can perform this action.", "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    return;
+            //}
+
             if (dtGrVEmployees.SelectedRows.Count > 0)
             {
                 var selectedRow = dtGrVEmployees.SelectedRows[0].DataBoundItem;
@@ -409,8 +384,8 @@ namespace TheSandwichMakersHardwareStoreSolution
                 txtBoxEmployeeAddress.Text = selectedEmployee.Address;
                 _currentImageUrl = selectedEmployee.Image;
                 lblImage.Text = $"Image uploaded! URL: {_currentImageUrl}";
-                listBoxDepartments.SelectedItem = _departments.FirstOrDefault(d => d.Name == selectedEmployee.Department);
-                cmbBoxEmployeeRole.SelectedItem = _roles.FirstOrDefault(r => r.Name == selectedEmployee.Role);
+                listBoxDepartments.SelectedIndex = listBoxDepartments.Items.OfType<Department>().ToList().FindIndex(d => d.Id == selectedEmployee.Department.Id);
+                cmbBoxEmployeeRole.SelectedItem = selectedEmployee.Role;
 
                 txtBoxEmployeeHourlyWage.Text = selectedEmployee.HourlyWage.ToString();
                 cmbBoxEmployeeIsActive.SelectedItem = selectedEmployee.IsActive == "Yes";
@@ -459,28 +434,14 @@ namespace TheSandwichMakersHardwareStoreSolution
             if (listBoxDepartments.SelectedItem == null)
             {
                 MessageBox.Show("Please select a department to edit.");
-            }
-
-
-            // Duplicates checking
-            _dbHelper.OpenConnection();
-            bool nameExists = _dbHelper.CheckEmployeeNameExists(txtBoxEmployeeName.Text);
-            bool emailExists = _dbHelper.CheckEmployeeEmailExists(txtBoxEmployeeEmail.Text);
-            _dbHelper.CloseConnection();
-
-            if (nameExists)
-            {
-                MessageBox.Show("An employee with this name already exists.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
-            if (emailExists)
+            if (cmbBoxEmployeeRole.SelectedItem is not RoleEnum || listBoxDepartments.SelectedItem is not Department)
             {
-                MessageBox.Show("An employee with this email already exists.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Please select a valid role and department.");
                 return false;
             }
-
-
 
             // If we reach this point, all validations passed
             return true;
@@ -491,8 +452,6 @@ namespace TheSandwichMakersHardwareStoreSolution
         {
             try
             {
-                //_dbHelper.OpenConnection();
-                //var employees = _dbHelper.GetEmployees(_roles, _departments);
 
                 var employees = EmployeeManager.GetEmployees();
 
@@ -505,8 +464,8 @@ namespace TheSandwichMakersHardwareStoreSolution
                     Address = e.Address,
                     Password = e.Password,
                     Image = e.Image,
-                    Role = e.Role.Name,
-                    Department = e.Department.Name,
+                    Role = e.Role,
+                    Department = e.Department,
                     HourlyWage = e.HourlyWage,
                     RegisterDate = e.RegisterDate,
                     IsActive = e.IsActive ? "Yes" : "No"
@@ -531,13 +490,7 @@ namespace TheSandwichMakersHardwareStoreSolution
             {
                 MessageBox.Show($"Failed to refresh employee grid: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            finally
-            {
-                _dbHelper.CloseConnection();
-            }
         }
-
-
 
         // Managing Departments
 
@@ -553,8 +506,8 @@ namespace TheSandwichMakersHardwareStoreSolution
             {
                 try
                 {
-                    _dbHelper.OpenConnection();
-                    _dbHelper.AddDepartment(txtBoxDepartmentName.Text);
+                    DepartmentManager.AddDepartment(txtBoxDepartmentName.Text);
+
                     MessageBox.Show("Department added successfully.");
                     txtBoxDepartmentName.Clear();
                 }
@@ -564,7 +517,6 @@ namespace TheSandwichMakersHardwareStoreSolution
                 }
                 finally
                 {
-                    _dbHelper.CloseConnection();
                     RefreshDepartmentsList();
                 }
             }
@@ -586,8 +538,7 @@ namespace TheSandwichMakersHardwareStoreSolution
             {
                 try
                 {
-                    _dbHelper.OpenConnection();
-                    _dbHelper.UpdateDepartment(selectedDepartment.Id, txtBoxDepartmentName.Text);
+                    DepartmentManager.UpdateDepartment(selectedDepartment.Id, txtBoxDepartmentName.Text);
                     MessageBox.Show("Department updated successfully.");
                 }
                 catch (Exception ex)
@@ -596,7 +547,6 @@ namespace TheSandwichMakersHardwareStoreSolution
                 }
                 finally
                 {
-                    _dbHelper.CloseConnection();
                     RefreshDepartmentsList();
                 }
             }
@@ -614,6 +564,7 @@ namespace TheSandwichMakersHardwareStoreSolution
                 MessageBox.Show("Only Manager or Owner can perform this action.", "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+
             if (listBoxDepartments.SelectedItem is Department selectedDepartment)
             {
                 DialogResult dialogResult = MessageBox.Show("Are you sure you want to remove this department?", "Remove Department", MessageBoxButtons.YesNo);
@@ -621,8 +572,7 @@ namespace TheSandwichMakersHardwareStoreSolution
                 {
                     try
                     {
-                        _dbHelper.OpenConnection();
-                        _dbHelper.RemoveDepartment(selectedDepartment.Id);
+                        DepartmentManager.RemoveDepartment(selectedDepartment.Id);
                         MessageBox.Show("Department removed successfully.");
                     }
                     catch (Exception ex)
@@ -631,7 +581,6 @@ namespace TheSandwichMakersHardwareStoreSolution
                     }
                     finally
                     {
-                        _dbHelper.CloseConnection();
                         RefreshDepartmentsList();
                     }
                 }
@@ -647,9 +596,7 @@ namespace TheSandwichMakersHardwareStoreSolution
         {
             try
             {
-                _dbHelper.OpenConnection();
-                _departments = _dbHelper.GetDepartments();
-                listBoxDepartments.DataSource = _departments;
+                listBoxDepartments.DataSource = DepartmentManager.GetDepartments();
                 listBoxDepartments.DisplayMember = "Name";
                 listBoxDepartments.ValueMember = "Id";
             }
@@ -657,10 +604,7 @@ namespace TheSandwichMakersHardwareStoreSolution
             {
                 MessageBox.Show(ex.Message);
             }
-            finally
-            {
-                _dbHelper.CloseConnection();
-            }
+
         }
 
         private void listBoxDepartments_SelectedIndexChanged(object sender, EventArgs e)
@@ -675,19 +619,16 @@ namespace TheSandwichMakersHardwareStoreSolution
             }
         }
 
-
-        private StockManager stockManager = new StockManager();
-
         private void RefreshProductInfoDisplay()
         {
             dataGridView1.DataSource = null;
-            dataGridView1.DataSource = stockManager.itemList;
+            dataGridView1.DataSource = StockManager.GetItems();
         }
 
 
         private void btnNewProduct_Click(object sender, EventArgs e)
         {
-            stockManager.AddNewItem(Convert.ToInt16(numericSKU.Value), tbNameProduct.Text, Convert.ToInt16(numericQuantityWarehouse.Value), Convert.ToInt16(numericQuantityStore.Value), cbCatergory.Text, Convert.ToDouble(numericWholesalePrice.Value), Convert.ToDouble(numericSellPrice.Value));
+            StockManager.AddNewItem(Convert.ToInt16(numericSKU.Value), tbNameProduct.Text, Convert.ToInt16(numericQuantityWarehouse.Value), Convert.ToInt16(numericQuantityStore.Value), (CategoryEnum)cbCatergory.SelectedIndex, Convert.ToDouble(numericWholesalePrice.Value), Convert.ToDouble(numericSellPrice.Value));
             RefreshProductInfoDisplay();
 
         }
@@ -695,14 +636,14 @@ namespace TheSandwichMakersHardwareStoreSolution
         private void btnEditProduct_Click(object sender, EventArgs e)
         {
             int id = GetIdSelectedRow();
-            stockManager.EditItem(id, Convert.ToInt16(numericSKU.Value), tbNameProduct.Text, Convert.ToInt16(numericQuantityWarehouse.Value), Convert.ToInt16(numericQuantityStore.Value), cbCatergory.Text, Convert.ToDouble(numericWholesalePrice.Value), Convert.ToDouble(numericSellPrice.Value));
+            StockManager.EditItem(id, Convert.ToInt16(numericSKU.Value), tbNameProduct.Text, Convert.ToInt16(numericQuantityWarehouse.Value), Convert.ToInt16(numericQuantityStore.Value), (CategoryEnum)cbCatergory.SelectedIndex, Convert.ToDouble(numericWholesalePrice.Value), Convert.ToDouble(numericSellPrice.Value));
             RefreshProductInfoDisplay();
         }
 
         private void btnRemoveProduct_Click(object sender, EventArgs e)
         {
             int id = GetIdSelectedRow();
-            stockManager.RemoveItem(id);
+            StockManager.RemoveItem(id);
             RefreshProductInfoDisplay();
         }
 
@@ -727,12 +668,12 @@ namespace TheSandwichMakersHardwareStoreSolution
             int id = GetIdSelectedRow();
             if (id != -1)
             {
-                Item item = stockManager.GetItemById(id);
+                Item item = StockManager.GetItemById(id);
                 tbNameProduct.Text = item.Name;
                 numericSKU.Value = item.Sku;
                 numericQuantityWarehouse.Value = item.QuantityWarehouse;
                 numericQuantityStore.Value = item.QuantityStore;
-                cbCatergory.Text = item.Category;
+                cbCatergory.Text = item.Category.ToString();
                 numericWholesalePrice.Value = Convert.ToDecimal(item.WholesalePrice);
                 numericSellPrice.Value = Convert.ToDecimal(item.SellPrice);
             }
@@ -742,21 +683,30 @@ namespace TheSandwichMakersHardwareStoreSolution
         private void btAddShelfRequest_Click(object sender, EventArgs e)
         {
             int itemId = GetIdSelectedRow();
-            stockManager.AddShelfRequest(itemId, Convert.ToInt16(numericQuantityShelfRequest.Value));
+            StockManager.AddShelfRequest(itemId, Convert.ToInt16(numericQuantityShelfRequest.Value));
             RefreshShelfRequestDisplay();
         }
 
         private void btnEditRequest_Click(object sender, EventArgs e)
         {
             int id = GetIdSelectedRowShelfRequest();
-            stockManager.EditShelfRequest(id, Convert.ToInt16(numericQuantityShelfRequest.Value));
+            int itemId = GetIdSelectedRow();
+            StockManager.EditShelfRequest(id, itemId, Convert.ToInt16(numericQuantityShelfRequest.Value));
             RefreshShelfRequestDisplay();
         }
 
         private void btnFulfillRequest_Click(object sender, EventArgs e)
         {
             int id = GetIdSelectedRowShelfRequest();
-            stockManager.FulFillShelfRequest(id);
+            try
+            {
+                StockManager.FulFillShelfRequest(id);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
             RefreshShelfRequestDisplay();
             RefreshProductInfoDisplay();
         }
@@ -784,14 +734,6 @@ namespace TheSandwichMakersHardwareStoreSolution
             else
             {
                 return -1;
-            }
-        }
-
-        private void tabControMain_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (tabControMain.SelectedTab == tabPageShifts)
-            {
-                RefreshShiftUI();
             }
         }
 
@@ -883,19 +825,19 @@ namespace TheSandwichMakersHardwareStoreSolution
             DateOnly date = new DateOnly(dateTime.Year, dateTime.Month, dateTime.Day);
 
             lstBoxNoShiftEmployees.Items.Clear();
-            foreach (Employee employee in EmployeeManager.GetUnassignedEmployees(date))
+            foreach (Employee employee in EmployeeManager.GetUnassignedEmployeesToShiftOnDate(date))
             {
                 lstBoxNoShiftEmployees.Items.Add(employee);
             }
 
             lstBoxMorningShiftEmployees.Items.Clear();
-            foreach (Employee employee in EmployeeManager.GetAssignedEmployeed(date, ShiftTypeEnum.Morning))
+            foreach (Employee employee in EmployeeManager.GetAssignedEmployeesToShiftOnDate(date, ShiftTypeEnum.Morning))
             {
                 lstBoxMorningShiftEmployees.Items.Add(employee);
             }
 
             lstBoxEveningShiftEmployees.Items.Clear();
-            foreach (Employee employee in EmployeeManager.GetAssignedEmployeed(date, ShiftTypeEnum.Evening))
+            foreach (Employee employee in EmployeeManager.GetAssignedEmployeesToShiftOnDate(date, ShiftTypeEnum.Evening))
             {
                 lstBoxEveningShiftEmployees.Items.Add(employee);
             }
@@ -912,7 +854,7 @@ namespace TheSandwichMakersHardwareStoreSolution
             DateTime dateTime = dtpShift.Value;
             DateOnly date = new DateOnly(dateTime.Year, dateTime.Month, dateTime.Day);
 
-            ShiftManager.AutoAssignShift(date, EmployeeManager.GetUnassignedEmployees(date));
+            ShiftManager.AutoAssignShift(EmployeeManager.GetUnassignedEmployeesToShiftOnDate(date), date);
             RefreshShiftUI();
         }
     }

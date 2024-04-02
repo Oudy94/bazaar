@@ -5,21 +5,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TheSandwichMakersHardwareStoreSolution.Enums;
+using TheSandwichMakersHardwareStoreSolution.Helpers;
 
 namespace TheSandwichMakersHardwareStoreSolution.Classes
 {
     public class ShiftManager
     {
-        public Dictionary<int, Shift> ShiftDict { get; set; }
-        public Dictionary<DateOnly, (Shift, Shift)> ShiftDateDict { get; set; }
+        private readonly DatabaseHelper _dbHelper;
 
         public ShiftManager() 
         {
-            this.ShiftDict = new Dictionary<int, Shift>();
-            this.ShiftDateDict = new Dictionary<DateOnly, (Shift, Shift)>();
+            this._dbHelper = new DatabaseHelper();
         }
 
-        public void AddShift(Shift shift)
+        public List<Shift> GetShifts()
         {
             try
             {
@@ -58,104 +57,86 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
             }
         }
 
-        public void RemoveShift(Shift shift)
-        {
             try
             {
-                this.ShiftDict.Remove(shift.Id);
-                this.ShiftDateDict.Remove(shift.Date);
+                _dbHelper.OpenConnection();
+                shifts = _dbHelper.GetShiftsFromDB();
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                MessageBox.Show(ex.Message);
             }
-        }
-
-        public List<Shift> GetShiftsForEmployee(Employee employee)
-        {
-            List<Shift> shifts = new List<Shift>();
-
-            foreach(Shift shift in this.ShiftDict.Values)
+            finally
             {
-                if (shift.EmployeeDict.ContainsKey(employee.Id))
-                {
-                    shifts.Add(shift);
-                }
+                _dbHelper.CloseConnection();
             }
 
             return shifts;
         }
 
-        public List<Shift> GetShifts()
-        {
-            return ShiftDict.Values.ToList();
-        }
-
         public void AssignEmployeeToShift(Employee employee, DateOnly date, ShiftTypeEnum shiftType)
         {
-            if (!ShiftDateDict.ContainsKey(date) || shiftType == ShiftTypeEnum.Morning && ShiftDateDict[date].Item1 == null || shiftType == ShiftTypeEnum.Evening && ShiftDateDict[date].Item2 == null)
+            try
             {
-                Shift shift = new Shift(date, shiftType);
-                AddShift(shift);
+                _dbHelper.OpenConnection();
+                _dbHelper.AssignEmployeeToShiftInDB(employee, date, shiftType);
             }
-
-            if (shiftType == ShiftTypeEnum.Morning)
+            catch(Exception ex)
             {
-                ShiftDateDict[date].Item1.EmployeeDict.Add(employee.Id, employee);
+                throw new Exception(ex.Message);
             }
-            else
+            finally
             {
-                ShiftDateDict[date].Item2.EmployeeDict.Add(employee.Id, employee);
+                _dbHelper.CloseConnection();
             }
         }
 
         public void UnassignEmployeeFromShift(Employee employee, DateOnly date, ShiftTypeEnum shiftType)
         {
-            if (!ShiftDateDict.ContainsKey(date) || shiftType == ShiftTypeEnum.Morning && ShiftDateDict[date].Item1 == null || shiftType == ShiftTypeEnum.Evening && ShiftDateDict[date].Item2 == null)
+            try
             {
-                throw new ArgumentException("Shift not found!");
+                _dbHelper.OpenConnection();
+                _dbHelper.UnassignEmployeeFromShiftInDB(employee, date, shiftType);
             }
-
-            if (shiftType == ShiftTypeEnum.Morning)
+            catch (Exception ex)
             {
-                ShiftDateDict[date].Item1.EmployeeDict.Remove(employee.Id);
+                throw new Exception(ex.Message);
             }
-            else
+            finally
             {
-                ShiftDateDict[date].Item2.EmployeeDict.Remove(employee.Id);
+                _dbHelper.CloseConnection();
             }
         }
 
-        public void AutoAssignShift(DateOnly date, List<Employee> unassignedEmployees)
+        public void AutoAssignShift(List<Employee> unassignedEmployees, DateOnly date)
         {
-            int employeeCountMorningShift = 0;
-            int employeeCountEveningShift = 0;
-
-            if (ShiftDateDict.ContainsKey(date))
+            try
             {
-                if (ShiftDateDict[date].Item1 != null)
-                {
-                    employeeCountMorningShift = ShiftDateDict[date].Item1.EmployeeDict.Values.Count();
-                }
+                _dbHelper.OpenConnection();
+                int employeeCountMorningShift = _dbHelper.GetAssignedEmployeeCountForShiftFromDB(date, ShiftTypeEnum.Morning);
+                int employeeCountEveningShift = _dbHelper.GetAssignedEmployeeCountForShiftFromDB(date, ShiftTypeEnum.Evening);
 
-                if (ShiftDateDict[date].Item2 != null)
+                for (int i = 0; i < unassignedEmployees.Count; i++)
                 {
-                    employeeCountEveningShift = ShiftDateDict[date].Item2.EmployeeDict.Values.Count();
+                    if (employeeCountMorningShift <= employeeCountEveningShift)
+                    {
+                        _dbHelper.AssignEmployeeToShiftInDB(unassignedEmployees[i], date, ShiftTypeEnum.Morning);
+                        employeeCountMorningShift++;
+                    }
+                    else
+                    {
+                        _dbHelper.AssignEmployeeToShiftInDB(unassignedEmployees[i], date, ShiftTypeEnum.Evening);
+                        employeeCountEveningShift++;
+                    }
                 }
             }
-
-            for (int i = 0; i < unassignedEmployees.Count; i++)
+            catch (Exception ex)
             {
-                if (employeeCountMorningShift <= employeeCountEveningShift)
-                {
-                    AssignEmployeeToShift(unassignedEmployees[i], date, ShiftTypeEnum.Morning);
-                    employeeCountMorningShift++;
-                }
-                else
-                {
-                    AssignEmployeeToShift(unassignedEmployees[i], date, ShiftTypeEnum.Evening);
-                    employeeCountEveningShift++;
-                }
+                throw new Exception(ex.Message);
+            }
+            finally
+            { 
+                _dbHelper.CloseConnection(); 
             }
         }
     }

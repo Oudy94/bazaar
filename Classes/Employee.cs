@@ -3,22 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TheSandwichMakersHardwareStoreSolution.Enums;
 
 namespace TheSandwichMakersHardwareStoreSolution.Classes
 {
-
-    public class Role
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-    }
-
-    public class Department
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-    }
-
     public class Employee
     {
         // Private fields
@@ -26,7 +14,7 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
         private string name;
         private string email;
         private string password;
-        private Role role;
+        private RoleEnum role;
         private DateTime registerDate;
         private string image;
         private string address;
@@ -39,7 +27,7 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
         public string Name { get { return name; } set { name = value; } }
         public string Email { get { return email; } set { email = value; } }
         public string Password { get { return password; } set { password = value; } }
-        public Role Role { get { return role; } set { role = value; } }
+        public RoleEnum Role { get { return role; } set { role = value; } }
         public DateTime RegisterDate { get { return registerDate; } set { registerDate = value; } }
         public string Image { get { return image; } set { image = value; } }
         public string Address { get { return address; } set { address = value; } }
@@ -48,7 +36,7 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
         public bool IsActive { get { return isActive; } set { isActive = value; } }
 
         // Constructor
-        public Employee(int id, string name, string email, string password, Role role, string image, string address, Department department, decimal hourlyWage, bool isActive)
+        public Employee(int id, string name, string email, string password, RoleEnum role, string image, string address, Department department, decimal hourlyWage, bool isActive)
         {
             this.Id = id;
             this.Name = name;
@@ -63,9 +51,8 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
             this.IsActive = isActive;
         }
 
-        public Employee(string name, string email, string password, Role role, string image, string address, Department department, decimal hourlyWage, bool isActive)
+        public Employee(string name, string email, string password, RoleEnum role, string image, string address, Department department, decimal hourlyWage, bool isActive)
         {
-            this.Id = id;
             this.Name = name;
             this.Email = email;
             this.Password = password; // ! hash passwords

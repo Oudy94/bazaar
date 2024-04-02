@@ -3,73 +3,242 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms.VisualStyles;
 using TheSandwichMakersHardwareStoreSolution.Enums;
+using TheSandwichMakersHardwareStoreSolution.Helpers;
 
 namespace TheSandwichMakersHardwareStoreSolution.Classes
 {
     public class EmployeeManager
     {
-        public Dictionary<int, Employee> EmployeeDict { get; set; }
-        public ShiftManager ShiftManager { get; set; }
+        private readonly DatabaseHelper _dbHelper;
 
-        public EmployeeManager(ShiftManager shiftManager) 
+        public EmployeeManager() 
         {
-            this.EmployeeDict = new Dictionary<int, Employee>();
-            this.ShiftManager = shiftManager;
+            this._dbHelper = new DatabaseHelper();
         }
 
-        public void AddEmployee(Employee employee)
-        {
-            try
-            {
-                EmployeeDict.Add(employee.Id, employee);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public List<Employee> GetUnassignedEmployees(DateOnly date)
+        public List<Employee> GetEmployees()
         {
             List<Employee> employees = new List<Employee>();
 
-            if (!ShiftManager.ShiftDateDict.ContainsKey(date))
-                return EmployeeDict.Values.ToList();
-
-            Shift morningShift = ShiftManager.ShiftDateDict[date].Item1;
-            Shift eveningShift = ShiftManager.ShiftDateDict[date].Item2;
-
-            foreach (Employee employee in EmployeeDict.Values)
+            try
             {
-                if ((morningShift == null || !morningShift.EmployeeDict.ContainsKey(employee.Id)) &&
-                    (eveningShift == null || !eveningShift.EmployeeDict.ContainsKey(employee.Id)))
-                {
-                    employees.Add(employee);
-                }
+                _dbHelper.OpenConnection();
+                employees = _dbHelper.GetEmployeesFromDB();
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
             }
 
             return employees;
         }
 
-        public List<Employee> GetEmployees()
+        public void AddEmployee(string name, string email, string password, RoleEnum role, string image, string address, Department department, decimal hourlyWage, bool isActive)
         {
-            return EmployeeDict.Values.ToList();
+            try
+            {
+                _dbHelper.OpenConnection();
+                _dbHelper.AddEmployeeToDB(name, email, password, role, image, address, department, hourlyWage, isActive);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
+            }
         }
 
-        public List<Employee> GetAssignedEmployeed(DateOnly date, ShiftTypeEnum shiftType)
+        public Employee GetEmployeeById(int id)
         {
-            if (!ShiftManager.ShiftDateDict.ContainsKey(date) || shiftType == ShiftTypeEnum.Morning && ShiftManager.ShiftDateDict[date].Item1 == null || shiftType == ShiftTypeEnum.Evening && ShiftManager.ShiftDateDict[date].Item2 == null)
-                return new List<Employee>();
+            Employee employee = null;
 
-            if (shiftType == ShiftTypeEnum.Morning)
+            try
             {
-                return ShiftManager.ShiftDateDict[date].Item1.GetEmployees();
+                _dbHelper.OpenConnection();
+                employee = _dbHelper.GetEmployeeByIdFromDB(id);
             }
-            else
+            catch (Exception ex)
             {
-                return ShiftManager.ShiftDateDict[date].Item2.GetEmployees();
+                throw new Exception(ex.Message);
             }
+            finally
+            {
+                _dbHelper.CloseConnection();
+            }
+
+            return employee;
+        }
+
+        public Employee GetEmployeeByEmail(string email)
+        {
+            try
+            {
+                _dbHelper.OpenConnection();
+                return _dbHelper.GetEmployeeByEmailFromDB(email);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
+            }
+        }
+
+        public void UpdateEmployee(int id, string name, string email, string password, RoleEnum role, string image, string address, Department department, decimal hourlyWage, bool isActive)
+        {
+            try
+            {
+                _dbHelper.OpenConnection();
+                _dbHelper.UpdateEmployeeInDB(id, name, email, password, role, image, address, department, hourlyWage, isActive);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection(); 
+            }
+        }
+
+        public void DeactivateEmployee(int id)
+        {
+            try
+            {
+                _dbHelper.OpenConnection();
+                _dbHelper.DeactivateEmployeeInDB(id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
+            }
+        }
+
+        public bool IsEmployeeNameUnique(string name)
+        {
+            try
+            {
+                _dbHelper.OpenConnection();
+                return _dbHelper.IsEmployeeNameUniqueInDB(name);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
+            }
+        }
+
+        public bool IsEmployeeEmailUnique(string email)
+        {
+            try
+            {
+                _dbHelper.OpenConnection();
+                return _dbHelper.IsEmployeeEmailUniqueInDB(email);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
+            }
+        }
+
+        public bool IsNameUniqueExceptCurrentEmployee(string name, int id)
+        {
+            try
+            {
+                _dbHelper.OpenConnection();
+                return _dbHelper.IsNameUniqueExceptCurrentEmployeeinDB(name, id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
+            }
+        }
+
+        public bool IsEmailUniqueExceptCurrentEmployee(string email, int id)
+        {
+            try
+            {
+                _dbHelper.OpenConnection();
+                return _dbHelper.IsEmailUniqueExceptCurrentEmployeeInDB(email, id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
+            }
+        }
+
+        public List<Employee> GetUnassignedEmployeesToShiftOnDate(DateOnly date)
+        {
+            List<Employee> employees = new List<Employee>();
+
+            try
+            {
+                _dbHelper.OpenConnection();
+                employees = _dbHelper.GetUnassignedEmployeesToShiftFromDB(date);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
+            }
+
+            return employees;
+        }
+
+        public List<Employee> GetAssignedEmployeesToShiftOnDate(DateOnly date, ShiftTypeEnum shiftType)
+        {
+            List<Employee> employees = new List<Employee>();
+
+            try
+            {
+                _dbHelper.OpenConnection();
+                employees = _dbHelper.GetAssignedEmployeesToShiftFromDB(date, shiftType);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
+            }
+
+            return employees;
         }
     }
 }

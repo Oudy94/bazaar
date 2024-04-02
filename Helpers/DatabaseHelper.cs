@@ -967,9 +967,112 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
             return assignedEmployeeCount;
         }
 
+        public List<Employee> GetEmployeesByRoleAndDepartment(int roleID, int departmentID)
+        {
+            List<Employee> employees = new List<Employee>();
+            string query = "SELECT e.*, r.Id as RoleId, r.Name as RoleName, d.Id as DepartmentId, d.Name as DepartmentName FROM Employee e " +
+                           "INNER JOIN RoleList r ON e.role = r.Id " +
+                           "INNER JOIN DepartmentList d ON e.department = d.Id " +
+                           "WHERE e.role = @RoleID AND e.department = @DepartmentID";
 
+            using (SqlCommand cmd = new SqlCommand(query, connection))
+            {
+                cmd.Parameters.AddWithValue("@RoleID", roleID);
+                cmd.Parameters.AddWithValue("@DepartmentID", departmentID);
 
-        // Shift Management ==================================================
+                if (connection.State == ConnectionState.Closed)
+                {
+                    try
+                    {
+                        connection.Open();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error opening database connection: " + ex.Message);
+                        return employees;
+                    }
+
+                }
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+
+                    if (reader.Read())
+                    {
+                        while (reader.Read())
+                        {
+                            employees.Add(new Employee(
+                                reader.GetInt32(reader.GetOrdinal("id")),
+                                reader.GetString(reader.GetOrdinal("name")),
+                                reader.GetString(reader.GetOrdinal("email")),
+                                reader.GetString(reader.GetOrdinal("password")), // Should be hashed
+                                new Role
+                                {
+                                    Id = reader.GetInt32(reader.GetOrdinal("RoleId")),
+                                    Name = reader.GetString(reader.GetOrdinal("RoleName"))
+                                },
+                                reader.IsDBNull(reader.GetOrdinal("image")) ? null : reader.GetString(reader.GetOrdinal("image")),
+                                reader.IsDBNull(reader.GetOrdinal("address")) ? null : reader.GetString(reader.GetOrdinal("address")),
+                                new Department
+                                {
+                                    Id = reader.GetInt32(reader.GetOrdinal("DepartmentId")),
+                                    Name = reader.GetString(reader.GetOrdinal("DepartmentName"))
+                                },
+                                reader.GetDecimal(reader.GetOrdinal("hourly_wage")),
+                                reader.GetBoolean(reader.GetOrdinal("is_active"))
+                            ));
+                        }
+                    }
+                }
+            }
+            connection.Close();
+            return employees;
+        }
+
+        // Get employee by email
+
+        public Employee GetEmployeeByEmail(string email)
+        {
+            string query = "SELECT e.*, r.Id as RoleId, r.Name as RoleName, d.Id as DepartmentId, d.Name as DepartmentName FROM Employee e " +
+                           "INNER JOIN RoleList r ON e.role = r.Id " +
+                           "INNER JOIN DepartmentList d ON e.department = d.Id " +
+                           "WHERE e.email = @Email";
+
+            OpenConnection();
+
+            using (SqlCommand cmd = new SqlCommand(query, connection))
+            {
+                cmd.Parameters.AddWithValue("@Email", email);
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        return new Employee
+                        (
+                            reader.GetInt32(reader.GetOrdinal("id")).ToString(),
+                            reader.GetString(reader.GetOrdinal("name")),
+                            reader.GetString(reader.GetOrdinal("email")),
+                            new Role
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("RoleId")),
+                                Name = reader.GetString(reader.GetOrdinal("RoleName"))
+                            },
+                            reader.IsDBNull(reader.GetOrdinal("image")) ? null : reader.GetString(reader.GetOrdinal("image")),
+                            reader.IsDBNull(reader.GetOrdinal("address")) ? null : reader.GetString(reader.GetOrdinal("address")),
+                            new Department
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("DepartmentId")),
+                                Name = reader.GetString(reader.GetOrdinal("DepartmentName"))
+                            },
+                            reader.GetDecimal(reader.GetOrdinal("hourly_wage")),
+                            reader.GetBoolean(reader.GetOrdinal("is_active"))
+                        );
+                    }
+                }
+            }
+            CloseConnection();
+            return null; // Employee not found
+        }
     }
 }
 

@@ -20,7 +20,42 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
 
         public List<Shift> GetShifts()
         {
-            List<Shift> shifts = new List<Shift>();
+            try
+            {
+                if (this.ShiftDict.ContainsKey(shift.Id))
+                {
+                    throw new Exception("Shift with the same ID already exists.");
+                }
+
+                if (ShiftDateDict.ContainsKey(shift.Date))
+                {
+                    var (morning, evening) = ShiftDateDict[shift.Date];
+                    if (shift.ShiftType == ShiftTypeEnum.Morning && morning != null || shift.ShiftType == ShiftTypeEnum.Evening && evening != null)
+                    {
+                        throw new Exception($"{shift.ShiftType} Shift with the same date already exists.");
+                    }
+
+                    if (shift.ShiftType == ShiftTypeEnum.Morning)
+                        ShiftDateDict[shift.Date] = (shift, evening);
+                    else
+                        ShiftDateDict[shift.Date] = (morning, shift);
+                }
+                else
+                {
+                    if (shift.ShiftType == ShiftTypeEnum.Morning)
+                        ShiftDateDict[shift.Date] = (shift, null);
+                    else
+                        ShiftDateDict[shift.Date] = (null, shift);
+                }
+
+                this.ShiftDict.Add(shift.Id, shift);
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
 
             try
             {

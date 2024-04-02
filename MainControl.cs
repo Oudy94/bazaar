@@ -1,14 +1,6 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using TheSandwichMakersHardwareStoreSolution.Classes;
 using TheSandwichMakersHardwareStoreSolution.Enums;
 using TheSandwichMakersHardwareStoreSolution.Helpers;
@@ -57,8 +49,39 @@ namespace TheSandwichMakersHardwareStoreSolution
 
         private void tabControMain_SelectedIndexChanged(object sender, EventArgs e)
         {
-        //    if(tabControMain.SelectedTab == tabPageShifts)
-        //    {
+            try
+            {
+                _dbHelper.OpenConnection();
+                _roles = _dbHelper.GetRoles();
+                _departments = _dbHelper.GetDepartments();
+
+                // Main tab loading data
+
+                // Load Roles to combo box
+
+                cbBoxRolesList.DataSource = _roles;
+                cbBoxRolesList.DisplayMember = "Name";
+                cbBoxRolesList.ValueMember = "Id";
+                cbBoxRolesList.SelectedIndex = -1;
+
+                // Load Departments to combo box
+
+                cbBoxDepartmentList.DataSource = _departments;
+                cbBoxDepartmentList.DisplayMember = "Name";
+                cbBoxDepartmentList.ValueMember = "Id";
+                cbBoxDepartmentList.SelectedIndex = -1;
+
+                /* ------------------------------------------ */
+
+                // Bind roles to the ComboBox
+                cmbBoxEmployeeRole.DataSource = _roles;
+                cmbBoxEmployeeRole.DisplayMember = "Name";
+                cmbBoxEmployeeRole.ValueMember = "Id";
+                var defaultRole = _roles.FirstOrDefault(r => r.Name == "Retailer");
+                if (defaultRole != null)
+                {
+                    cmbBoxEmployeeRole.SelectedItem = defaultRole;
+                }
 
         //    }
         //    else if (tabControMain.SelectedTab == tabPageStock)
@@ -67,7 +90,90 @@ namespace TheSandwichMakersHardwareStoreSolution
         //    }
         }
 
-        private void InitializeUiElements()
+        // Main tab
+
+        // Function to refresh `lstBoxFilteredEmployees` when the selected role or department changes
+
+        private void RefreshEmployeeLB()
+        {
+            // Check if both Role and Department are selected
+
+            if (cbBoxRolesList.SelectedItem == null || cbBoxDepartmentList.SelectedItem == null)
+            {
+                return;
+            }
+
+            // Clear the list box
+            lstBoxFilteredEmployees.Items.Clear();
+
+            var selectedRole = cbBoxRolesList.SelectedItem as Role;
+            var selectedDepartment = cbBoxDepartmentList.SelectedItem as Department;
+
+
+            if (selectedRole != null && selectedDepartment != null)
+            {
+                var filteredEmployees = _dbHelper.GetEmployeesByRoleAndDepartment(selectedRole.Id, selectedDepartment.Id);
+
+                foreach (var employee in filteredEmployees)
+                {
+                    lstBoxFilteredEmployees.Items.Add(employee.Email);
+                }
+            }
+
+            label45.Text = lstBoxFilteredEmployees.Items.Count.ToString();
+        }
+
+        // Any time the selected role or department changes, update the employee grid
+
+        private void cmbBoxRoleList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            RefreshEmployeeLB();
+        }
+
+        private void cmbBoxDepartmentList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            RefreshEmployeeLB();
+        }
+
+        // Display employee details when an employee is selected in the list box
+
+        private void lstBxFilteredEmployees_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            MessageBox.Show(lstBoxFilteredEmployees.SelectedItem.ToString());
+            if (lstBoxFilteredEmployees.SelectedItem != null)
+            {
+
+                var selectedEmployee = lstBoxFilteredEmployees.SelectedItem.ToString();
+
+                // Get employee info from their email from db
+
+                var employee = _dbHelper.GetEmployeeByEmail(selectedEmployee);
+
+                if (employee == null) { return; }
+
+                label25.Text = "Name: " + employee.Name;
+                label29.Text = "Email: " + employee.Email;
+                label31.Text = "Role: " + employee.Role.Name;
+                label33.Text = "Department: " + employee.Department.Name;
+
+                // Get their attendance past 30 days
+                var shifts = ShiftManager.GetShiftsForEmployee(employee);
+
+                int totalShifts = shifts.Count;
+                int totalMorningShifts = shifts.Count(s => s.ShiftType == ShiftTypeEnum.Morning);
+                int totalEveningShifts = shifts.Count(s => s.ShiftType == ShiftTypeEnum.Evening);
+
+                // Display the shifts count in the list box
+
+                label38.Text = totalMorningShifts.ToString();
+                label41.Text = totalEveningShifts.ToString();
+                label43.Text = totalShifts.ToString();
+
+                pictureBox1.ImageLocation = employee.Image;
+            }
+        }
+
+        public void LoadEmployees()
         {
             RefreshEmployeesGrid();
             RefreshShiftUI();
@@ -608,7 +714,12 @@ namespace TheSandwichMakersHardwareStoreSolution
         public void RefreshShelfRequestDisplay()
         {
             dataGridView2.DataSource = null;
-            dataGridView2.DataSource = StockManager.GetShelfRequests();
+            dataGridView2.DataSource = stockManager.shelfRequests;
+            listBox2.Items.Clear();
+            foreach (ShelfRequest request in stockManager.shelfRequests)
+            {
+                listBox2.Items.Add($"{request.ItemName} | {request.Quantity}");
+            }
         }
 
         private int GetIdSelectedRowShelfRequest()
@@ -690,13 +801,13 @@ namespace TheSandwichMakersHardwareStoreSolution
         {
             if (listBox.SelectedIndex < 0)
             {
-                MessageBox.Show("you have to select employee first.");
+                MessageBox.Show("You have to select employee first.");
                 return false;
             }
 
             if (dtpShift.Value.Date == DateTime.MinValue)
             {
-                MessageBox.Show("you have to select correct date.");
+                MessageBox.Show("You have to select correct date.");
                 return false;
             }
 
@@ -736,7 +847,7 @@ namespace TheSandwichMakersHardwareStoreSolution
         {
             if (dtpShift.Value.Date == DateTime.MinValue)
             {
-                MessageBox.Show("you have to select correct date.");
+                MessageBox.Show("You have to select correct date.");
                 return;
             }
 

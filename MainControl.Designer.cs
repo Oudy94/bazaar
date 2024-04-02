@@ -30,11 +30,12 @@
         {
             tabControMain = new TabControl();
             tabPageMain = new TabPage();
-            cbBoxDepartmentList = new ComboBox();
+            comboBox4 = new ComboBox();
             label46 = new Label();
             label44 = new Label();
             label45 = new Label();
             groupBox4 = new GroupBox();
+            button4 = new Button();
             label42 = new Label();
             label43 = new Label();
             label40 = new Label();
@@ -42,6 +43,9 @@
             label39 = new Label();
             label37 = new Label();
             label38 = new Label();
+            dateTimePicker2 = new DateTimePicker();
+            label35 = new Label();
+            label36 = new Label();
             label33 = new Label();
             label34 = new Label();
             label31 = new Label();
@@ -49,18 +53,21 @@
             label29 = new Label();
             label30 = new Label();
             pictureBox1 = new PictureBox();
+            label28 = new Label();
             label27 = new Label();
             label26 = new Label();
             label25 = new Label();
+            label24 = new Label();
             label20 = new Label();
             groupBox3 = new GroupBox();
             label48 = new Label();
+            button2 = new Button();
             listBox2 = new ListBox();
             label47 = new Label();
             lstBoxFilteredEmployees = new ListBox();
             label19 = new Label();
             label18 = new Label();
-            cbBoxRolesList = new ComboBox();
+            comboBox3 = new ComboBox();
             tabPageEmployee = new TabPage();
             label50 = new Label();
             dtGrVEmployees = new DataGridView();
@@ -171,7 +178,7 @@
             // 
             // tabPageMain
             // 
-            tabPageMain.Controls.Add(cbBoxDepartmentList);
+            tabPageMain.Controls.Add(comboBox4);
             tabPageMain.Controls.Add(label46);
             tabPageMain.Controls.Add(label44);
             tabPageMain.Controls.Add(label45);
@@ -180,7 +187,7 @@
             tabPageMain.Controls.Add(lstBoxFilteredEmployees);
             tabPageMain.Controls.Add(label19);
             tabPageMain.Controls.Add(label18);
-            tabPageMain.Controls.Add(cbBoxRolesList);
+            tabPageMain.Controls.Add(comboBox3);
             tabPageMain.Location = new Point(4, 26);
             tabPageMain.Name = "tabPageMain";
             tabPageMain.Size = new Size(952, 517);
@@ -188,13 +195,13 @@
             tabPageMain.Text = "Main";
             tabPageMain.UseVisualStyleBackColor = true;
             // 
-            // cbBoxDepartmentList
+            // comboBox4
             // 
-            cbBoxDepartmentList.FormattingEnabled = true;
-            cbBoxDepartmentList.Location = new Point(164, 29);
-            cbBoxDepartmentList.Name = "cbBoxDepartmentList";
-            cbBoxDepartmentList.Size = new Size(133, 25);
-            cbBoxDepartmentList.TabIndex = 47;
+            comboBox4.FormattingEnabled = true;
+            comboBox4.Location = new Point(164, 29);
+            comboBox4.Name = "comboBox4";
+            comboBox4.Size = new Size(133, 25);
+            comboBox4.TabIndex = 47;
             // 
             // label46
             // 
@@ -228,6 +235,7 @@
             // 
             // groupBox4
             // 
+            groupBox4.Controls.Add(button4);
             groupBox4.Controls.Add(label42);
             groupBox4.Controls.Add(label43);
             groupBox4.Controls.Add(label40);
@@ -235,6 +243,9 @@
             groupBox4.Controls.Add(label39);
             groupBox4.Controls.Add(label37);
             groupBox4.Controls.Add(label38);
+            groupBox4.Controls.Add(dateTimePicker2);
+            groupBox4.Controls.Add(label35);
+            groupBox4.Controls.Add(label36);
             groupBox4.Controls.Add(label33);
             groupBox4.Controls.Add(label34);
             groupBox4.Controls.Add(label31);
@@ -242,9 +253,11 @@
             groupBox4.Controls.Add(label29);
             groupBox4.Controls.Add(label30);
             groupBox4.Controls.Add(pictureBox1);
+            groupBox4.Controls.Add(label28);
             groupBox4.Controls.Add(label27);
             groupBox4.Controls.Add(label26);
             groupBox4.Controls.Add(label25);
+            groupBox4.Controls.Add(label24);
             groupBox4.Controls.Add(label20);
             groupBox4.Location = new Point(336, 11);
             groupBox4.Name = "groupBox4";
@@ -253,11 +266,21 @@
             groupBox4.TabStop = false;
             groupBox4.Text = "Employee Information";
             // 
+            // button4
+            // 
+            button4.Font = new Font("Segoe UI Semibold", 15.75F, FontStyle.Bold, GraphicsUnit.Point);
+            button4.Location = new Point(402, 250);
+            button4.Name = "button4";
+            button4.Size = new Size(159, 51);
+            button4.TabIndex = 47;
+            button4.Text = "Manage";
+            button4.UseVisualStyleBackColor = true;
+            // 
             // label42
             // 
             label42.AutoSize = true;
             label42.Font = new Font("Segoe UI", 11F, FontStyle.Bold, GraphicsUnit.Point);
-            label42.Location = new Point(131, 250);
+            label42.Location = new Point(17, 280);
             label42.Name = "label42";
             label42.Size = new Size(88, 20);
             label42.TabIndex = 43;
@@ -267,7 +290,7 @@
             // 
             label43.AutoSize = true;
             label43.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label43.Location = new Point(131, 270);
+            label43.Location = new Point(17, 301);
             label43.Name = "label43";
             label43.Size = new Size(132, 17);
             label43.TabIndex = 42;
@@ -277,7 +300,7 @@
             // 
             label40.AutoSize = true;
             label40.Font = new Font("Segoe UI", 11F, FontStyle.Bold, GraphicsUnit.Point);
-            label40.Location = new Point(185, 195);
+            label40.Location = new Point(185, 280);
             label40.Name = "label40";
             label40.Size = new Size(112, 20);
             label40.TabIndex = 41;
@@ -287,7 +310,7 @@
             // 
             label41.AutoSize = true;
             label41.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label41.Location = new Point(185, 215);
+            label41.Location = new Point(185, 301);
             label41.Name = "label41";
             label41.Size = new Size(197, 17);
             label41.TabIndex = 40;
@@ -297,17 +320,17 @@
             // 
             label39.AutoSize = true;
             label39.Font = new Font("Segoe UI", 16F, FontStyle.Bold, GraphicsUnit.Point);
-            label39.Location = new Point(17, 150);
+            label39.Location = new Point(17, 199);
             label39.Name = "label39";
-            label39.Size = new Size(75, 30);
+            label39.Size = new Size(202, 30);
             label39.TabIndex = 39;
-            label39.Text = "Today";
+            label39.Text = "In the last 30 days";
             // 
             // label37
             // 
             label37.AutoSize = true;
             label37.Font = new Font("Segoe UI", 11F, FontStyle.Bold, GraphicsUnit.Point);
-            label37.Location = new Point(17, 195);
+            label37.Location = new Point(185, 229);
             label37.Name = "label37";
             label37.Size = new Size(117, 20);
             label37.TabIndex = 38;
@@ -317,11 +340,38 @@
             // 
             label38.AutoSize = true;
             label38.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label38.Location = new Point(17, 215);
+            label38.Location = new Point(185, 250);
             label38.Name = "label38";
             label38.Size = new Size(202, 17);
             label38.TabIndex = 37;
             label38.Text = "{EmployeeMorningShiftsNumber}";
+            // 
+            // dateTimePicker2
+            // 
+            dateTimePicker2.Location = new Point(91, 138);
+            dateTimePicker2.Name = "dateTimePicker2";
+            dateTimePicker2.Size = new Size(200, 25);
+            dateTimePicker2.TabIndex = 36;
+            // 
+            // label35
+            // 
+            label35.AutoSize = true;
+            label35.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            label35.Location = new Point(17, 138);
+            label35.Name = "label35";
+            label35.Size = new Size(50, 21);
+            label35.TabIndex = 35;
+            label35.Text = "Shift:";
+            // 
+            // label36
+            // 
+            label36.AutoSize = true;
+            label36.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            label36.Location = new Point(17, 163);
+            label36.Name = "label36";
+            label36.Size = new Size(193, 17);
+            label36.TabIndex = 34;
+            label36.Text = "{EmployeeShiftForSelectedDate}";
             // 
             // label33
             // 
@@ -391,6 +441,16 @@
             pictureBox1.TabIndex = 27;
             pictureBox1.TabStop = false;
             // 
+            // label28
+            // 
+            label28.AutoSize = true;
+            label28.Font = new Font("Segoe UI", 11F, FontStyle.Bold, GraphicsUnit.Point);
+            label28.Location = new Point(17, 229);
+            label28.Name = "label28";
+            label28.Size = new Size(123, 20);
+            label28.TabIndex = 26;
+            label28.Text = "Attendance (%):";
+            // 
             // label27
             // 
             label27.AutoSize = true;
@@ -420,6 +480,16 @@
             label25.TabIndex = 23;
             label25.Text = "Name:";
             // 
+            // label24
+            // 
+            label24.AutoSize = true;
+            label24.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            label24.Location = new Point(17, 250);
+            label24.Name = "label24";
+            label24.Size = new Size(138, 17);
+            label24.TabIndex = 22;
+            label24.Text = "{EmployeeAttendance}";
+            // 
             // label20
             // 
             label20.AutoSize = true;
@@ -433,6 +503,7 @@
             // groupBox3
             // 
             groupBox3.Controls.Add(label48);
+            groupBox3.Controls.Add(button2);
             groupBox3.Controls.Add(listBox2);
             groupBox3.Controls.Add(label47);
             groupBox3.Location = new Point(336, 354);
@@ -446,17 +517,27 @@
             // 
             label48.AutoSize = true;
             label48.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label48.Location = new Point(229, 22);
+            label48.Location = new Point(230, 22);
             label48.Name = "label48";
             label48.Size = new Size(131, 17);
             label48.TabIndex = 44;
             label48.Text = "{NumberOfRequests}";
             // 
+            // button2
+            // 
+            button2.Font = new Font("Segoe UI Semibold", 15.75F, FontStyle.Bold, GraphicsUnit.Point);
+            button2.Location = new Point(402, 62);
+            button2.Name = "button2";
+            button2.Size = new Size(159, 51);
+            button2.TabIndex = 46;
+            button2.Text = "Manage";
+            button2.UseVisualStyleBackColor = true;
+            // 
             // listBox2
             // 
             listBox2.FormattingEnabled = true;
             listBox2.ItemHeight = 17;
-            listBox2.Location = new Point(7, 42);
+            listBox2.Location = new Point(7, 43);
             listBox2.Name = "listBox2";
             listBox2.Size = new Size(290, 89);
             listBox2.TabIndex = 45;
@@ -465,7 +546,7 @@
             // 
             label47.AutoSize = true;
             label47.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
-            label47.Location = new Point(6, 18);
+            label47.Location = new Point(7, 19);
             label47.Name = "label47";
             label47.Size = new Size(217, 21);
             label47.TabIndex = 44;
@@ -498,13 +579,13 @@
             label18.TabIndex = 2;
             label18.Text = "Role";
             // 
-            // cbBoxRolesList
+            // comboBox3
             // 
-            cbBoxRolesList.FormattingEnabled = true;
-            cbBoxRolesList.Location = new Point(12, 29);
-            cbBoxRolesList.Name = "cbBoxRolesList";
-            cbBoxRolesList.Size = new Size(133, 25);
-            cbBoxRolesList.TabIndex = 0;
+            comboBox3.FormattingEnabled = true;
+            comboBox3.Location = new Point(12, 29);
+            comboBox3.Name = "comboBox3";
+            comboBox3.Size = new Size(133, 25);
+            comboBox3.TabIndex = 0;
             // 
             // tabPageEmployee
             // 
@@ -810,9 +891,9 @@
             tabPageStock.Controls.Add(groupBox2);
             tabPageStock.Controls.Add(dataGridView1);
             tabPageStock.Controls.Add(groupBox1);
-            tabPageStock.Location = new Point(4, 24);
+            tabPageStock.Location = new Point(4, 26);
             tabPageStock.Name = "tabPageStock";
-            tabPageStock.Size = new Size(952, 519);
+            tabPageStock.Size = new Size(952, 517);
             tabPageStock.TabIndex = 2;
             tabPageStock.Text = "Stock";
             tabPageStock.UseVisualStyleBackColor = true;
@@ -1275,11 +1356,12 @@
 
         private TabControl tabControMain;
         private TabPage tabPageMain;
-        private ComboBox cbBoxDepartmentList;
+        private ComboBox comboBox4;
         private Label label46;
         private Label label44;
         private Label label45;
         private GroupBox groupBox4;
+        private Button button4;
         private Label label42;
         private Label label43;
         private Label label40;
@@ -1287,6 +1369,9 @@
         private Label label39;
         private Label label37;
         private Label label38;
+        private DateTimePicker dateTimePicker2;
+        private Label label35;
+        private Label label36;
         private Label label33;
         private Label label34;
         private Label label31;
@@ -1294,18 +1379,21 @@
         private Label label29;
         private Label label30;
         private PictureBox pictureBox1;
+        private Label label28;
         private Label label27;
         private Label label26;
         private Label label25;
+        private Label label24;
         private Label label20;
         private GroupBox groupBox3;
         private Label label48;
+        private Button button2;
         private ListBox listBox2;
         private Label label47;
         private ListBox lstBoxFilteredEmployees;
         private Label label19;
         private Label label18;
-        private ComboBox cbBoxRolesList;
+        private ComboBox comboBox3;
         private TabPage tabPageEmployee;
         private DataGridView dtGrVEmployees;
         private GroupBox groupBoxManageDepartments;

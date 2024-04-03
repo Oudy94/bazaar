@@ -970,6 +970,255 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
 
 
         // Shift Management ==================================================
+
+        // Dashboard Management ==================================================
+
+        public List<Employee> GetEmployeeByRoleFromDB(RoleEnum role)
+        {
+            List<Employee> employees = new List<Employee>();
+
+            string query = @"
+                SELECT e.*, d.id as department_id, d.name as department_name
+                FROM employee e
+                LEFT JOIN department_list d ON e.department = d.id
+                WHERE e.role = @Role;
+            ";
+
+            using (SqlCommand cmd = new SqlCommand(query, connection))
+            {
+                cmd.Parameters.AddWithValue("@Role", (int)role + 1);
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Department department = new Department(
+                            reader.GetInt32(reader.GetOrdinal("department_id")),
+                            reader.GetString(reader.GetOrdinal("department_name"))
+                        );
+
+                        employees.Add(new Employee(
+                            reader.GetInt32(reader.GetOrdinal("id")),
+                            reader.GetString(reader.GetOrdinal("name")),
+                            reader.GetString(reader.GetOrdinal("email")),
+                            reader.GetString(reader.GetOrdinal("password")), // Should be hashed
+                            (RoleEnum)reader.GetInt32(reader.GetOrdinal("role")) - 1,
+                            reader.IsDBNull(reader.GetOrdinal("image")) ? null : reader.GetString(reader.GetOrdinal("image")),
+                            reader.IsDBNull(reader.GetOrdinal("address")) ? null : reader.GetString(reader.GetOrdinal("address")),
+                            department,
+                            reader.GetDecimal(reader.GetOrdinal("hourly_wage")),
+                            reader.GetBoolean(reader.GetOrdinal("is_active"))
+                        ));
+                    }
+                }
+            }
+
+            return employees;
+        }
+
+        public List<Employee> GetEmployeeByDepartmentFromDB(Department department)
+        {
+            List<Employee> employees = new List<Employee>();
+
+            string query = @"
+                SELECT e.*, d.id as department_id, d.name as department_name
+                FROM employee e
+                LEFT JOIN department_list d ON e.department = d.id
+                WHERE e.department = @DepartmentId;
+            ";
+
+            using (SqlCommand cmd = new SqlCommand(query, connection))
+            {
+                cmd.Parameters.AddWithValue("@DepartmentId", department.Id);
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Department employeeDepartment = new Department(
+                            reader.GetInt32(reader.GetOrdinal("department_id")),
+                            reader.GetString(reader.GetOrdinal("department_name"))
+                        );
+
+                        employees.Add(new Employee(
+                            reader.GetInt32(reader.GetOrdinal("id")),
+                            reader.GetString(reader.GetOrdinal("name")),
+                            reader.GetString(reader.GetOrdinal("email")),
+                            reader.GetString(reader.GetOrdinal("password")), // Should be hashed
+                            (RoleEnum)reader.GetInt32(reader.GetOrdinal("role")) - 1,
+                            reader.IsDBNull(reader.GetOrdinal("image")) ? null : reader.GetString(reader.GetOrdinal("image")),
+                            reader.IsDBNull(reader.GetOrdinal("address")) ? null : reader.GetString(reader.GetOrdinal("address")),
+                            employeeDepartment,
+                            reader.GetDecimal(reader.GetOrdinal("hourly_wage")),
+                            reader.GetBoolean(reader.GetOrdinal("is_active"))
+                        ));
+                    }
+                }
+            }
+            
+            return employees;
+        }
+
+        public List<Employee> GetEmployeeByRoleAndDepartmentFromDB(RoleEnum role, Department department)
+        {
+            List<Employee> employees = new List<Employee>();
+
+            string query = @"
+                SELECT e.*, d.id as department_id, d.name as department_name
+                FROM employee e
+                LEFT JOIN department_list d ON e.department = d.id
+                WHERE e.role = @Role AND e.department = @DepartmentId;
+            ";
+
+            using (SqlCommand cmd = new SqlCommand(query, connection))
+            {
+                cmd.Parameters.AddWithValue("@Role", (int)role + 1);
+                cmd.Parameters.AddWithValue("@DepartmentId", department.Id);
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Department employeeDepartment = new Department(
+                            reader.GetInt32(reader.GetOrdinal("department_id")),
+                            reader.GetString(reader.GetOrdinal("department_name"))
+                        );
+
+                        employees.Add(new Employee(
+                            reader.GetInt32(reader.GetOrdinal("id")),
+                            reader.GetString(reader.GetOrdinal("name")),
+                            reader.GetString(reader.GetOrdinal("email")),
+                            reader.GetString(reader.GetOrdinal("password")), // Should be hashed
+                            (RoleEnum)reader.GetInt32(reader.GetOrdinal("role")) - 1,
+                            reader.IsDBNull(reader.GetOrdinal("image")) ? null : reader.GetString(reader.GetOrdinal("image")),
+                            reader.IsDBNull(reader.GetOrdinal("address")) ? null : reader.GetString(reader.GetOrdinal("address")),
+                            employeeDepartment,
+                            reader.GetDecimal(reader.GetOrdinal("hourly_wage")),
+                            reader.GetBoolean(reader.GetOrdinal("is_active"))
+                        ));
+                    }
+                }
+            }
+            return employees;
+        }
+
+        public List<Shift> GetEmployeeAllShiftsFromDB30d(int employeeId)
+        {
+            List<Shift> shifts = new List<Shift>();
+
+            string query = @"
+                SELECT s.id, s.date, s.shift_type
+                FROM shift s
+                INNER JOIN shift_employee se ON s.id = se.shift_id
+                WHERE se.employee_id = @EmployeeId
+                AND s.date >= DATEADD(day, -30, GETDATE());
+            ";
+
+            using (SqlCommand cmd = new SqlCommand(query, connection))
+            {
+                cmd.Parameters.AddWithValue("@EmployeeId", employeeId);
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        DateTime dateTime = reader.GetDateTime(reader.GetOrdinal("date"));
+                        DateOnly date = new DateOnly(dateTime.Year, dateTime.Month, dateTime.Day);
+
+                        Shift shift = new Shift
+                        (
+                            reader.GetInt32(reader.GetOrdinal("id")),
+                            date,
+                            (ShiftTypeEnum)reader.GetInt32(reader.GetOrdinal("shift_type")) - 1
+                        );
+
+                        shifts.Add(shift);
+                    }
+                }
+            }
+
+            return shifts;
+        }
+
+        public double GetEmployeeAttendancePercentageFromDB(int employeeId)
+        {
+            double attendancePercentage = 0;
+
+            try
+            {
+                string query = @"
+                    SELECT COUNT(*) AS total_shifts, 
+                           COUNT(se.employee_id) AS attended_shifts
+                    FROM shift s
+                    LEFT JOIN shift_employee se ON s.id = se.shift_id
+                    WHERE se.employee_id = @EmployeeId;
+                ";
+
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@EmployeeId", employeeId);
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            int totalShifts = reader.GetInt32(reader.GetOrdinal("total_shifts"));
+                            int attendedShifts = reader.GetInt32(reader.GetOrdinal("attended_shifts"));
+
+                            if (totalShifts > 0)
+                            {
+                                attendancePercentage = (double)attendedShifts / totalShifts;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return attendancePercentage;
+        }
+
+        // Get GetEmployeeShiftsOnDateFromDB
+        public List<Shift> GetEmployeeShiftsOnDateFromDB(int employeeId, DateOnly date)
+        {
+            List<Shift> shifts = new List<Shift>();
+
+            string query = @"
+                SELECT s.id, s.date, s.shift_type
+                FROM shift s
+                INNER JOIN shift_employee se ON s.id = se.shift_id
+                WHERE se.employee_id = @EmployeeId
+                AND s.date = @Date;
+            ";
+
+            using (SqlCommand cmd = new SqlCommand(query, connection))
+            {
+                cmd.Parameters.AddWithValue("@EmployeeId", employeeId);
+                cmd.Parameters.AddWithValue("@Date", new DateTime(date.Year, date.Month, date.Day));
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        DateTime dateTime = reader.GetDateTime(reader.GetOrdinal("date"));
+                        DateOnly shiftDate = new DateOnly(dateTime.Year, dateTime.Month, dateTime.Day);
+
+                        Shift shift = new Shift
+                        (
+                            reader.GetInt32(reader.GetOrdinal("id")),
+                            shiftDate,
+                            (ShiftTypeEnum)reader.GetInt32(reader.GetOrdinal("shift_type")) - 1
+                        );
+
+                        shifts.Add(shift);
+                    }
+                }
+            }
+
+            return shifts;
+        }
     }
 }
-

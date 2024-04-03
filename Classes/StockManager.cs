@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using TheSandwichMakersHardwareStoreSolution.Enums;
+﻿using TheSandwichMakersHardwareStoreSolution.Enums;
 using TheSandwichMakersHardwareStoreSolution.Helpers;
 
 namespace TheSandwichMakersHardwareStoreSolution.Classes
@@ -24,7 +17,7 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
 
         public List<Item> GetItems()
         {
-            List<Item> items = new List <Item>();
+            List<Item> items = new List<Item>();
 
             try
             {
@@ -88,7 +81,7 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
                 _dbHelper.OpenConnection();
                 _dbHelper.UpdateItemInDB(id, sku, name, quantitywarehouse, quantitystore, category, wholesaleprice, sellprice);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -160,7 +153,7 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
                 _dbHelper.OpenConnection();
                 _dbHelper.UpdateShelfRequest(id, itemId, quantity);
             }
-            catch(Exception ex) 
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }

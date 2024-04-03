@@ -39,6 +39,27 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
             return shifts;
         }
 
+        public List<Shift> GetEmployeeShifts(Employee employee)
+        {
+            List<Shift> shifts = new List<Shift>();
+
+            try
+            {
+                _dbHelper.OpenConnection();
+                shifts = _dbHelper.GetEmployeeAllShiftsFromDB30d(employee.Id);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
+            }
+
+            return shifts;
+        }
+
         public void AssignEmployeeToShift(Employee employee, DateOnly date, ShiftTypeEnum shiftType)
         {
             try
@@ -103,6 +124,50 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
             { 
                 _dbHelper.CloseConnection(); 
             }
+        }
+
+        // Get Employee attendance percentage
+        public double GetEmployeeAttendancePercentage(Employee employee)
+        {
+            double attendancePercentage = 0;
+
+            try
+            {
+                _dbHelper.OpenConnection();
+                attendancePercentage = _dbHelper.GetEmployeeAttendancePercentageFromDB(employee.Id);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
+            }
+
+            return attendancePercentage;
+        }
+
+        // Get GetEmployeeShiftsOnDate
+        public List<Shift> GetEmployeeShiftsOnDate(Employee employee, DateOnly date)
+        {
+            List<Shift> shifts = new List<Shift>();
+
+            try
+            {
+                _dbHelper.OpenConnection();
+                shifts = _dbHelper.GetEmployeeShiftsOnDateFromDB(employee.Id, date);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
+            }
+
+            return shifts;
         }
     }
 }

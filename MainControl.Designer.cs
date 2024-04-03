@@ -30,35 +30,35 @@
         {
             tabControMain = new TabControl();
             tabPageMain = new TabPage();
-            comboBox4 = new ComboBox();
+            cmbDepartmentList = new ComboBox();
             label46 = new Label();
             label44 = new Label();
-            label45 = new Label();
+            lblFilteredCount = new Label();
             groupBox4 = new GroupBox();
             button4 = new Button();
             label42 = new Label();
-            label43 = new Label();
+            lbEmployeeTotal = new Label();
             label40 = new Label();
-            label41 = new Label();
+            lbEmployeeEvening = new Label();
             label39 = new Label();
             label37 = new Label();
-            label38 = new Label();
+            lbEmployeeMorning = new Label();
             dateTimePicker2 = new DateTimePicker();
             label35 = new Label();
-            label36 = new Label();
+            lbEmployeeShiftOnDate = new Label();
             label33 = new Label();
-            label34 = new Label();
+            lbEmployeeDepartment = new Label();
             label31 = new Label();
-            label32 = new Label();
+            lbEmployeeRole = new Label();
             label29 = new Label();
-            label30 = new Label();
-            pictureBox1 = new PictureBox();
+            lbEmployeeEmail = new Label();
+            pbEmployeeImage = new PictureBox();
             label28 = new Label();
             label27 = new Label();
             label26 = new Label();
             label25 = new Label();
-            label24 = new Label();
-            label20 = new Label();
+            lbEmployeeAttendance = new Label();
+            lbEmployeeName = new Label();
             groupBox3 = new GroupBox();
             label48 = new Label();
             button2 = new Button();
@@ -67,7 +67,7 @@
             lstBoxFilteredEmployees = new ListBox();
             label19 = new Label();
             label18 = new Label();
-            comboBox3 = new ComboBox();
+            cmbRoleList = new ComboBox();
             tabPageEmployee = new TabPage();
             label50 = new Label();
             dtGrVEmployees = new DataGridView();
@@ -143,7 +143,7 @@
             tabControMain.SuspendLayout();
             tabPageMain.SuspendLayout();
             groupBox4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pbEmployeeImage).BeginInit();
             groupBox3.SuspendLayout();
             tabPageEmployee.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dtGrVEmployees).BeginInit();
@@ -178,16 +178,16 @@
             // 
             // tabPageMain
             // 
-            tabPageMain.Controls.Add(comboBox4);
+            tabPageMain.Controls.Add(cmbDepartmentList);
             tabPageMain.Controls.Add(label46);
             tabPageMain.Controls.Add(label44);
-            tabPageMain.Controls.Add(label45);
+            tabPageMain.Controls.Add(lblFilteredCount);
             tabPageMain.Controls.Add(groupBox4);
             tabPageMain.Controls.Add(groupBox3);
             tabPageMain.Controls.Add(lstBoxFilteredEmployees);
             tabPageMain.Controls.Add(label19);
             tabPageMain.Controls.Add(label18);
-            tabPageMain.Controls.Add(comboBox3);
+            tabPageMain.Controls.Add(cmbRoleList);
             tabPageMain.Location = new Point(4, 26);
             tabPageMain.Name = "tabPageMain";
             tabPageMain.Size = new Size(952, 517);
@@ -195,13 +195,14 @@
             tabPageMain.Text = "Main";
             tabPageMain.UseVisualStyleBackColor = true;
             // 
-            // comboBox4
+            // cmbDepartmentList
             // 
-            comboBox4.FormattingEnabled = true;
-            comboBox4.Location = new Point(164, 29);
-            comboBox4.Name = "comboBox4";
-            comboBox4.Size = new Size(133, 25);
-            comboBox4.TabIndex = 47;
+            cmbDepartmentList.FormattingEnabled = true;
+            cmbDepartmentList.Location = new Point(164, 29);
+            cmbDepartmentList.Name = "cmbDepartmentList";
+            cmbDepartmentList.Size = new Size(133, 25);
+            cmbDepartmentList.TabIndex = 47;
+            cmbDepartmentList.SelectedIndexChanged += cmbDepartmentList_SelectedIndexChanged;
             // 
             // label46
             // 
@@ -223,42 +224,42 @@
             label44.TabIndex = 45;
             label44.Text = "Employees:";
             // 
-            // label45
+            // lblFilteredCount
             // 
-            label45.AutoSize = true;
-            label45.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label45.Location = new Point(115, 479);
-            label45.Name = "label45";
-            label45.Size = new Size(170, 17);
-            label45.TabIndex = 44;
-            label45.Text = "{EmployeesDisplayedCount}";
+            lblFilteredCount.AutoSize = true;
+            lblFilteredCount.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            lblFilteredCount.Location = new Point(115, 479);
+            lblFilteredCount.Name = "lblFilteredCount";
+            lblFilteredCount.Size = new Size(170, 17);
+            lblFilteredCount.TabIndex = 44;
+            lblFilteredCount.Text = "{EmployeesDisplayedCount}";
             // 
             // groupBox4
             // 
             groupBox4.Controls.Add(button4);
             groupBox4.Controls.Add(label42);
-            groupBox4.Controls.Add(label43);
+            groupBox4.Controls.Add(lbEmployeeTotal);
             groupBox4.Controls.Add(label40);
-            groupBox4.Controls.Add(label41);
+            groupBox4.Controls.Add(lbEmployeeEvening);
             groupBox4.Controls.Add(label39);
             groupBox4.Controls.Add(label37);
-            groupBox4.Controls.Add(label38);
+            groupBox4.Controls.Add(lbEmployeeMorning);
             groupBox4.Controls.Add(dateTimePicker2);
             groupBox4.Controls.Add(label35);
-            groupBox4.Controls.Add(label36);
+            groupBox4.Controls.Add(lbEmployeeShiftOnDate);
             groupBox4.Controls.Add(label33);
-            groupBox4.Controls.Add(label34);
+            groupBox4.Controls.Add(lbEmployeeDepartment);
             groupBox4.Controls.Add(label31);
-            groupBox4.Controls.Add(label32);
+            groupBox4.Controls.Add(lbEmployeeRole);
             groupBox4.Controls.Add(label29);
-            groupBox4.Controls.Add(label30);
-            groupBox4.Controls.Add(pictureBox1);
+            groupBox4.Controls.Add(lbEmployeeEmail);
+            groupBox4.Controls.Add(pbEmployeeImage);
             groupBox4.Controls.Add(label28);
             groupBox4.Controls.Add(label27);
             groupBox4.Controls.Add(label26);
             groupBox4.Controls.Add(label25);
-            groupBox4.Controls.Add(label24);
-            groupBox4.Controls.Add(label20);
+            groupBox4.Controls.Add(lbEmployeeAttendance);
+            groupBox4.Controls.Add(lbEmployeeName);
             groupBox4.Location = new Point(336, 11);
             groupBox4.Name = "groupBox4";
             groupBox4.Size = new Size(601, 337);
@@ -275,6 +276,7 @@
             button4.TabIndex = 47;
             button4.Text = "Manage";
             button4.UseVisualStyleBackColor = true;
+            button4.Click += button4_Click;
             // 
             // label42
             // 
@@ -286,15 +288,15 @@
             label42.TabIndex = 43;
             label42.Text = "Total Shifts";
             // 
-            // label43
+            // lbEmployeeTotal
             // 
-            label43.AutoSize = true;
-            label43.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label43.Location = new Point(17, 301);
-            label43.Name = "label43";
-            label43.Size = new Size(132, 17);
-            label43.TabIndex = 42;
-            label43.Text = "{EmployeeTotalShifts}";
+            lbEmployeeTotal.AutoSize = true;
+            lbEmployeeTotal.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            lbEmployeeTotal.Location = new Point(17, 301);
+            lbEmployeeTotal.Name = "lbEmployeeTotal";
+            lbEmployeeTotal.Size = new Size(132, 17);
+            lbEmployeeTotal.TabIndex = 42;
+            lbEmployeeTotal.Text = "{EmployeeTotalShifts}";
             // 
             // label40
             // 
@@ -306,15 +308,15 @@
             label40.TabIndex = 41;
             label40.Text = "Evening Shifts:";
             // 
-            // label41
+            // lbEmployeeEvening
             // 
-            label41.AutoSize = true;
-            label41.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label41.Location = new Point(185, 301);
-            label41.Name = "label41";
-            label41.Size = new Size(197, 17);
-            label41.TabIndex = 40;
-            label41.Text = "{EmployeeEveningShiftsNumber}";
+            lbEmployeeEvening.AutoSize = true;
+            lbEmployeeEvening.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            lbEmployeeEvening.Location = new Point(185, 301);
+            lbEmployeeEvening.Name = "lbEmployeeEvening";
+            lbEmployeeEvening.Size = new Size(197, 17);
+            lbEmployeeEvening.TabIndex = 40;
+            lbEmployeeEvening.Text = "{EmployeeEveningShiftsNumber}";
             // 
             // label39
             // 
@@ -336,15 +338,15 @@
             label37.TabIndex = 38;
             label37.Text = "Morning Shifts:";
             // 
-            // label38
+            // lbEmployeeMorning
             // 
-            label38.AutoSize = true;
-            label38.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label38.Location = new Point(185, 250);
-            label38.Name = "label38";
-            label38.Size = new Size(202, 17);
-            label38.TabIndex = 37;
-            label38.Text = "{EmployeeMorningShiftsNumber}";
+            lbEmployeeMorning.AutoSize = true;
+            lbEmployeeMorning.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            lbEmployeeMorning.Location = new Point(185, 250);
+            lbEmployeeMorning.Name = "lbEmployeeMorning";
+            lbEmployeeMorning.Size = new Size(202, 17);
+            lbEmployeeMorning.TabIndex = 37;
+            lbEmployeeMorning.Text = "{EmployeeMorningShiftsNumber}";
             // 
             // dateTimePicker2
             // 
@@ -352,6 +354,7 @@
             dateTimePicker2.Name = "dateTimePicker2";
             dateTimePicker2.Size = new Size(200, 25);
             dateTimePicker2.TabIndex = 36;
+            dateTimePicker2.ValueChanged += dateTimePicker2_ValueChanged;
             // 
             // label35
             // 
@@ -363,15 +366,15 @@
             label35.TabIndex = 35;
             label35.Text = "Shift:";
             // 
-            // label36
+            // lbEmployeeShiftOnDate
             // 
-            label36.AutoSize = true;
-            label36.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label36.Location = new Point(17, 163);
-            label36.Name = "label36";
-            label36.Size = new Size(193, 17);
-            label36.TabIndex = 34;
-            label36.Text = "{EmployeeShiftForSelectedDate}";
+            lbEmployeeShiftOnDate.AutoSize = true;
+            lbEmployeeShiftOnDate.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            lbEmployeeShiftOnDate.Location = new Point(17, 163);
+            lbEmployeeShiftOnDate.Name = "lbEmployeeShiftOnDate";
+            lbEmployeeShiftOnDate.Size = new Size(193, 17);
+            lbEmployeeShiftOnDate.TabIndex = 34;
+            lbEmployeeShiftOnDate.Text = "{EmployeeShiftForSelectedDate}";
             // 
             // label33
             // 
@@ -383,15 +386,15 @@
             label33.TabIndex = 33;
             label33.Text = "Department:";
             // 
-            // label34
+            // lbEmployeeDepartment
             // 
-            label34.AutoSize = true;
-            label34.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label34.Location = new Point(185, 104);
-            label34.Name = "label34";
-            label34.Size = new Size(142, 17);
-            label34.TabIndex = 32;
-            label34.Text = "{EmployeeDepartment}";
+            lbEmployeeDepartment.AutoSize = true;
+            lbEmployeeDepartment.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            lbEmployeeDepartment.Location = new Point(185, 104);
+            lbEmployeeDepartment.Name = "lbEmployeeDepartment";
+            lbEmployeeDepartment.Size = new Size(142, 17);
+            lbEmployeeDepartment.TabIndex = 32;
+            lbEmployeeDepartment.Text = "{EmployeeDepartment}";
             // 
             // label31
             // 
@@ -403,15 +406,15 @@
             label31.TabIndex = 31;
             label31.Text = "Role:";
             // 
-            // label32
+            // lbEmployeeRole
             // 
-            label32.AutoSize = true;
-            label32.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label32.Location = new Point(17, 104);
-            label32.Name = "label32";
-            label32.Size = new Size(99, 17);
-            label32.TabIndex = 30;
-            label32.Text = "{EmployeeRole}";
+            lbEmployeeRole.AutoSize = true;
+            lbEmployeeRole.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            lbEmployeeRole.Location = new Point(17, 104);
+            lbEmployeeRole.Name = "lbEmployeeRole";
+            lbEmployeeRole.Size = new Size(99, 17);
+            lbEmployeeRole.TabIndex = 30;
+            lbEmployeeRole.Text = "{EmployeeRole}";
             // 
             // label29
             // 
@@ -423,23 +426,23 @@
             label29.TabIndex = 29;
             label29.Text = "Email:";
             // 
-            // label30
+            // lbEmployeeEmail
             // 
-            label30.AutoSize = true;
-            label30.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label30.Location = new Point(185, 50);
-            label30.Name = "label30";
-            label30.Size = new Size(104, 17);
-            label30.TabIndex = 28;
-            label30.Text = "{EmployeeEmail}";
+            lbEmployeeEmail.AutoSize = true;
+            lbEmployeeEmail.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            lbEmployeeEmail.Location = new Point(185, 50);
+            lbEmployeeEmail.Name = "lbEmployeeEmail";
+            lbEmployeeEmail.Size = new Size(104, 17);
+            lbEmployeeEmail.TabIndex = 28;
+            lbEmployeeEmail.Text = "{EmployeeEmail}";
             // 
-            // pictureBox1
+            // pbEmployeeImage
             // 
-            pictureBox1.Location = new Point(387, 53);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(187, 162);
-            pictureBox1.TabIndex = 27;
-            pictureBox1.TabStop = false;
+            pbEmployeeImage.Location = new Point(387, 53);
+            pbEmployeeImage.Name = "pbEmployeeImage";
+            pbEmployeeImage.Size = new Size(187, 162);
+            pbEmployeeImage.TabIndex = 27;
+            pbEmployeeImage.TabStop = false;
             // 
             // label28
             // 
@@ -480,25 +483,25 @@
             label25.TabIndex = 23;
             label25.Text = "Name:";
             // 
-            // label24
+            // lbEmployeeAttendance
             // 
-            label24.AutoSize = true;
-            label24.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label24.Location = new Point(17, 250);
-            label24.Name = "label24";
-            label24.Size = new Size(138, 17);
-            label24.TabIndex = 22;
-            label24.Text = "{EmployeeAttendance}";
+            lbEmployeeAttendance.AutoSize = true;
+            lbEmployeeAttendance.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            lbEmployeeAttendance.Location = new Point(17, 250);
+            lbEmployeeAttendance.Name = "lbEmployeeAttendance";
+            lbEmployeeAttendance.Size = new Size(138, 17);
+            lbEmployeeAttendance.TabIndex = 22;
+            lbEmployeeAttendance.Text = "{EmployeeAttendance}";
             // 
-            // label20
+            // lbEmployeeName
             // 
-            label20.AutoSize = true;
-            label20.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label20.Location = new Point(17, 50);
-            label20.Name = "label20";
-            label20.Size = new Size(108, 17);
-            label20.TabIndex = 21;
-            label20.Text = "{EmployeeName}";
+            lbEmployeeName.AutoSize = true;
+            lbEmployeeName.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            lbEmployeeName.Location = new Point(17, 50);
+            lbEmployeeName.Name = "lbEmployeeName";
+            lbEmployeeName.Size = new Size(108, 17);
+            lbEmployeeName.TabIndex = 21;
+            lbEmployeeName.Text = "{EmployeeName}";
             // 
             // groupBox3
             // 
@@ -532,6 +535,7 @@
             button2.TabIndex = 46;
             button2.Text = "Manage";
             button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
             // 
             // listBox2
             // 
@@ -539,7 +543,7 @@
             listBox2.ItemHeight = 17;
             listBox2.Location = new Point(7, 43);
             listBox2.Name = "listBox2";
-            listBox2.Size = new Size(290, 89);
+            listBox2.Size = new Size(290, 72);
             listBox2.TabIndex = 45;
             // 
             // label47
@@ -558,8 +562,9 @@
             lstBoxFilteredEmployees.ItemHeight = 17;
             lstBoxFilteredEmployees.Location = new Point(12, 58);
             lstBoxFilteredEmployees.Name = "lstBoxFilteredEmployees";
-            lstBoxFilteredEmployees.Size = new Size(285, 395);
+            lstBoxFilteredEmployees.Size = new Size(285, 361);
             lstBoxFilteredEmployees.TabIndex = 4;
+            lstBoxFilteredEmployees.SelectedIndexChanged += lstBoxFilteredEmployees_SelectedIndexChanged;
             // 
             // label19
             // 
@@ -579,13 +584,14 @@
             label18.TabIndex = 2;
             label18.Text = "Role";
             // 
-            // comboBox3
+            // cmbRoleList
             // 
-            comboBox3.FormattingEnabled = true;
-            comboBox3.Location = new Point(12, 29);
-            comboBox3.Name = "comboBox3";
-            comboBox3.Size = new Size(133, 25);
-            comboBox3.TabIndex = 0;
+            cmbRoleList.FormattingEnabled = true;
+            cmbRoleList.Location = new Point(12, 29);
+            cmbRoleList.Name = "cmbRoleList";
+            cmbRoleList.Size = new Size(133, 25);
+            cmbRoleList.TabIndex = 0;
+            cmbRoleList.SelectedIndexChanged += cmbRoleList_SelectedIndexChanged;
             // 
             // tabPageEmployee
             // 
@@ -594,9 +600,9 @@
             tabPageEmployee.Controls.Add(groupBoxManageDepartments);
             tabPageEmployee.Controls.Add(listBoxDepartments);
             tabPageEmployee.Controls.Add(groupBoxManageEmployees);
-            tabPageEmployee.Location = new Point(4, 26);
+            tabPageEmployee.Location = new Point(4, 24);
             tabPageEmployee.Name = "tabPageEmployee";
-            tabPageEmployee.Size = new Size(952, 517);
+            tabPageEmployee.Size = new Size(952, 519);
             tabPageEmployee.TabIndex = 1;
             tabPageEmployee.Text = "Employee & Departments";
             tabPageEmployee.UseVisualStyleBackColor = true;
@@ -620,6 +626,7 @@
             dtGrVEmployees.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dtGrVEmployees.Location = new Point(182, 25);
             dtGrVEmployees.Name = "dtGrVEmployees";
+            dtGrVEmployees.RowHeadersWidth = 62;
             dtGrVEmployees.RowTemplate.Height = 25;
             dtGrVEmployees.Size = new Size(520, 468);
             dtGrVEmployees.TabIndex = 2;
@@ -691,7 +698,7 @@
             listBoxDepartments.ItemHeight = 17;
             listBoxDepartments.Location = new Point(708, 266);
             listBoxDepartments.Name = "listBoxDepartments";
-            listBoxDepartments.Size = new Size(224, 225);
+            listBoxDepartments.Size = new Size(224, 191);
             listBoxDepartments.TabIndex = 1;
             listBoxDepartments.SelectedIndexChanged += listBoxDepartments_SelectedIndexChanged;
             // 
@@ -891,9 +898,9 @@
             tabPageStock.Controls.Add(groupBox2);
             tabPageStock.Controls.Add(dataGridView1);
             tabPageStock.Controls.Add(groupBox1);
-            tabPageStock.Location = new Point(4, 26);
+            tabPageStock.Location = new Point(4, 24);
             tabPageStock.Name = "tabPageStock";
-            tabPageStock.Size = new Size(952, 517);
+            tabPageStock.Size = new Size(952, 519);
             tabPageStock.TabIndex = 2;
             tabPageStock.Text = "Stock";
             tabPageStock.UseVisualStyleBackColor = true;
@@ -920,6 +927,7 @@
             dataGridView2.Location = new Point(6, 204);
             dataGridView2.Name = "dataGridView2";
             dataGridView2.ReadOnly = true;
+            dataGridView2.RowHeadersWidth = 62;
             dataGridView2.RowTemplate.Height = 25;
             dataGridView2.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView2.Size = new Size(174, 284);
@@ -987,6 +995,7 @@
             dataGridView1.MultiSelect = false;
             dataGridView1.Name = "dataGridView1";
             dataGridView1.ReadOnly = true;
+            dataGridView1.RowHeadersWidth = 62;
             dataGridView1.RowTemplate.Height = 25;
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView1.Size = new Size(520, 494);
@@ -1290,7 +1299,7 @@
             lstBoxEveningShiftEmployees.ItemHeight = 17;
             lstBoxEveningShiftEmployees.Location = new Point(741, 29);
             lstBoxEveningShiftEmployees.Name = "lstBoxEveningShiftEmployees";
-            lstBoxEveningShiftEmployees.Size = new Size(190, 395);
+            lstBoxEveningShiftEmployees.Size = new Size(190, 361);
             lstBoxEveningShiftEmployees.TabIndex = 2;
             // 
             // lstBoxNoShiftEmployees
@@ -1299,7 +1308,7 @@
             lstBoxNoShiftEmployees.ItemHeight = 17;
             lstBoxNoShiftEmployees.Location = new Point(12, 29);
             lstBoxNoShiftEmployees.Name = "lstBoxNoShiftEmployees";
-            lstBoxNoShiftEmployees.Size = new Size(224, 395);
+            lstBoxNoShiftEmployees.Size = new Size(224, 361);
             lstBoxNoShiftEmployees.TabIndex = 1;
             // 
             // lstBoxMorningShiftEmployees
@@ -1308,7 +1317,7 @@
             lstBoxMorningShiftEmployees.ItemHeight = 17;
             lstBoxMorningShiftEmployees.Location = new Point(536, 29);
             lstBoxMorningShiftEmployees.Name = "lstBoxMorningShiftEmployees";
-            lstBoxMorningShiftEmployees.Size = new Size(189, 395);
+            lstBoxMorningShiftEmployees.Size = new Size(189, 361);
             lstBoxMorningShiftEmployees.TabIndex = 0;
             // 
             // MainControl
@@ -1324,7 +1333,7 @@
             tabPageMain.PerformLayout();
             groupBox4.ResumeLayout(false);
             groupBox4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pbEmployeeImage).EndInit();
             groupBox3.ResumeLayout(false);
             groupBox3.PerformLayout();
             tabPageEmployee.ResumeLayout(false);
@@ -1356,35 +1365,35 @@
 
         private TabControl tabControMain;
         private TabPage tabPageMain;
-        private ComboBox comboBox4;
+        private ComboBox cmbDepartmentList;
         private Label label46;
         private Label label44;
-        private Label label45;
+        private Label lblFilteredCount;
         private GroupBox groupBox4;
         private Button button4;
         private Label label42;
-        private Label label43;
+        private Label lbEmployeeTotal;
         private Label label40;
-        private Label label41;
+        private Label lbEmployeeEvening;
         private Label label39;
         private Label label37;
-        private Label label38;
+        private Label lbEmployeeMorning;
         private DateTimePicker dateTimePicker2;
         private Label label35;
-        private Label label36;
+        private Label lbEmployeeShiftOnDate;
         private Label label33;
-        private Label label34;
+        private Label lbEmployeeDepartment;
         private Label label31;
-        private Label label32;
+        private Label lbEmployeeRole;
         private Label label29;
-        private Label label30;
-        private PictureBox pictureBox1;
+        private Label lbEmployeeEmail;
+        private PictureBox pbEmployeeImage;
         private Label label28;
         private Label label27;
         private Label label26;
         private Label label25;
-        private Label label24;
-        private Label label20;
+        private Label lbEmployeeAttendance;
+        private Label lbEmployeeName;
         private GroupBox groupBox3;
         private Label label48;
         private Button button2;
@@ -1393,7 +1402,7 @@
         private ListBox lstBoxFilteredEmployees;
         private Label label19;
         private Label label18;
-        private ComboBox comboBox3;
+        private ComboBox cmbRoleList;
         private TabPage tabPageEmployee;
         private DataGridView dtGrVEmployees;
         private GroupBox groupBoxManageDepartments;

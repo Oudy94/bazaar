@@ -57,14 +57,14 @@ namespace TheSandwichMakersHardwareStoreSolution
 
         private void tabControMain_SelectedIndexChanged(object sender, EventArgs e)
         {
-        //    if(tabControMain.SelectedTab == tabPageShifts)
-        //    {
+            //    if(tabControMain.SelectedTab == tabPageShifts)
+            //    {
 
-        //    }
-        //    else if (tabControMain.SelectedTab == tabPageStock)
-        //    {
+            //    }
+            //    else if (tabControMain.SelectedTab == tabPageStock)
+            //    {
 
-        //    }
+            //    }
         }
 
         private void InitializeUiElements()
@@ -73,6 +73,16 @@ namespace TheSandwichMakersHardwareStoreSolution
             RefreshShiftUI();
             RefreshProductInfoDisplay();
             RefreshShelfRequestDisplay();
+
+            // Add roles to cmbRoleList
+            cmbRoleList.DataSource = Enum.GetValues(typeof(RoleEnum));
+            cmbRoleList.SelectedIndex = -1;
+
+            // Add departments to cmbDepartmentList
+            cmbDepartmentList.DataSource = DepartmentManager.GetDepartments();
+            cmbDepartmentList.DisplayMember = "Name";
+            cmbDepartmentList.ValueMember = "Id";
+            cmbDepartmentList.SelectedIndex = -1;
 
             // Bind roles to the ComboBox
             cmbBoxEmployeeRole.DataSource = Enum.GetValues(typeof(RoleEnum));
@@ -87,6 +97,210 @@ namespace TheSandwichMakersHardwareStoreSolution
             listBoxDepartments.DisplayMember = "Name";
             listBoxDepartments.ValueMember = "Id";
             listBoxDepartments.SelectedIndex = -1;
+        }
+
+        private void ClearAllLabels()
+        {
+            lbEmployeeName.Text = string.Empty;
+            lbEmployeeEmail.Text = string.Empty;
+            lbEmployeeRole.Text = string.Empty;
+            lbEmployeeDepartment.Text = string.Empty;
+
+            pbEmployeeImage.ImageLocation = string.Empty;
+
+            lbEmployeeAttendance.Text = string.Empty;
+            lbEmployeeMorning.Text = string.Empty;
+            lbEmployeeEvening.Text = string.Empty;
+            lbEmployeeTotal.Text = string.Empty;
+        }
+
+        private void cmbRoleList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmbDepartmentList.SelectedItem is Department department)
+            {
+                // Filter employees by role and department and display them in the lstBoxFilteredEmployees
+                if (cmbRoleList.SelectedItem is RoleEnum role)
+                {
+                    lstBoxFilteredEmployees.Items.Clear();
+                    foreach (Employee employee in EmployeeManager.GetEmployeesByRoleAndDepartment(role, department))
+                    {
+                        lstBoxFilteredEmployees.Items.Add(employee);
+                    }
+                    lblFilteredCount.Text = lstBoxFilteredEmployees.Items.Count.ToString();
+                }
+                else
+                {
+                    // Filter employees by role and display them in the lstBoxFilteredEmployees
+                    lstBoxFilteredEmployees.Items.Clear();
+                    foreach (Employee employee in EmployeeManager.GetEmployeesByDepartment(department))
+                    {
+                        lstBoxFilteredEmployees.Items.Add(employee);
+                    }
+                    lblFilteredCount.Text = lstBoxFilteredEmployees.Items.Count.ToString();
+                }
+            }
+            else
+            {
+                // Filter employees by role and display them in the lstBoxFilteredEmployees
+                if (cmbRoleList.SelectedItem is RoleEnum role)
+                {
+                    lstBoxFilteredEmployees.Items.Clear();
+                    foreach (Employee employee in EmployeeManager.GetEmployeesByRole(role))
+                    {
+                        lstBoxFilteredEmployees.Items.Add(employee);
+                    }
+                    lblFilteredCount.Text = lstBoxFilteredEmployees.Items.Count.ToString();
+                }
+                else
+                {
+                    // Display all if none is selected
+                    lstBoxFilteredEmployees.Items.Clear();
+                    foreach (Employee employee in EmployeeManager.GetEmployees())
+                    {
+                        lstBoxFilteredEmployees.Items.Add(employee);
+                    }
+                    lblFilteredCount.Text = lstBoxFilteredEmployees.Items.Count.ToString();
+                }
+            }
+        }
+
+        private void cmbDepartmentList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Check if a Role is selected
+            if (cmbRoleList.SelectedItem is RoleEnum role)
+            {
+                // Filter employees by role and department and display them in the lstBoxFilteredEmployees
+                if (cmbDepartmentList.SelectedItem is Department department)
+                {
+                    lstBoxFilteredEmployees.Items.Clear();
+                    foreach (Employee employee in EmployeeManager.GetEmployeesByRoleAndDepartment(role, department))
+                    {
+                        lstBoxFilteredEmployees.Items.Add(employee);
+                    }
+                }
+                else
+                {
+                    // Filter employees by department and display them in the lstBoxFilteredEmployees
+                    lstBoxFilteredEmployees.Items.Clear();
+                    foreach (Employee employee in EmployeeManager.GetEmployeesByRole(role))
+                    {
+                        lstBoxFilteredEmployees.Items.Add(employee);
+                    }
+                }
+            }
+            else
+            {
+                if (cmbDepartmentList.SelectedItem is Department department)
+                {
+                    lstBoxFilteredEmployees.Items.Clear();
+                    foreach (Employee employee in EmployeeManager.GetEmployeesByDepartment(department))
+                    {
+                        lstBoxFilteredEmployees.Items.Add(employee);
+                    }
+                }
+                else
+                {
+                    // Display all if none is selected
+                    lstBoxFilteredEmployees.Items.Clear();
+                    foreach (Employee employee in EmployeeManager.GetEmployees())
+                    {
+                        lstBoxFilteredEmployees.Items.Add(employee);
+                    }
+                }
+            }
+        }
+
+        // Once employee selected, display the details
+        private void lstBoxFilteredEmployees_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lstBoxFilteredEmployees.SelectedItem is Employee employee)
+            {
+                ClearAllLabels();
+
+                lbEmployeeName.Text = employee.Name;
+                lbEmployeeEmail.Text = employee.Email;
+                lbEmployeeRole.Text = employee.Role.ToString();
+                lbEmployeeDepartment.Text = employee.Department.Name;
+                pbEmployeeImage.ImageLocation = employee.Image;
+
+                // Get employee shifts info past 30 days
+                List<Shift> shifts = ShiftManager.GetEmployeeShifts(employee);
+
+                // Display shifts info in labels
+
+                // Display employee attendence % past 30 days
+                lbEmployeeAttendance.Text = ShiftManager.GetEmployeeAttendancePercentage(employee).ToString("P");
+
+                // All the other shift info
+                lbEmployeeMorning.Text = shifts.Count(s => s.ShiftType == ShiftTypeEnum.Morning).ToString();
+                lbEmployeeEvening.Text = shifts.Count(s => s.ShiftType == ShiftTypeEnum.Evening).ToString();
+                lbEmployeeTotal.Text = shifts.Count.ToString();
+            }
+        }
+
+        // Show employee shift of selected date
+        private void dateTimePicker2_ValueChanged(object sender, EventArgs e)
+        {
+            // Check if employee has a shift on selected date
+            if (lstBoxFilteredEmployees.SelectedItem is Employee employee)
+            {
+                DateOnly date = new DateOnly(dateTimePicker2.Value.Year, dateTimePicker2.Value.Month, dateTimePicker2.Value.Day);
+                List<Shift> shifts = ShiftManager.GetEmployeeShiftsOnDate(employee, date);
+
+                // Display shift info on label (Morning | Evening | None)
+                if (shifts.Count > 0)
+                {
+                    if (shifts.Any(s => s.ShiftType == ShiftTypeEnum.Morning))
+                    {
+                        lbEmployeeShiftOnDate.Text = "Morning Shift";
+                    }
+                    else if (shifts.Any(s => s.ShiftType == ShiftTypeEnum.Evening))
+                    {
+                        lbEmployeeShiftOnDate.Text = "Evening Shift";
+                    }
+                    else
+                    {
+                        lbEmployeeShiftOnDate.Text = "No Shift";
+                    }
+                }
+                else
+                {
+                    lbEmployeeShiftOnDate.Text = "No Shift";
+                }
+            }
+        }
+
+        // On Manage click in Employee Info
+        private void button4_Click(object sender, EventArgs e)
+        {
+            // Get selected Employee from lstBoxFilteredEmployees
+            if (lstBoxFilteredEmployees.SelectedItem is Employee employee)
+            {
+                tabControMain.SelectedTab = tabPageEmployee;
+                txtBoxEmployeeName.Text = employee.Name;
+                txtBoxEmployeeEmail.Text = employee.Email;
+                txtBoxEmployeePswd.Text = employee.Password;
+                txtBoxEmployeeAddress.Text = employee.Address;
+                _currentImageUrl = employee.Image;
+                lblImage.Text = $"Image uploaded! URL: {_currentImageUrl}";
+                listBoxDepartments.SelectedIndex = listBoxDepartments.Items.OfType<Department>().ToList().FindIndex(d => d.Id == employee.Department.Id);
+                cmbBoxEmployeeRole.SelectedItem = employee.Role;
+                txtBoxEmployeeHourlyWage.Text = employee.HourlyWage.ToString();
+                cmbBoxEmployeeIsActive.SelectedItem = employee.IsActive;
+            }
+            tabControMain.SelectedTab = tabPageEmployee;
+        }
+
+        // On Manage click in Shelf requests
+        private void button2_Click(object sender, EventArgs e)
+        {
+            // Get selected shelf request
+            if (listBox2.SelectedItem is ShelfRequest request)
+            {
+                tabControMain.SelectedTab = tabPageStock;
+                numericQuantityShelfRequest.Value = request.Quantity;
+            }
+
         }
 
         // Attaching Image For User
@@ -596,7 +810,7 @@ namespace TheSandwichMakersHardwareStoreSolution
             {
                 StockManager.FulFillShelfRequest(id);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
@@ -609,6 +823,11 @@ namespace TheSandwichMakersHardwareStoreSolution
         {
             dataGridView2.DataSource = null;
             dataGridView2.DataSource = StockManager.GetShelfRequests();
+            listBox2.Items.Clear();
+            foreach (ShelfRequest request in StockManager.GetShelfRequests())
+            {
+                listBox2.Items.Add(request);
+            }
         }
 
         private int GetIdSelectedRowShelfRequest()

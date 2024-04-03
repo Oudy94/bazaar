@@ -240,5 +240,71 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
 
             return employees;
         }
+
+        public List<Employee> GetEmployeesByRole(RoleEnum role)
+        {
+            List<Employee> employees = new List<Employee>();
+
+            try
+            {
+                _dbHelper.OpenConnection();
+                employees = _dbHelper.GetEmployeeByRoleFromDB(role);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
+            }
+
+            return employees;
+        }
+
+        public List<Employee> GetEmployeesByDepartment(Department department)
+        {
+            List<Employee> employees = new List<Employee>();
+
+            try
+            {
+                _dbHelper.OpenConnection();
+                employees = _dbHelper.GetEmployeeByDepartmentFromDB(department);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
+            }
+
+            return employees;
+        }
+
+        public List<Employee> GetEmployeesByRoleAndDepartment(RoleEnum role, Department department)
+        {
+            List<Employee> employees = new List<Employee>();
+
+            try
+            {
+                _dbHelper.OpenConnection();
+                employees = _dbHelper.GetEmployeeByRoleAndDepartmentFromDB(role, department);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
+            }
+
+            return employees;
+        }
     }
 }

@@ -114,100 +114,62 @@ namespace TheSandwichMakersHardwareStoreSolution
             lbEmployeeTotal.Text = string.Empty;
         }
 
-        private void cmbRoleList_SelectedIndexChanged(object sender, EventArgs e)
+        private void btnRoleClearFilter_Click(object sender, EventArgs e)
         {
-            if (cmbDepartmentList.SelectedItem is Department department)
+            cmbRoleList.SelectedIndex = -1;
+        }
+
+        private void btnClearDepartmentFilter_Click(object sender, EventArgs e)
+        {
+            cmbDepartmentList.SelectedIndex = -1;
+        }
+
+        private void FilterEmployees()
+        {
+            Department selectedDepartment = cmbDepartmentList.SelectedItem as Department;
+            RoleEnum? selectedRole = cmbRoleList.SelectedItem as RoleEnum?;
+
+            IEnumerable<Employee> filteredEmployees;
+
+            if (selectedDepartment != null && selectedRole.HasValue)
             {
-                // Filter employees by role and department and display them in the lstBoxFilteredEmployees
-                if (cmbRoleList.SelectedItem is RoleEnum role)
-                {
-                    lstBoxFilteredEmployees.Items.Clear();
-                    foreach (Employee employee in EmployeeManager.GetEmployeesByRoleAndDepartment(role, department))
-                    {
-                        lstBoxFilteredEmployees.Items.Add(employee);
-                    }
-                    lblFilteredCount.Text = lstBoxFilteredEmployees.Items.Count.ToString();
-                }
-                else
-                {
-                    // Filter employees by role and display them in the lstBoxFilteredEmployees
-                    lstBoxFilteredEmployees.Items.Clear();
-                    foreach (Employee employee in EmployeeManager.GetEmployeesByDepartment(department))
-                    {
-                        lstBoxFilteredEmployees.Items.Add(employee);
-                    }
-                    lblFilteredCount.Text = lstBoxFilteredEmployees.Items.Count.ToString();
-                }
+                filteredEmployees = EmployeeManager.GetEmployeesByRoleAndDepartment(selectedRole.Value, selectedDepartment);
+            }
+            else if (selectedDepartment != null)
+            {
+                filteredEmployees = EmployeeManager.GetEmployeesByDepartment(selectedDepartment);
+            }
+            else if (selectedRole.HasValue)
+            {
+                filteredEmployees = EmployeeManager.GetEmployeesByRole(selectedRole.Value);
             }
             else
             {
-                // Filter employees by role and display them in the lstBoxFilteredEmployees
-                if (cmbRoleList.SelectedItem is RoleEnum role)
-                {
-                    lstBoxFilteredEmployees.Items.Clear();
-                    foreach (Employee employee in EmployeeManager.GetEmployeesByRole(role))
-                    {
-                        lstBoxFilteredEmployees.Items.Add(employee);
-                    }
-                    lblFilteredCount.Text = lstBoxFilteredEmployees.Items.Count.ToString();
-                }
-                else
-                {
-                    // Display all if none is selected
-                    lstBoxFilteredEmployees.Items.Clear();
-                    foreach (Employee employee in EmployeeManager.GetEmployees())
-                    {
-                        lstBoxFilteredEmployees.Items.Add(employee);
-                    }
-                    lblFilteredCount.Text = lstBoxFilteredEmployees.Items.Count.ToString();
-                }
+                filteredEmployees = EmployeeManager.GetEmployees();
             }
+
+            UpdateFilteredEmployees(filteredEmployees);
+        }
+
+        private void UpdateFilteredEmployees(IEnumerable<Employee> employees)
+        {
+            lstBoxFilteredEmployees.Items.Clear();
+            foreach (Employee employee in employees)
+            {
+                lstBoxFilteredEmployees.Items.Add(employee);
+            }
+
+            lblFilteredCount.Text = lstBoxFilteredEmployees.Items.Count.ToString();
+        }
+
+        private void cmbRoleList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            FilterEmployees();
         }
 
         private void cmbDepartmentList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Check if a Role is selected
-            if (cmbRoleList.SelectedItem is RoleEnum role)
-            {
-                // Filter employees by role and department and display them in the lstBoxFilteredEmployees
-                if (cmbDepartmentList.SelectedItem is Department department)
-                {
-                    lstBoxFilteredEmployees.Items.Clear();
-                    foreach (Employee employee in EmployeeManager.GetEmployeesByRoleAndDepartment(role, department))
-                    {
-                        lstBoxFilteredEmployees.Items.Add(employee);
-                    }
-                }
-                else
-                {
-                    // Filter employees by department and display them in the lstBoxFilteredEmployees
-                    lstBoxFilteredEmployees.Items.Clear();
-                    foreach (Employee employee in EmployeeManager.GetEmployeesByRole(role))
-                    {
-                        lstBoxFilteredEmployees.Items.Add(employee);
-                    }
-                }
-            }
-            else
-            {
-                if (cmbDepartmentList.SelectedItem is Department department)
-                {
-                    lstBoxFilteredEmployees.Items.Clear();
-                    foreach (Employee employee in EmployeeManager.GetEmployeesByDepartment(department))
-                    {
-                        lstBoxFilteredEmployees.Items.Add(employee);
-                    }
-                }
-                else
-                {
-                    // Display all if none is selected
-                    lstBoxFilteredEmployees.Items.Clear();
-                    foreach (Employee employee in EmployeeManager.GetEmployees())
-                    {
-                        lstBoxFilteredEmployees.Items.Add(employee);
-                    }
-                }
-            }
+            FilterEmployees();
         }
 
         // Once employee selected, display the details
@@ -221,6 +183,9 @@ namespace TheSandwichMakersHardwareStoreSolution
                 lbEmployeeEmail.Text = employee.Email;
                 lbEmployeeRole.Text = employee.Role.ToString();
                 lbEmployeeDepartment.Text = employee.Department.Name;
+
+                // Make sure image fits the picture box
+                pbEmployeeImage.SizeMode = PictureBoxSizeMode.StretchImage;
                 pbEmployeeImage.ImageLocation = employee.Image;
 
                 // Get employee shifts info past 30 days

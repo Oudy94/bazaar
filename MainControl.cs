@@ -264,6 +264,21 @@ namespace TheSandwichMakersHardwareStoreSolution
             {
                 tabControMain.SelectedTab = tabPageStock;
                 numericQuantityShelfRequest.Value = request.Quantity;
+
+                foreach(DataGridViewRow row in dataGridView2.Rows)
+                {
+                    row.Selected = false;
+                }
+
+                // Select the row which has the same item id as the selected shelf request
+                foreach (DataGridViewRow row in dataGridView2.Rows)
+                {
+                    if (Convert.ToInt32(row.Cells["Id"].Value) == request.Id)
+                    {
+                        row.Selected = true;
+                        break;
+                    }
+                }
             }
 
         }
@@ -788,11 +803,11 @@ namespace TheSandwichMakersHardwareStoreSolution
         {
             dataGridView2.DataSource = null;
             dataGridView2.DataSource = StockManager.GetShelfRequests();
-            listBox2.Items.Clear();
-            foreach (ShelfRequest request in StockManager.GetShelfRequests())
-            {
-                listBox2.Items.Add(request);
-            }
+            listBox2.DataSource = null;
+
+            listBox2.DataSource = StockManager.GetShelfRequests();
+            listBox2.ValueMember = "quantity";
+            listBox2.DisplayMember = "quantity";
         }
 
         private int GetIdSelectedRowShelfRequest()

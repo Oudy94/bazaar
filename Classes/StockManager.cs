@@ -57,12 +57,12 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
             return shelfRequests;
         }
 
-        public void AddNewItem(int sku, string name, int quantitywarehouse, int quantitystore, CategoryEnum category, double wholesaleprice, double sellprice)
+        public void AddNewItem(int sku, string name, int quantitywarehouse, int quantitystore, CategoryEnum category, double wholesaleprice, double sellprice, DateTime experationdate)
         {
             try
             {
                 _dbHelper.OpenConnection();
-                _dbHelper.AddItemToDB(sku, name, quantitywarehouse, quantitystore, category, wholesaleprice, sellprice);
+                _dbHelper.AddItemToDB(sku, name, quantitywarehouse, quantitystore, category, wholesaleprice, sellprice, experationdate);
             }
             catch (Exception ex)
             {
@@ -74,12 +74,12 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
             }
         }
 
-        public void EditItem(int id, int sku, string name, int quantitywarehouse, int quantitystore, CategoryEnum category, double wholesaleprice, double sellprice)
+        public void EditItem(int id, int sku, string name, int quantitywarehouse, int quantitystore, CategoryEnum category, double wholesaleprice, double sellprice, DateTime experationdate)
         {
             try
             {
                 _dbHelper.OpenConnection();
-                _dbHelper.UpdateItemInDB(id, sku, name, quantitywarehouse, quantitystore, category, wholesaleprice, sellprice);
+                _dbHelper.UpdateItemInDB(id, sku, name, quantitywarehouse, quantitystore, category, wholesaleprice, sellprice, experationdate);
             }
             catch (Exception ex)
             {

@@ -17,8 +17,9 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
         public CategoryEnum Category { get; set; }
         public double WholesalePrice { get; set; }
         public double SellPrice { get; set; }
+        public DateTime Experationdate { get; set; }
 
-        public Item(int id, int sku, string name, int quantitywarehouse, int quantitystore, CategoryEnum category, double wholesaleprice, double sellprice)
+        public Item(int id, int sku, string name, int quantitywarehouse, int quantitystore, CategoryEnum category, double wholesaleprice, double sellprice, DateTime experationdate)
         {
             Id = id;
             Sku = sku;
@@ -28,6 +29,7 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
             Category = category;
             WholesalePrice = wholesaleprice;
             SellPrice = sellprice;
+            Experationdate = experationdate;
         }
     }
 }

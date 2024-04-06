@@ -534,10 +534,10 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
         // Employee Management ==================================================
 
         // Item Management ==================================================
-        public void AddItemToDB(int sku, string name, int quantitywarehouse, int quantitystore, CategoryEnum category, double wholesaleprice, double sellprice)
+        public void AddItemToDB(int sku, string name, int quantitywarehouse, int quantitystore, CategoryEnum category, double wholesaleprice, double sellprice, DateTime experationdate)
         {
-            string query = "INSERT INTO item (sku, name, quantity_warehouse, quantity_store, category, wholesale_price, sell_price) " +
-                "VALUES (@Sku, @Name, @QuantityWarehouse, @QuantityStore, @Category, @WholePrice, @SellPrice)";
+            string query = "INSERT INTO item (sku, name, quantity_warehouse, quantity_store, category, wholesale_price, sell_price, experationdate) " +
+                "VALUES (@Sku, @Name, @QuantityWarehouse, @QuantityStore, @Category, @WholePrice, @SellPrice, @Experationdate)";
 
             using (SqlCommand cmd = new SqlCommand(query, connection))
             {
@@ -548,16 +548,16 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
                 cmd.Parameters.AddWithValue("@Category", (int)category + 1);
                 cmd.Parameters.AddWithValue("@WholePrice", wholesaleprice);
                 cmd.Parameters.AddWithValue("@SellPrice", sellprice);
-
+                cmd.Parameters.AddWithValue("@Experationdate", experationdate);
                 cmd.ExecuteNonQuery();
             }
         }
 
-        public void UpdateItemInDB(int id, int sku, string name, int quantitywarehouse, int quantitystore, CategoryEnum category, double wholesaleprice, double sellprice)
+        public void UpdateItemInDB(int id, int sku, string name, int quantitywarehouse, int quantitystore, CategoryEnum category, double wholesaleprice, double sellprice, DateTime experationdate)
         {
             string query = "UPDATE item SET sku = @Sku, name = @Name, quantity_warehouse = @QuantityWarehouse, " +
                            "quantity_store = @QuantityStore, category = @Category, wholesale_price = @WholePrice, " +
-                           "sell_price = @SellPrice WHERE id = @Id";
+                           "sell_price = @SellPrice, experationdate = @Experationdate WHERE id = @Id";
 
             using (SqlCommand cmd = new SqlCommand(query, connection))
             {
@@ -568,6 +568,7 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
                 cmd.Parameters.AddWithValue("@Category", (int)category + 1);
                 cmd.Parameters.AddWithValue("@WholePrice", wholesaleprice);
                 cmd.Parameters.AddWithValue("@SellPrice", sellprice);
+                cmd.Parameters.AddWithValue("@Experationdate", experationdate);
                 cmd.Parameters.AddWithValue("@Id", id);
 
                 cmd.ExecuteNonQuery();
@@ -590,7 +591,7 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
         {
             List<Item> items = new List<Item>();
 
-            string query = "SELECT id, sku, name, quantity_warehouse, quantity_store, category, wholesale_price, sell_price FROM item";
+            string query = "SELECT id, sku, name, quantity_warehouse, quantity_store, category, wholesale_price, sell_price, experationdate FROM item";
 
             using (SqlCommand cmd = new SqlCommand(query, connection))
             {
@@ -607,7 +608,8 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
                             reader.GetInt32(reader.GetOrdinal("quantity_store")),
                             (CategoryEnum)reader.GetInt32(reader.GetOrdinal("category")) - 1,
                             reader.GetDouble(reader.GetOrdinal("wholesale_price")),
-                            reader.GetDouble(reader.GetOrdinal("sell_price"))
+                            reader.GetDouble(reader.GetOrdinal("sell_price")),
+                            reader.GetDateTime(reader.GetOrdinal("experationdate"))
                         );
                         items.Add(item);
                     }
@@ -640,7 +642,8 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
                             reader.GetInt32(reader.GetOrdinal("quantity_store")),
                             (CategoryEnum)reader.GetInt32(reader.GetOrdinal("category")) - 1,
                             reader.GetDouble(reader.GetOrdinal("wholesale_price")),
-                            reader.GetDouble(reader.GetOrdinal("sell_price"))
+                            reader.GetDouble(reader.GetOrdinal("sell_price")),
+                            reader.GetDateTime(reader.GetOrdinal("experationdate"))
                         );
                     }
                 }

@@ -109,6 +109,8 @@
             label23 = new Label();
             dataGridView1 = new DataGridView();
             groupBox1 = new GroupBox();
+            dateTimePickerExperationdate = new DateTimePicker();
+            labelExperationdate = new Label();
             numericQuantityStore = new NumericUpDown();
             label2 = new Label();
             numericQuantityWarehouse = new NumericUpDown();
@@ -898,9 +900,9 @@
             tabPageStock.Controls.Add(groupBox2);
             tabPageStock.Controls.Add(dataGridView1);
             tabPageStock.Controls.Add(groupBox1);
-            tabPageStock.Location = new Point(4, 24);
+            tabPageStock.Location = new Point(4, 26);
             tabPageStock.Name = "tabPageStock";
-            tabPageStock.Size = new Size(952, 519);
+            tabPageStock.Size = new Size(952, 517);
             tabPageStock.TabIndex = 2;
             tabPageStock.Text = "Stock";
             tabPageStock.UseVisualStyleBackColor = true;
@@ -1004,6 +1006,8 @@
             // 
             // groupBox1
             // 
+            groupBox1.Controls.Add(dateTimePickerExperationdate);
+            groupBox1.Controls.Add(labelExperationdate);
             groupBox1.Controls.Add(numericQuantityStore);
             groupBox1.Controls.Add(label2);
             groupBox1.Controls.Add(numericQuantityWarehouse);
@@ -1027,6 +1031,22 @@
             groupBox1.TabIndex = 3;
             groupBox1.TabStop = false;
             groupBox1.Text = "Manage Products";
+            // 
+            // dateTimePickerExperationdate
+            // 
+            dateTimePickerExperationdate.Location = new Point(19, 377);
+            dateTimePickerExperationdate.Name = "dateTimePickerExperationdate";
+            dateTimePickerExperationdate.Size = new Size(139, 25);
+            dateTimePickerExperationdate.TabIndex = 33;
+            // 
+            // labelExperationdate
+            // 
+            labelExperationdate.AutoSize = true;
+            labelExperationdate.Location = new Point(18, 352);
+            labelExperationdate.Name = "labelExperationdate";
+            labelExperationdate.Size = new Size(100, 17);
+            labelExperationdate.TabIndex = 32;
+            labelExperationdate.Text = "Experation date";
             // 
             // numericQuantityStore
             // 
@@ -1054,7 +1074,7 @@
             // numericSellPrice
             // 
             numericSellPrice.DecimalPlaces = 2;
-            numericSellPrice.Location = new Point(18, 329);
+            numericSellPrice.Location = new Point(18, 324);
             numericSellPrice.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
             numericSellPrice.Name = "numericSellPrice";
             numericSellPrice.Size = new Size(140, 25);
@@ -1063,7 +1083,7 @@
             // numericWholesalePrice
             // 
             numericWholesalePrice.DecimalPlaces = 2;
-            numericWholesalePrice.Location = new Point(18, 285);
+            numericWholesalePrice.Location = new Point(18, 280);
             numericWholesalePrice.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
             numericWholesalePrice.Name = "numericWholesalePrice";
             numericWholesalePrice.Size = new Size(140, 25);
@@ -1080,7 +1100,7 @@
             // label10
             // 
             label10.AutoSize = true;
-            label10.Location = new Point(19, 309);
+            label10.Location = new Point(19, 304);
             label10.Name = "label10";
             label10.Size = new Size(60, 17);
             label10.TabIndex = 17;
@@ -1088,7 +1108,7 @@
             // 
             // btnEditProduct
             // 
-            btnEditProduct.Location = new Point(18, 392);
+            btnEditProduct.Location = new Point(18, 437);
             btnEditProduct.Name = "btnEditProduct";
             btnEditProduct.Size = new Size(140, 23);
             btnEditProduct.TabIndex = 16;
@@ -1098,7 +1118,7 @@
             // 
             // btnRemoveProduct
             // 
-            btnRemoveProduct.Location = new Point(18, 421);
+            btnRemoveProduct.Location = new Point(18, 466);
             btnRemoveProduct.Name = "btnRemoveProduct";
             btnRemoveProduct.Size = new Size(140, 23);
             btnRemoveProduct.TabIndex = 15;
@@ -1108,7 +1128,7 @@
             // 
             // btnNewProduct
             // 
-            btnNewProduct.Location = new Point(18, 363);
+            btnNewProduct.Location = new Point(18, 408);
             btnNewProduct.Name = "btnNewProduct";
             btnNewProduct.Size = new Size(140, 23);
             btnNewProduct.TabIndex = 14;
@@ -1119,7 +1139,7 @@
             // label11
             // 
             label11.AutoSize = true;
-            label11.Location = new Point(19, 265);
+            label11.Location = new Point(19, 260);
             label11.Name = "label11";
             label11.Size = new Size(100, 17);
             label11.TabIndex = 10;
@@ -1127,9 +1147,10 @@
             // 
             // cbCatergory
             // 
+            cbCatergory.DropDownStyle = ComboBoxStyle.DropDownList;
             cbCatergory.FormattingEnabled = true;
             cbCatergory.Items.AddRange(new object[] { "Books", "Electronic", "Media", "Videogames" });
-            cbCatergory.Location = new Point(18, 237);
+            cbCatergory.Location = new Point(18, 232);
             cbCatergory.Name = "cbCatergory";
             cbCatergory.Size = new Size(140, 25);
             cbCatergory.TabIndex = 7;
@@ -1137,7 +1158,7 @@
             // label13
             // 
             label13.AutoSize = true;
-            label13.Location = new Point(18, 217);
+            label13.Location = new Point(18, 212);
             label13.Name = "label13";
             label13.Size = new Size(61, 17);
             label13.TabIndex = 6;
@@ -1475,5 +1496,7 @@
         private NumericUpDown numericQuantityShelfRequest;
         private DataGridView dataGridView2;
         private Button btnUnassignEveningShift;
+        private Label labelExperationdate;
+        private DateTimePicker dateTimePickerExperationdate;
     }
 }

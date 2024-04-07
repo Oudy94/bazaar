@@ -83,6 +83,10 @@ namespace TheSandwichMakersHardwareStoreSolution
             cmbDepartmentList.DisplayMember = "Name";
             cmbDepartmentList.ValueMember = "Id";
             cmbDepartmentList.SelectedIndex = -1;
+            cmbBoxEmployeeDepartment.DataSource = DepartmentManager.GetDepartments();
+            cmbBoxEmployeeDepartment.DisplayMember = "Name";
+            cmbBoxEmployeeDepartment.ValueMember = "Id";
+            cmbBoxEmployeeDepartment.SelectedIndex = -1;
 
             // Bind roles to the ComboBox
             cmbBoxEmployeeRole.DataSource = Enum.GetValues(typeof(RoleEnum));
@@ -396,9 +400,13 @@ namespace TheSandwichMakersHardwareStoreSolution
                         (RoleEnum)cmbBoxEmployeeRole.SelectedItem,
                         _currentImageUrl,
                         txtBoxEmployeeAddress.Text,
-                        (Department)listBoxDepartments.SelectedItem,
+                        (Department)cmbBoxEmployeeDepartment.SelectedItem,
                         Convert.ToDecimal(txtBoxEmployeeHourlyWage.Text),
-                        Convert.ToBoolean(cmbBoxEmployeeIsActive.SelectedItem));
+                        Convert.ToBoolean(cmbBoxEmployeeIsActive.SelectedItem),
+                        txtBoxEmployeePhoneNum.Text,
+                        Convert.ToInt32(txtBoxEmployeeBsn.Text),
+                        txtBoxEmployeeBankAcc.Text
+                        );
 
                     RefreshEmployeesGrid();
                 }
@@ -430,7 +438,7 @@ namespace TheSandwichMakersHardwareStoreSolution
 
                 try
                 {
-                    EmployeeManager.UpdateEmployee(selectedEmployeeId, txtBoxEmployeeName.Text, txtBoxEmployeeEmail.Text, txtBoxEmployeePswd.Text, (RoleEnum)cmbBoxEmployeeRole.SelectedItem, _currentImageUrl, txtBoxEmployeeAddress.Text, (Department)listBoxDepartments.SelectedItem, Convert.ToDecimal(txtBoxEmployeeHourlyWage.Text), Convert.ToBoolean(cmbBoxEmployeeIsActive.SelectedItem));
+                    EmployeeManager.UpdateEmployee(selectedEmployeeId, txtBoxEmployeeName.Text, txtBoxEmployeeEmail.Text, txtBoxEmployeePswd.Text, (RoleEnum)cmbBoxEmployeeRole.SelectedItem, _currentImageUrl, txtBoxEmployeeAddress.Text, (Department)cmbBoxEmployeeDepartment.SelectedItem, Convert.ToDecimal(txtBoxEmployeeHourlyWage.Text), Convert.ToBoolean(cmbBoxEmployeeIsActive.SelectedItem), txtBoxEmployeePhoneNum.Text, Convert.ToInt32(txtBoxEmployeeBsn.Text), txtBoxEmployeeBankAcc.Text);
                     RefreshEmployeesGrid();
                 }
                 catch (Exception ex)
@@ -492,11 +500,13 @@ namespace TheSandwichMakersHardwareStoreSolution
                 txtBoxEmployeeAddress.Text = selectedEmployee.Address;
                 _currentImageUrl = selectedEmployee.Image;
                 lblImage.Text = $"Image uploaded! URL: {_currentImageUrl}";
-                listBoxDepartments.SelectedIndex = listBoxDepartments.Items.OfType<Department>().ToList().FindIndex(d => d.Id == selectedEmployee.Department.Id);
+                cmbBoxEmployeeDepartment.SelectedValue = selectedEmployee.Department.Id;
                 cmbBoxEmployeeRole.SelectedItem = selectedEmployee.Role;
-
                 txtBoxEmployeeHourlyWage.Text = selectedEmployee.HourlyWage.ToString();
                 cmbBoxEmployeeIsActive.SelectedItem = selectedEmployee.IsActive == "Yes";
+                txtBoxEmployeePhoneNum.Text = selectedEmployee.PhoneNumber;
+                txtBoxEmployeeBsn.Text = selectedEmployee.Bsn.ToString();
+                txtBoxEmployeeBankAcc.Text = selectedEmployee.BankAccount;
             }
         }
 
@@ -538,22 +548,42 @@ namespace TheSandwichMakersHardwareStoreSolution
                 return false;
             }
 
-            // Department Selected
-            if (listBoxDepartments.SelectedItem == null)
+
+            // Role and Department selection validation
+            if (cmbBoxEmployeeRole.SelectedItem is not RoleEnum || cmbBoxEmployeeRole.SelectedItem == null)
             {
-                MessageBox.Show("Please select a department to edit.");
+                MessageBox.Show("Please select a valid role and department.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
-            if (cmbBoxEmployeeRole.SelectedItem is not RoleEnum || listBoxDepartments.SelectedItem is not Department)
+            // Phone number validation
+            if (string.IsNullOrWhiteSpace(txtBoxEmployeePhoneNum.Text) || txtBoxEmployeePhoneNum.Text.Length <= 8)
             {
-                MessageBox.Show("Please select a valid role and department.");
+                MessageBox.Show("Please enter a valid phone number.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
-            // If we reach this point, all validations passed
+            // BSN validation
+            if (string.IsNullOrWhiteSpace(txtBoxEmployeeBsn.Text) ||
+                txtBoxEmployeeBsn.Text.Length != 9 || // Assuming BSN must be 9 digits
+                !int.TryParse(txtBoxEmployeeBsn.Text, out int bsn))
+            {
+                MessageBox.Show("BSN must be a valid 9-digit integer.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            // Bank account validation
+            if (string.IsNullOrWhiteSpace(txtBoxEmployeeBankAcc.Text) ||
+                txtBoxEmployeeBankAcc.Text.Length > 34) 
+            {
+                MessageBox.Show("Bank account number is required and cannot exceed 34 characters.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            
             return true;
         }
+
 
 
         private void RefreshEmployeesGrid()
@@ -576,7 +606,11 @@ namespace TheSandwichMakersHardwareStoreSolution
                     Department = e.Department,
                     HourlyWage = e.HourlyWage,
                     RegisterDate = e.RegisterDate,
-                    IsActive = e.IsActive ? "Yes" : "No"
+                    IsActive = e.IsActive ? "Yes" : "No",
+                    PhoneNumber = e.PhoneNumber,
+                    Bsn = e.BSN,
+                    BankAccount = e.BankAccount
+
                 }).ToList();
 
                 dtGrVEmployees.DataSource = employeeDisplayData;
@@ -585,6 +619,9 @@ namespace TheSandwichMakersHardwareStoreSolution
                 dtGrVEmployees.Columns["Id"].HeaderText = "ID";
                 dtGrVEmployees.Columns["Name"].HeaderText = "Name";
                 dtGrVEmployees.Columns["Email"].HeaderText = "Email";
+                dtGrVEmployees.Columns["PhoneNumber"].HeaderText = "PhoneNumber";
+                dtGrVEmployees.Columns["Bsn"].HeaderText = "Bsn";
+                dtGrVEmployees.Columns["BankAccount"].HeaderText = "BankAccount";
                 dtGrVEmployees.Columns["Address"].HeaderText = "Address";
                 dtGrVEmployees.Columns["Password"].HeaderText = "Password";
                 dtGrVEmployees.Columns["Image"].HeaderText = "Image";
@@ -707,6 +744,10 @@ namespace TheSandwichMakersHardwareStoreSolution
                 listBoxDepartments.DataSource = DepartmentManager.GetDepartments();
                 listBoxDepartments.DisplayMember = "Name";
                 listBoxDepartments.ValueMember = "Id";
+                cmbBoxEmployeeDepartment.DataSource = DepartmentManager.GetDepartments();
+                cmbBoxEmployeeDepartment.DisplayMember = "Name";
+                cmbBoxEmployeeDepartment.ValueMember = "Id";
+                cmbBoxEmployeeDepartment.SelectedIndex = -1;
             }
             catch (Exception ex)
             {

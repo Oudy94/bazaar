@@ -40,12 +40,12 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
             return employees;
         }
 
-        public void AddEmployee(string name, string email, string password, RoleEnum role, string image, string address, Department department, decimal hourlyWage, bool isActive)
+        public void AddEmployee(string name, string email, string password, RoleEnum role, string image, string address, Department department, decimal hourlyWage, bool isActive, string phone_number, int bsn, string bank_account)
         {
             try
             {
                 _dbHelper.OpenConnection();
-                _dbHelper.AddEmployeeToDB(name, email, password, role, image, address, department, hourlyWage, isActive);
+                _dbHelper.AddEmployeeToDB(name, email, password, role, image, address, department, hourlyWage, isActive, phone_number, bsn , bank_account);
             }
             catch (Exception ex)
             {
@@ -95,12 +95,12 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
             }
         }
 
-        public void UpdateEmployee(int id, string name, string email, string password, RoleEnum role, string image, string address, Department department, decimal hourlyWage, bool isActive)
+        public void UpdateEmployee(int id, string name, string email, string password, RoleEnum role, string image, string address, Department department, decimal hourlyWage, bool isActive, string phone_number, int bsn, string bank_account)
         {
             try
             {
                 _dbHelper.OpenConnection();
-                _dbHelper.UpdateEmployeeInDB(id, name, email, password, role, image, address, department, hourlyWage, isActive);
+                _dbHelper.UpdateEmployeeInDB(id, name, email, password, role, image, address, department, hourlyWage, isActive, phone_number, bsn , bank_account);
             }
             catch (Exception ex)
             {

@@ -21,6 +21,9 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
         private Department department;
         private decimal hourlyWage;
         private bool isActive;
+        private string phone_number;
+        private int bsn;
+        private string bank_account;
 
         // Properties
         public int Id { get { return id; } set { id = value; } }
@@ -34,9 +37,12 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
         public Department Department { get { return department; } set { department = value; } }
         public decimal HourlyWage { get { return hourlyWage; } set { hourlyWage = value; } }
         public bool IsActive { get { return isActive; } set { isActive = value; } }
+        public string PhoneNumber { get { return phone_number; } set { phone_number = value; } }
+        public int BSN { get { return bsn; } set { bsn = value; } }
+        public string BankAccount { get { return bank_account; } set { bank_account = value; } }
 
         // Constructor
-        public Employee(int id, string name, string email, string password, RoleEnum role, string image, string address, Department department, decimal hourlyWage, bool isActive)
+        public Employee(int id, string name, string email, string password, RoleEnum role, string image, string address, Department department, decimal hourlyWage, bool isActive, string phone_number, int bsn, string bank_account)
         {
             this.Id = id;
             this.Name = name;
@@ -49,9 +55,12 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
             this.HourlyWage = hourlyWage;
             this.RegisterDate = DateTime.Now;
             this.IsActive = isActive;
+            this.PhoneNumber = phone_number;
+            this.BSN = bsn;
+            this.BankAccount = bank_account;
         }
 
-        public Employee(string name, string email, string password, RoleEnum role, string image, string address, Department department, decimal hourlyWage, bool isActive)
+        public Employee(string name, string email, string password, RoleEnum role, string image, string address, Department department, decimal hourlyWage, bool isActive, string phone_number, int bsn, string bank_account)
         {
             this.Name = name;
             this.Email = email;
@@ -63,6 +72,9 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
             this.HourlyWage = hourlyWage;
             this.RegisterDate = DateTime.Now;
             this.IsActive = isActive;
+            this.PhoneNumber = phone_number;
+            this.BSN = bsn;
+            this.BankAccount = bank_account;
         }
         public override string ToString()
         {

@@ -168,10 +168,10 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
         // Department Management ==================================================
 
         // Employee Management ==================================================
-        public void AddEmployeeToDB(string name, string email, string password, RoleEnum role, string image, string address, Department department, decimal hourlyWage, bool isActive)
+        public void AddEmployeeToDB(string name, string email, string password, RoleEnum role, string image, string address, Department department, decimal hourlyWage, bool isActive, string phone_number, int bsn, string bank_account)
         {
-            string query = @"INSERT INTO Employee (name, email, password, role, register_date, image, address, department, hourly_wage, is_active) 
-                         VALUES (@Name, @Email, @Password, @Role, @RegisterDate, @Image, @Address, @Department, @HourlyWage, @IsActive)";
+            string query = @"INSERT INTO Employee (name, email, password, role, register_date, image, address, department, hourly_wage, is_active, phone_number, bsn, bank_account) 
+                         VALUES (@Name, @Email, @Password, @Role, @RegisterDate, @Image, @Address, @Department, @HourlyWage, @IsActive, @PhoneNumber, @Bsn, @BankAccount)";
             using (SqlCommand cmd = new SqlCommand(query, connection))
             {
                 // Add parameters to prevent SQL injection
@@ -185,25 +185,31 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
                 cmd.Parameters.AddWithValue("@Department", department.Id);
                 cmd.Parameters.AddWithValue("@HourlyWage", hourlyWage);
                 cmd.Parameters.AddWithValue("@IsActive", isActive);
+                cmd.Parameters.AddWithValue("@PhoneNumber", phone_number);
+                cmd.Parameters.AddWithValue("@Bsn", bsn);
+                cmd.Parameters.AddWithValue("@BankAccount", bank_account);
 
                 cmd.ExecuteNonQuery();
             }
         }
 
         // Method to update an existing employee
-        public void UpdateEmployeeInDB(int id, string name, string email, string password, RoleEnum role, string image, string address, Department department, decimal hourlyWage, bool isActive)
+        public void UpdateEmployeeInDB(int id, string name, string email, string password, RoleEnum role, string image, string address, Department department, decimal hourlyWage, bool isActive, string phone_number, int bsn, string bank_account)
         {
             string query = @"UPDATE employee 
-                         SET name = @Name, 
-                             email = @Email, 
-                             password = @Password, 
-                             role = @Role, 
-                             image = @Image, 
-                             address = @Address, 
-                             department = @Department, 
-                             hourly_wage = @HourlyWage, 
-                             is_active = @IsActive 
-                         WHERE id = @Id";
+                            SET name = @Name, 
+                                email = @Email, 
+                                password = @Password, 
+                                role = @Role, 
+                                image = @Image, 
+                                address = @Address, 
+                                department = @Department, 
+                                hourly_wage = @HourlyWage, 
+                                is_active = @IsActive,
+                                phone_number = @PhoneNumber,
+                                bsn = @Bsn,
+                                bank_account = @BankAccount
+                            WHERE id = @Id";
             using (SqlCommand cmd = new SqlCommand(query, connection))
             {
                 cmd.Parameters.AddWithValue("@Id", id);
@@ -216,6 +222,9 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
                 cmd.Parameters.AddWithValue("@Department", department.Id);
                 cmd.Parameters.AddWithValue("@HourlyWage", hourlyWage);
                 cmd.Parameters.AddWithValue("@IsActive", isActive);
+                cmd.Parameters.AddWithValue("@PhoneNumber", phone_number);
+                cmd.Parameters.AddWithValue("@Bsn", bsn);
+                cmd.Parameters.AddWithValue("@BankAccount", bank_account);
 
                 cmd.ExecuteNonQuery();
             }
@@ -265,7 +274,10 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
                             reader.IsDBNull(reader.GetOrdinal("address")) ? null : reader.GetString(reader.GetOrdinal("address")),
                             department,
                             reader.GetDecimal(reader.GetOrdinal("hourly_wage")),
-                            reader.GetBoolean(reader.GetOrdinal("is_active"))
+                            reader.GetBoolean(reader.GetOrdinal("is_active")),
+                            reader.GetString(reader.GetOrdinal("phone_number")),
+                            reader.GetInt32(reader.GetOrdinal("bsn")),
+                            reader.GetString(reader.GetOrdinal("bank_account"))
                         ));
                     }
                 }
@@ -307,7 +319,10 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
                             reader.IsDBNull(reader.GetOrdinal("address")) ? null : reader.GetString(reader.GetOrdinal("address")),
                             department,
                             reader.GetDecimal(reader.GetOrdinal("hourly_wage")),
-                            reader.GetBoolean(reader.GetOrdinal("is_active"))
+                            reader.GetBoolean(reader.GetOrdinal("is_active")),
+                            reader.GetString(reader.GetOrdinal("phone_number")),
+                            reader.GetInt32(reader.GetOrdinal("bsn")),
+                            reader.GetString(reader.GetOrdinal("bank_account"))
                         );
                     }
                 }
@@ -350,7 +365,10 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
                             reader.IsDBNull(reader.GetOrdinal("address")) ? null : reader.GetString(reader.GetOrdinal("address")),
                             department,
                             reader.GetDecimal(reader.GetOrdinal("hourly_wage")),
-                            reader.GetBoolean(reader.GetOrdinal("is_active"))
+                            reader.GetBoolean(reader.GetOrdinal("is_active")),
+                            reader.GetString(reader.GetOrdinal("phone_number")),
+                            reader.GetInt32(reader.GetOrdinal("bsn")),
+                            reader.GetString(reader.GetOrdinal("bank_account"))
                         );
                     }
                 }
@@ -399,7 +417,10 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
                             reader.IsDBNull(reader.GetOrdinal("address")) ? null : reader.GetString(reader.GetOrdinal("address")),
                             department,
                             reader.GetDecimal(reader.GetOrdinal("hourly_wage")),
-                            reader.GetBoolean(reader.GetOrdinal("is_active"))
+                            reader.GetBoolean(reader.GetOrdinal("is_active")),
+                            reader.GetString(reader.GetOrdinal("phone_number")),
+                            reader.GetInt32(reader.GetOrdinal("bsn")),
+                            reader.GetString(reader.GetOrdinal("bank_account"))
                         ));
                     }
                 }
@@ -445,7 +466,10 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
                             reader.IsDBNull(reader.GetOrdinal("address")) ? null : reader.GetString(reader.GetOrdinal("address")),
                             department,
                             reader.GetDecimal(reader.GetOrdinal("hourly_wage")),
-                            reader.GetBoolean(reader.GetOrdinal("is_active"))
+                            reader.GetBoolean(reader.GetOrdinal("is_active")),
+                            reader.GetString(reader.GetOrdinal("phone_number")),
+                            reader.GetInt32(reader.GetOrdinal("bsn")),
+                            reader.GetString(reader.GetOrdinal("bank_account"))
                         ));
                     }
                 }
@@ -1010,7 +1034,10 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
                             reader.IsDBNull(reader.GetOrdinal("address")) ? null : reader.GetString(reader.GetOrdinal("address")),
                             department,
                             reader.GetDecimal(reader.GetOrdinal("hourly_wage")),
-                            reader.GetBoolean(reader.GetOrdinal("is_active"))
+                            reader.GetBoolean(reader.GetOrdinal("is_active")),
+                            reader.GetString(reader.GetOrdinal("phone_number")),
+                            reader.GetInt32(reader.GetInt32("bsn")),
+                            reader.GetString(reader.GetOrdinal("bank_account"))
                         ));
                     }
                 }
@@ -1053,7 +1080,10 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
                             reader.IsDBNull(reader.GetOrdinal("address")) ? null : reader.GetString(reader.GetOrdinal("address")),
                             employeeDepartment,
                             reader.GetDecimal(reader.GetOrdinal("hourly_wage")),
-                            reader.GetBoolean(reader.GetOrdinal("is_active"))
+                            reader.GetBoolean(reader.GetOrdinal("is_active")),
+                            reader.GetString(reader.GetOrdinal("phone_number")),
+                            reader.GetInt32(reader.GetInt32("bsn")),
+                            reader.GetString(reader.GetOrdinal("bank_account"))
                         ));
                     }
                 }
@@ -1097,7 +1127,10 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
                             reader.IsDBNull(reader.GetOrdinal("address")) ? null : reader.GetString(reader.GetOrdinal("address")),
                             employeeDepartment,
                             reader.GetDecimal(reader.GetOrdinal("hourly_wage")),
-                            reader.GetBoolean(reader.GetOrdinal("is_active"))
+                            reader.GetBoolean(reader.GetOrdinal("is_active")),
+                            reader.GetString(reader.GetOrdinal("phone_number")),
+                            reader.GetInt32(reader.GetInt32("bsn")),
+                            reader.GetString(reader.GetOrdinal("bank_account"))
                         ));
                     }
                 }

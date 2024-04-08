@@ -78,6 +78,13 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
             try
             {
                 _dbHelper.OpenConnection();
+                bool hasEmployees = _dbHelper.HasEmployeesInDepartment(id);
+
+                if (hasEmployees)
+                {
+                    throw new Exception("Cannot delete department because there are employees assigned to it.");
+                }
+
                 _dbHelper.RemoveDepartmentFromDB(id);
             }
             catch (Exception ex)

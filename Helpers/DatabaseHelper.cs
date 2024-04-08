@@ -166,6 +166,20 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
             }
             return department;
         }
+
+        public bool HasEmployeesInDepartment(int id)
+        {
+            string query = "SELECT COUNT(*) FROM employee WHERE department = @Id;";
+
+            using (SqlCommand cmd = new SqlCommand(query, connection))
+            {
+                cmd.Parameters.AddWithValue("@Id", id);
+
+                int count = (int)cmd.ExecuteScalar();
+                return count > 0;
+            }
+        }
+
         // Department Management ==================================================
 
         // Employee Management ==================================================

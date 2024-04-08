@@ -32,14 +32,6 @@ namespace TheSandwichMakersHardwareStoreSolution
             this.EmployeeManager = new EmployeeManager();
             this.StockManager = new StockManager();
 
-            //DepartmentManager.LoadDepartmentDataFromDatabase();
-
-            //ShiftManager.LoadShiftDataFromDatabase();
-            //ShiftManager.LoadShiftEmployeeDataFromDatabase(EmployeeManager.GetEmployees());
-
-            //StockManager.LoadItemsFromDatabase();
-            //StockManager.LoadShelfRequestFromDatabase();
-
             InitializeUiElements();
         }
 
@@ -894,7 +886,7 @@ namespace TheSandwichMakersHardwareStoreSolution
             }
 
             Employee employee = (Employee)lstBoxNoShiftEmployees.SelectedItem;
-            DateTime dateTime = dtpShift.Value;
+            DateTime dateTime = GetStartOfWeek(dtpShift.Value);
             DateOnly date = new DateOnly(dateTime.Year, dateTime.Month, dateTime.Day);
 
             ShiftManager.AssignEmployeeToShift(employee, date, ShiftTypeEnum.Morning);
@@ -909,7 +901,7 @@ namespace TheSandwichMakersHardwareStoreSolution
             }
 
             Employee employee = (Employee)lstBoxNoShiftEmployees.SelectedItem;
-            DateTime dateTime = dtpShift.Value;
+            DateTime dateTime = GetStartOfWeek(dtpShift.Value);
             DateOnly date = new DateOnly(dateTime.Year, dateTime.Month, dateTime.Day);
 
             ShiftManager.AssignEmployeeToShift(employee, date, ShiftTypeEnum.Evening);
@@ -924,7 +916,7 @@ namespace TheSandwichMakersHardwareStoreSolution
             }
 
             Employee employee = (Employee)lstBoxMorningShiftEmployees.SelectedItem;
-            DateTime dateTime = dtpShift.Value;
+            DateTime dateTime = GetStartOfWeek(dtpShift.Value);
             DateOnly date = new DateOnly(dateTime.Year, dateTime.Month, dateTime.Day);
 
             ShiftManager.UnassignEmployeeFromShift(employee, date, ShiftTypeEnum.Morning);
@@ -939,7 +931,7 @@ namespace TheSandwichMakersHardwareStoreSolution
             }
 
             Employee employee = (Employee)lstBoxEveningShiftEmployees.SelectedItem;
-            DateTime dateTime = dtpShift.Value;
+            DateTime dateTime = GetStartOfWeek(dtpShift.Value);
             DateOnly date = new DateOnly(dateTime.Year, dateTime.Month, dateTime.Day);
 
             ShiftManager.UnassignEmployeeFromShift(employee, date, ShiftTypeEnum.Evening);
@@ -954,7 +946,7 @@ namespace TheSandwichMakersHardwareStoreSolution
                 return false;
             }
 
-            if (dtpShift.Value.Date == DateTime.MinValue)
+            if (GetStartOfWeek(dtpShift.Value).Date == DateTime.MinValue)
             {
                 MessageBox.Show("you have to select correct date.");
                 return false;
@@ -970,7 +962,7 @@ namespace TheSandwichMakersHardwareStoreSolution
 
         public void RefreshShiftUI()
         {
-            DateTime dateTime = dtpShift.Value;
+            DateTime dateTime = GetStartOfWeek(dtpShift.Value);
             DateOnly date = new DateOnly(dateTime.Year, dateTime.Month, dateTime.Day);
 
             lstBoxNoShiftEmployees.Items.Clear();
@@ -994,17 +986,24 @@ namespace TheSandwichMakersHardwareStoreSolution
 
         private void btnAutoAssign_Click(object sender, EventArgs e)
         {
-            if (dtpShift.Value.Date == DateTime.MinValue)
+            if (GetStartOfWeek(dtpShift.Value).Date == DateTime.MinValue)
             {
                 MessageBox.Show("you have to select correct date.");
                 return;
             }
 
-            DateTime dateTime = dtpShift.Value;
+            DateTime dateTime = GetStartOfWeek(dtpShift.Value);
             DateOnly date = new DateOnly(dateTime.Year, dateTime.Month, dateTime.Day);
 
             ShiftManager.AutoAssignShift(EmployeeManager.GetUnassignedEmployeesToShiftOnDate(date), date);
             RefreshShiftUI();
         }
+
+        private DateTime GetStartOfWeek(DateTime dateTime)
+        {
+            int diff = (7 + (dateTime.DayOfWeek - DayOfWeek.Monday)) % 7;
+            return dateTime.AddDays(-1 * diff).Date;
+        }
+
     }
 }

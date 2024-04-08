@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -827,7 +828,9 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
                         (
                             reader.GetInt32(reader.GetOrdinal("id")),
                             date,
-                            (ShiftTypeEnum)reader.GetInt32(reader.GetOrdinal("shift_type")) - 1
+                            (ShiftTypeEnum)reader.GetInt32(reader.GetOrdinal("shift_type")) - 1,
+                            reader.GetDateTime(reader.GetOrdinal("start_time")),
+                            reader.GetDateTime(reader.GetOrdinal("end_time"))
                         );
 
                         shifts.Add(shift);
@@ -838,7 +841,7 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
             return shifts;
         }
 
-        public void AssignEmployeeToShiftInDB(Employee employee, DateOnly date, ShiftTypeEnum shiftType)
+        public void AssignEmployeeToShiftInDB(Employee employee, DateOnly date, ShiftTypeEnum shiftType, DateTime startTime, DateTime endTime)
         {
             SqlTransaction transaction = null;
 
@@ -861,11 +864,13 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
                     }
                     else
                     {
-                        string insertQuery = "INSERT INTO shift (date, shift_type) OUTPUT INSERTED.Id VALUES (@Date, @ShiftType);";
+                        string insertQuery = "INSERT INTO shift (date, shift_type, start_time, end_time) OUTPUT INSERTED.Id VALUES (@Date, @ShiftType, @StartDate, @EndDate);";
                         using (SqlCommand insertCmd = new SqlCommand(insertQuery, connection, transaction))
                         {
                             insertCmd.Parameters.AddWithValue("@Date", new DateTime(date.Year, date.Month, date.Day));
                             insertCmd.Parameters.AddWithValue("@ShiftType", (int)shiftType + 1);
+                            insertCmd.Parameters.AddWithValue("@StartDate", startTime);
+                            insertCmd.Parameters.AddWithValue("@EndDate", endTime);
                             shiftId = Convert.ToInt32(insertCmd.ExecuteScalar());
                         }
                     }
@@ -897,8 +902,6 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
                 throw new Exception(ex.Message);
             }
         }
-
-
 
         public void UnassignEmployeeFromShiftInDB(Employee employee, DateOnly date, ShiftTypeEnum shiftType)
         {
@@ -994,8 +997,65 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
             return assignedEmployeeCount;
         }
 
+        public (DateTime, DateTime) GetShiftTimesFromDB(DateOnly date, ShiftTypeEnum shiftType)
+        {
+            DateTime startShiftDateTime = date.ToDateTime(shiftType == ShiftTypeEnum.Morning ? new TimeOnly(9, 0) : new TimeOnly(16, 0));
+            DateTime endShiftDateTime = date.ToDateTime(shiftType == ShiftTypeEnum.Morning ? new TimeOnly(16, 0) : new TimeOnly(23, 0));
 
+            (DateTime, DateTime) shiftTime = (startShiftDateTime, endShiftDateTime);
 
+            string query = "SELECT start_time, end_time FROM shift WHERE date = @Date AND shift_type = @ShiftType;";
+
+            using (SqlCommand cmd = new SqlCommand(query, connection))
+            {
+                cmd.Parameters.AddWithValue("@Date", new DateTime(date.Year, date.Month, date.Day));
+                cmd.Parameters.AddWithValue("@ShiftType", (int)shiftType + 1);
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        shiftTime = (reader.GetDateTime(reader.GetOrdinal("start_time")), reader.GetDateTime(reader.GetOrdinal("end_time")));
+                    }
+                }
+            }
+
+            return shiftTime;
+        }
+
+        public void AddOrUpdateShiftToDB(DateOnly date, ShiftTypeEnum shiftType, DateTime startTime, DateTime endTime)
+        {
+            string query = "SELECT COUNT(*) FROM shift WHERE date = @Date AND shift_type = @ShiftType";
+            using (SqlCommand selectCmd = new SqlCommand(query, connection))
+            {
+                selectCmd.Parameters.AddWithValue("@Date", new DateTime(date.Year, date.Month, date.Day));
+                selectCmd.Parameters.AddWithValue("@ShiftType", (int)shiftType + 1);
+                int count = (int)selectCmd.ExecuteScalar();
+
+                if (count > 0)
+                {
+                    string updateQuery = "UPDATE shift SET start_time = @StartTime, end_time = @EndTime WHERE date = @Date AND shift_type = @ShiftType";
+                    using (SqlCommand updateCmd = new SqlCommand(updateQuery, connection))
+                    {
+                        updateCmd.Parameters.AddWithValue("@StartTime", startTime);
+                        updateCmd.Parameters.AddWithValue("@EndTime", endTime);
+                        updateCmd.Parameters.AddWithValue("@Date", new DateTime(date.Year, date.Month, date.Day));
+                        updateCmd.Parameters.AddWithValue("@ShiftType", (int)shiftType + 1);
+                        updateCmd.ExecuteNonQuery();
+                    }
+                }
+                else
+                {
+                    string insertQuery = "INSERT INTO shift (date, shift_type, start_time, end_time) VALUES (@Date, @ShiftType, @StartTime, @EndTime)";
+                    SqlCommand insertCmd = new SqlCommand(insertQuery, connection);
+                    insertCmd.Parameters.AddWithValue("@Date", new DateTime(date.Year, date.Month, date.Day));
+                    insertCmd.Parameters.AddWithValue("@ShiftType", (int)shiftType + 1);
+                    insertCmd.Parameters.AddWithValue("@StartTime", startTime);
+                    insertCmd.Parameters.AddWithValue("@EndTime", endTime);
+                    insertCmd.ExecuteNonQuery();
+                }
+            }
+        }
         // Shift Management ==================================================
 
         // Dashboard Management ==================================================
@@ -1165,7 +1225,9 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
                         (
                             reader.GetInt32(reader.GetOrdinal("id")),
                             date,
-                            (ShiftTypeEnum)reader.GetInt32(reader.GetOrdinal("shift_type")) - 1
+                            (ShiftTypeEnum)reader.GetInt32(reader.GetOrdinal("shift_type")) - 1,
+                            reader.GetDateTime(reader.GetOrdinal("start_time")),
+                            reader.GetDateTime(reader.GetOrdinal("end_time"))
                         );
 
                         shifts.Add(shift);
@@ -1246,7 +1308,9 @@ namespace TheSandwichMakersHardwareStoreSolution.Helpers
                         (
                             reader.GetInt32(reader.GetOrdinal("id")),
                             shiftDate,
-                            (ShiftTypeEnum)reader.GetInt32(reader.GetOrdinal("shift_type")) - 1
+                            (ShiftTypeEnum)reader.GetInt32(reader.GetOrdinal("shift_type")) - 1,
+                            reader.GetDateTime(reader.GetOrdinal("start_time")),
+                            reader.GetDateTime(reader.GetOrdinal("end_time"))
                         );
 
                         shifts.Add(shift);

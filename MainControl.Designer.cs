@@ -138,6 +138,12 @@
             tbNameProduct = new TextBox();
             label16 = new Label();
             tabPageShifts = new TabPage();
+            btnSaveEveningShiftTime = new Button();
+            dtpEveningShiftEndTime = new DateTimePicker();
+            dtpEveningShiftStartTime = new DateTimePicker();
+            btnSaveMorningShiftTime = new Button();
+            dtpMorningShiftEndTime = new DateTimePicker();
+            dtpMorningShiftStartTime = new DateTimePicker();
             btnUnassignEveningShift = new Button();
             dtpShift = new DateTimePicker();
             label9 = new Label();
@@ -151,6 +157,9 @@
             lstBoxEveningShiftEmployees = new ListBox();
             lstBoxNoShiftEmployees = new ListBox();
             lstBoxMorningShiftEmployees = new ListBox();
+            label30 = new Label();
+            label32 = new Label();
+            label34 = new Label();
             tabControMain.SuspendLayout();
             tabPageMain.SuspendLayout();
             groupBox4.SuspendLayout();
@@ -623,7 +632,6 @@
             groupBoxManageEmployees.Controls.Add(txtBoxEmployeeBankAcc);
             groupBoxManageEmployees.Controls.Add(label20);
             groupBoxManageEmployees.Controls.Add(txtBoxEmployeeBsn);
-            groupBoxManageEmployees.Controls.Add(label22);
             groupBoxManageEmployees.Controls.Add(dtGrVEmployees);
             groupBoxManageEmployees.Controls.Add(txtBoxEmployeePhoneNum);
             groupBoxManageEmployees.Controls.Add(label5);
@@ -696,11 +704,11 @@
             // label22
             // 
             label22.AutoSize = true;
-            label22.Location = new Point(480, 67);
+            label22.Location = new Point(742, 409);
             label22.Name = "label22";
-            label22.Size = new Size(32, 17);
-            label22.TabIndex = 21;
-            label22.Text = "BSN";
+            label22.Size = new Size(67, 17);
+            label22.TabIndex = 20;
+            label22.Text = "Start time:";
             // 
             // dtGrVEmployees
             // 
@@ -902,9 +910,9 @@
             tabPageDepartment.Controls.Add(label12);
             tabPageDepartment.Controls.Add(groupBox5);
             tabPageDepartment.Controls.Add(listBoxDepartments);
-            tabPageDepartment.Location = new Point(4, 26);
+            tabPageDepartment.Location = new Point(4, 24);
             tabPageDepartment.Name = "tabPageDepartment";
-            tabPageDepartment.Size = new Size(952, 517);
+            tabPageDepartment.Size = new Size(952, 519);
             tabPageDepartment.TabIndex = 4;
             tabPageDepartment.Text = "Departments";
             tabPageDepartment.UseVisualStyleBackColor = true;
@@ -1293,6 +1301,16 @@
             // 
             // tabPageShifts
             // 
+            tabPageShifts.Controls.Add(label34);
+            tabPageShifts.Controls.Add(label32);
+            tabPageShifts.Controls.Add(label30);
+            tabPageShifts.Controls.Add(btnSaveEveningShiftTime);
+            tabPageShifts.Controls.Add(dtpEveningShiftEndTime);
+            tabPageShifts.Controls.Add(dtpEveningShiftStartTime);
+            tabPageShifts.Controls.Add(label22);
+            tabPageShifts.Controls.Add(btnSaveMorningShiftTime);
+            tabPageShifts.Controls.Add(dtpMorningShiftEndTime);
+            tabPageShifts.Controls.Add(dtpMorningShiftStartTime);
             tabPageShifts.Controls.Add(btnUnassignEveningShift);
             tabPageShifts.Controls.Add(dtpShift);
             tabPageShifts.Controls.Add(label9);
@@ -1306,16 +1324,76 @@
             tabPageShifts.Controls.Add(lstBoxEveningShiftEmployees);
             tabPageShifts.Controls.Add(lstBoxNoShiftEmployees);
             tabPageShifts.Controls.Add(lstBoxMorningShiftEmployees);
-            tabPageShifts.Location = new Point(4, 24);
+            tabPageShifts.Location = new Point(4, 26);
             tabPageShifts.Name = "tabPageShifts";
-            tabPageShifts.Size = new Size(952, 519);
+            tabPageShifts.Size = new Size(952, 517);
             tabPageShifts.TabIndex = 3;
             tabPageShifts.Text = "Shifts";
             tabPageShifts.UseVisualStyleBackColor = true;
             // 
+            // btnSaveEveningShiftTime
+            // 
+            btnSaveEveningShiftTime.Location = new Point(742, 470);
+            btnSaveEveningShiftTime.Name = "btnSaveEveningShiftTime";
+            btnSaveEveningShiftTime.Size = new Size(189, 28);
+            btnSaveEveningShiftTime.TabIndex = 24;
+            btnSaveEveningShiftTime.Text = "Save Time";
+            btnSaveEveningShiftTime.UseVisualStyleBackColor = true;
+            btnSaveEveningShiftTime.Click += btnSaveEveningShiftTime_Click;
+            // 
+            // dtpEveningShiftEndTime
+            // 
+            dtpEveningShiftEndTime.CustomFormat = "";
+            dtpEveningShiftEndTime.Format = DateTimePickerFormat.Time;
+            dtpEveningShiftEndTime.Location = new Point(825, 439);
+            dtpEveningShiftEndTime.Name = "dtpEveningShiftEndTime";
+            dtpEveningShiftEndTime.ShowUpDown = true;
+            dtpEveningShiftEndTime.Size = new Size(106, 25);
+            dtpEveningShiftEndTime.TabIndex = 23;
+            // 
+            // dtpEveningShiftStartTime
+            // 
+            dtpEveningShiftStartTime.CustomFormat = "";
+            dtpEveningShiftStartTime.Format = DateTimePickerFormat.Time;
+            dtpEveningShiftStartTime.Location = new Point(825, 403);
+            dtpEveningShiftStartTime.Name = "dtpEveningShiftStartTime";
+            dtpEveningShiftStartTime.ShowUpDown = true;
+            dtpEveningShiftStartTime.Size = new Size(106, 25);
+            dtpEveningShiftStartTime.TabIndex = 21;
+            // 
+            // btnSaveMorningShiftTime
+            // 
+            btnSaveMorningShiftTime.Location = new Point(536, 472);
+            btnSaveMorningShiftTime.Name = "btnSaveMorningShiftTime";
+            btnSaveMorningShiftTime.Size = new Size(189, 28);
+            btnSaveMorningShiftTime.TabIndex = 17;
+            btnSaveMorningShiftTime.Text = "Save Time";
+            btnSaveMorningShiftTime.UseVisualStyleBackColor = true;
+            btnSaveMorningShiftTime.Click += btnSaveMorningShiftTime_Click;
+            // 
+            // dtpMorningShiftEndTime
+            // 
+            dtpMorningShiftEndTime.CustomFormat = "";
+            dtpMorningShiftEndTime.Format = DateTimePickerFormat.Time;
+            dtpMorningShiftEndTime.Location = new Point(619, 441);
+            dtpMorningShiftEndTime.Name = "dtpMorningShiftEndTime";
+            dtpMorningShiftEndTime.ShowUpDown = true;
+            dtpMorningShiftEndTime.Size = new Size(106, 25);
+            dtpMorningShiftEndTime.TabIndex = 16;
+            // 
+            // dtpMorningShiftStartTime
+            // 
+            dtpMorningShiftStartTime.CustomFormat = "";
+            dtpMorningShiftStartTime.Format = DateTimePickerFormat.Time;
+            dtpMorningShiftStartTime.Location = new Point(619, 405);
+            dtpMorningShiftStartTime.Name = "dtpMorningShiftStartTime";
+            dtpMorningShiftStartTime.ShowUpDown = true;
+            dtpMorningShiftStartTime.Size = new Size(106, 25);
+            dtpMorningShiftStartTime.TabIndex = 14;
+            // 
             // btnUnassignEveningShift
             // 
-            btnUnassignEveningShift.Location = new Point(307, 390);
+            btnUnassignEveningShift.Location = new Point(316, 364);
             btnUnassignEveningShift.Name = "btnUnassignEveningShift";
             btnUnassignEveningShift.Size = new Size(153, 40);
             btnUnassignEveningShift.TabIndex = 12;
@@ -1325,7 +1403,8 @@
             // 
             // dtpShift
             // 
-            dtpShift.Location = new Point(286, 64);
+            dtpShift.CustomFormat = "";
+            dtpShift.Location = new Point(277, 53);
             dtpShift.Name = "dtpShift";
             dtpShift.Size = new Size(221, 25);
             dtpShift.TabIndex = 11;
@@ -1334,7 +1413,7 @@
             // label9
             // 
             label9.AutoSize = true;
-            label9.Location = new Point(286, 46);
+            label9.Location = new Point(277, 35);
             label9.Name = "label9";
             label9.Size = new Size(35, 17);
             label9.TabIndex = 10;
@@ -1369,7 +1448,7 @@
             // 
             // btnAutoAssign
             // 
-            btnAutoAssign.Location = new Point(307, 135);
+            btnAutoAssign.Location = new Point(316, 128);
             btnAutoAssign.Name = "btnAutoAssign";
             btnAutoAssign.Size = new Size(153, 40);
             btnAutoAssign.TabIndex = 6;
@@ -1379,7 +1458,7 @@
             // 
             // btnUnassignMorningShift
             // 
-            btnUnassignMorningShift.Location = new Point(307, 344);
+            btnUnassignMorningShift.Location = new Point(316, 318);
             btnUnassignMorningShift.Name = "btnUnassignMorningShift";
             btnUnassignMorningShift.Size = new Size(153, 40);
             btnUnassignMorningShift.TabIndex = 5;
@@ -1389,7 +1468,7 @@
             // 
             // btnAssignEvening
             // 
-            btnAssignEvening.Location = new Point(307, 265);
+            btnAssignEvening.Location = new Point(316, 247);
             btnAssignEvening.Name = "btnAssignEvening";
             btnAssignEvening.Size = new Size(153, 40);
             btnAssignEvening.TabIndex = 4;
@@ -1399,7 +1478,7 @@
             // 
             // btnAssignMorning
             // 
-            btnAssignMorning.Location = new Point(307, 219);
+            btnAssignMorning.Location = new Point(316, 201);
             btnAssignMorning.Name = "btnAssignMorning";
             btnAssignMorning.Size = new Size(153, 40);
             btnAssignMorning.TabIndex = 3;
@@ -1422,7 +1501,7 @@
             lstBoxNoShiftEmployees.ItemHeight = 17;
             lstBoxNoShiftEmployees.Location = new Point(12, 29);
             lstBoxNoShiftEmployees.Name = "lstBoxNoShiftEmployees";
-            lstBoxNoShiftEmployees.Size = new Size(224, 361);
+            lstBoxNoShiftEmployees.Size = new Size(224, 463);
             lstBoxNoShiftEmployees.TabIndex = 1;
             // 
             // lstBoxMorningShiftEmployees
@@ -1433,6 +1512,33 @@
             lstBoxMorningShiftEmployees.Name = "lstBoxMorningShiftEmployees";
             lstBoxMorningShiftEmployees.Size = new Size(189, 361);
             lstBoxMorningShiftEmployees.TabIndex = 0;
+            // 
+            // label30
+            // 
+            label30.AutoSize = true;
+            label30.Location = new Point(742, 445);
+            label30.Name = "label30";
+            label30.Size = new Size(62, 17);
+            label30.TabIndex = 25;
+            label30.Text = "End time:";
+            // 
+            // label32
+            // 
+            label32.AutoSize = true;
+            label32.Location = new Point(536, 409);
+            label32.Name = "label32";
+            label32.Size = new Size(67, 17);
+            label32.TabIndex = 26;
+            label32.Text = "Start time:";
+            // 
+            // label34
+            // 
+            label34.AutoSize = true;
+            label34.Location = new Point(536, 445);
+            label34.Name = "label34";
+            label34.Size = new Size(62, 17);
+            label34.TabIndex = 27;
+            label34.Text = "End time:";
             // 
             // MainControl
             // 
@@ -1600,6 +1706,15 @@
         private TextBox txtBoxEmployeeBankAcc;
         private Label label20;
         private TextBox txtBoxEmployeeBsn;
+        private DateTimePicker dtpMorningShiftEndTime;
+        private DateTimePicker dtpMorningShiftStartTime;
+        private Button btnSaveMorningShiftTime;
+        private Button btnSaveEveningShiftTime;
+        private DateTimePicker dtpEveningShiftEndTime;
+        private DateTimePicker dtpEveningShiftStartTime;
         private Label label22;
+        private Label label34;
+        private Label label32;
+        private Label label30;
     }
 }

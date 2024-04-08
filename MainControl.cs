@@ -889,7 +889,7 @@ namespace TheSandwichMakersHardwareStoreSolution
             DateTime dateTime = GetStartOfWeek(dtpShift.Value);
             DateOnly date = new DateOnly(dateTime.Year, dateTime.Month, dateTime.Day);
 
-            ShiftManager.AssignEmployeeToShift(employee, date, ShiftTypeEnum.Morning);
+            ShiftManager.AssignEmployeeToShift(employee, date, ShiftTypeEnum.Morning, dtpMorningShiftStartTime.Value, dtpMorningShiftEndTime.Value);
             RefreshShiftUI();
         }
 
@@ -904,7 +904,7 @@ namespace TheSandwichMakersHardwareStoreSolution
             DateTime dateTime = GetStartOfWeek(dtpShift.Value);
             DateOnly date = new DateOnly(dateTime.Year, dateTime.Month, dateTime.Day);
 
-            ShiftManager.AssignEmployeeToShift(employee, date, ShiftTypeEnum.Evening);
+            ShiftManager.AssignEmployeeToShift(employee, date, ShiftTypeEnum.Evening, dtpEveningShiftStartTime.Value, dtpEveningShiftStartTime.Value);
             RefreshShiftUI();
         }
 
@@ -982,6 +982,9 @@ namespace TheSandwichMakersHardwareStoreSolution
             {
                 lstBoxEveningShiftEmployees.Items.Add(employee);
             }
+
+            (dtpMorningShiftStartTime.Value, dtpMorningShiftEndTime.Value) = ShiftManager.GetShiftTimes(date, ShiftTypeEnum.Morning);
+            (dtpEveningShiftStartTime.Value, dtpEveningShiftEndTime.Value) = ShiftManager.GetShiftTimes(date, ShiftTypeEnum.Evening);
         }
 
         private void btnAutoAssign_Click(object sender, EventArgs e)
@@ -995,7 +998,7 @@ namespace TheSandwichMakersHardwareStoreSolution
             DateTime dateTime = GetStartOfWeek(dtpShift.Value);
             DateOnly date = new DateOnly(dateTime.Year, dateTime.Month, dateTime.Day);
 
-            ShiftManager.AutoAssignShift(EmployeeManager.GetUnassignedEmployeesToShiftOnDate(date), date);
+            ShiftManager.AutoAssignShift(EmployeeManager.GetUnassignedEmployeesToShiftOnDate(date), date, dtpMorningShiftStartTime.Value, dtpMorningShiftEndTime.Value, dtpEveningShiftStartTime.Value, dtpEveningShiftEndTime.Value);
             RefreshShiftUI();
         }
 
@@ -1005,5 +1008,38 @@ namespace TheSandwichMakersHardwareStoreSolution
             return dateTime.AddDays(-1 * diff).Date;
         }
 
+        private void btnSaveMorningShiftTime_Click(object sender, EventArgs e)
+        {
+            DateTime dateTime = GetStartOfWeek(dtpShift.Value);
+            DateOnly date = new DateOnly(dateTime.Year, dateTime.Month, dateTime.Day);
+
+            try
+            {
+                ShiftManager.AddOrUpdateShift(date, ShiftTypeEnum.Morning, dtpMorningShiftStartTime.Value, dtpMorningShiftEndTime.Value);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            MessageBox.Show("Morning shift time is saved.");
+        }
+
+        private void btnSaveEveningShiftTime_Click(object sender, EventArgs e)
+        {
+            DateTime dateTime = GetStartOfWeek(dtpShift.Value);
+            DateOnly date = new DateOnly(dateTime.Year, dateTime.Month, dateTime.Day);
+
+            try
+            {
+                ShiftManager.AddOrUpdateShift(date, ShiftTypeEnum.Evening, dtpEveningShiftStartTime.Value, dtpEveningShiftEndTime.Value);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            MessageBox.Show("Evening shift time is saved.");
+        }
     }
 }

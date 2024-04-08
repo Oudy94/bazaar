@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TheSandwichMakersHardwareStoreSolution.Enums;
 using TheSandwichMakersHardwareStoreSolution.Helpers;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 namespace TheSandwichMakersHardwareStoreSolution.Classes
 {
@@ -60,12 +61,12 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
             return shifts;
         }
 
-        public void AssignEmployeeToShift(Employee employee, DateOnly date, ShiftTypeEnum shiftType)
+        public void AssignEmployeeToShift(Employee employee, DateOnly date, ShiftTypeEnum shiftType, DateTime startTime, DateTime endTime)
         {
             try
             {
                 _dbHelper.OpenConnection();
-                _dbHelper.AssignEmployeeToShiftInDB(employee, date, shiftType);
+                _dbHelper.AssignEmployeeToShiftInDB(employee, date, shiftType, startTime, endTime);
             }
             catch(Exception ex)
             {
@@ -94,7 +95,7 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
             }
         }
 
-        public void AutoAssignShift(List<Employee> unassignedEmployees, DateOnly date)
+        public void AutoAssignShift(List<Employee> unassignedEmployees, DateOnly date, DateTime morningStartTime, DateTime morningEndTime, DateTime eveningStartTime, DateTime eveningEndTime)
         {
             try
             {
@@ -106,12 +107,12 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
                 {
                     if (employeeCountMorningShift <= employeeCountEveningShift)
                     {
-                        _dbHelper.AssignEmployeeToShiftInDB(unassignedEmployees[i], date, ShiftTypeEnum.Morning);
+                        _dbHelper.AssignEmployeeToShiftInDB(unassignedEmployees[i], date, ShiftTypeEnum.Morning, morningStartTime, morningEndTime);
                         employeeCountMorningShift++;
                     }
                     else
                     {
-                        _dbHelper.AssignEmployeeToShiftInDB(unassignedEmployees[i], date, ShiftTypeEnum.Evening);
+                        _dbHelper.AssignEmployeeToShiftInDB(unassignedEmployees[i], date, ShiftTypeEnum.Evening, eveningStartTime, eveningEndTime);
                         employeeCountEveningShift++;
                     }
                 }
@@ -168,6 +169,44 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
             }
 
             return shifts;
+        }
+
+        public void AddOrUpdateShift(DateOnly date, ShiftTypeEnum shiftType, DateTime startTime, DateTime endTime)
+        {
+            try
+            {
+                _dbHelper.OpenConnection();
+                _dbHelper.AddOrUpdateShiftToDB(date, shiftType, startTime, endTime);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
+            }
+        }
+
+        public (DateTime, DateTime) GetShiftTimes(DateOnly date, ShiftTypeEnum shiftType)
+        {
+            (DateTime, DateTime) shiftTime = (DateTime.MinValue, DateTime.MinValue);
+
+            try
+            {
+                _dbHelper.OpenConnection();
+                shiftTime = _dbHelper.GetShiftTimesFromDB(date, shiftType);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
+            }
+
+            return shiftTime;
         }
     }
 }

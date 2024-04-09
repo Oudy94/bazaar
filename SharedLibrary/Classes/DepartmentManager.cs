@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TheSandwichMakersHardwareStoreSolution.Enums;
-using TheSandwichMakersHardwareStoreSolution.Helpers;
+using SharedLibrary.Enums;
+using SharedLibrary.Helpers;
 
-namespace TheSandwichMakersHardwareStoreSolution.Classes
+namespace SharedLibrary.Classes
 {
     public class DepartmentManager
     {
@@ -45,7 +45,7 @@ namespace TheSandwichMakersHardwareStoreSolution.Classes
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                throw new Exception(ex.Message);
             }
             finally
             {

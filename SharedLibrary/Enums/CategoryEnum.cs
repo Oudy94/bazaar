@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TheSandwichMakersHardwareStoreSolution.Enums
+namespace SharedLibrary.Enums
 {
     public enum CategoryEnum
     {

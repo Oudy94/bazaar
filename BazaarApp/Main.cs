@@ -1,5 +1,5 @@
 using System.Security.Cryptography.X509Certificates;
-using TheSandwichMakersHardwareStoreSolution.Classes;
+using SharedLibrary.Classes;
 
 namespace TheSandwichMakersHardwareStoreSolution
 {

@@ -9,9 +9,9 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using TheSandwichMakersHardwareStoreSolution.Classes;
-using TheSandwichMakersHardwareStoreSolution.Enums;
-using TheSandwichMakersHardwareStoreSolution.Helpers;
+using SharedLibrary.Classes;
+using SharedLibrary.Enums;
+using SharedLibrary.Helpers;
 
 namespace TheSandwichMakersHardwareStoreSolution
 {
@@ -118,9 +118,16 @@ namespace TheSandwichMakersHardwareStoreSolution
                 if (cmbRoleList.SelectedItem is RoleEnum role)
                 {
                     lstBoxFilteredEmployees.Items.Clear();
-                    foreach (Employee employee in EmployeeManager.GetEmployeesByRoleAndDepartment(role, department))
+                    try
                     {
-                        lstBoxFilteredEmployees.Items.Add(employee);
+                        foreach (Employee employee in EmployeeManager.GetEmployeesByRoleAndDepartment(role, department))
+                        {
+                            lstBoxFilteredEmployees.Items.Add(employee);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
                     }
                     lblFilteredCount.Text = lstBoxFilteredEmployees.Items.Count.ToString();
                 }
@@ -128,9 +135,16 @@ namespace TheSandwichMakersHardwareStoreSolution
                 {
                     // Filter employees by role and display them in the lstBoxFilteredEmployees
                     lstBoxFilteredEmployees.Items.Clear();
-                    foreach (Employee employee in EmployeeManager.GetEmployeesByDepartment(department))
+                    try
                     {
-                        lstBoxFilteredEmployees.Items.Add(employee);
+                        foreach (Employee employee in EmployeeManager.GetEmployeesByDepartment(department))
+                        {
+                            lstBoxFilteredEmployees.Items.Add(employee);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
                     }
                     lblFilteredCount.Text = lstBoxFilteredEmployees.Items.Count.ToString();
                 }
@@ -141,9 +155,16 @@ namespace TheSandwichMakersHardwareStoreSolution
                 if (cmbRoleList.SelectedItem is RoleEnum role)
                 {
                     lstBoxFilteredEmployees.Items.Clear();
-                    foreach (Employee employee in EmployeeManager.GetEmployeesByRole(role))
+                    try
                     {
-                        lstBoxFilteredEmployees.Items.Add(employee);
+                        foreach (Employee employee in EmployeeManager.GetEmployeesByRole(role))
+                        {
+                            lstBoxFilteredEmployees.Items.Add(employee);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
                     }
                     lblFilteredCount.Text = lstBoxFilteredEmployees.Items.Count.ToString();
                 }
@@ -178,9 +199,16 @@ namespace TheSandwichMakersHardwareStoreSolution
                 {
                     // Filter employees by department and display them in the lstBoxFilteredEmployees
                     lstBoxFilteredEmployees.Items.Clear();
-                    foreach (Employee employee in EmployeeManager.GetEmployeesByRole(role))
+                    try
                     {
-                        lstBoxFilteredEmployees.Items.Add(employee);
+                        foreach (Employee employee in EmployeeManager.GetEmployeesByRole(role))
+                        {
+                            lstBoxFilteredEmployees.Items.Add(employee);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
                     }
                 }
             }
@@ -189,9 +217,16 @@ namespace TheSandwichMakersHardwareStoreSolution
                 if (cmbDepartmentList.SelectedItem is Department department)
                 {
                     lstBoxFilteredEmployees.Items.Clear();
-                    foreach (Employee employee in EmployeeManager.GetEmployeesByDepartment(department))
+                    try
                     {
-                        lstBoxFilteredEmployees.Items.Add(employee);
+                        foreach (Employee employee in EmployeeManager.GetEmployeesByDepartment(department))
+                        {
+                            lstBoxFilteredEmployees.Items.Add(employee);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
                     }
                 }
                 else

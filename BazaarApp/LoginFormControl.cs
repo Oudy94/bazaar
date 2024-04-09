@@ -7,19 +7,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using TheSandwichMakersHardwareStoreSolution.Helpers;
+using SharedLibrary.Helpers;
+using SharedLibrary.Classes;
 
 namespace TheSandwichMakersHardwareStoreSolution
 {
     public partial class LoginFormControl : UserControl
     {
         public Main main { get; }
+        public Login Login { get; set; }
 
         public LoginFormControl(Main main)
         {
             InitializeComponent();
 
             this.main = main;
+            Login = new Login();
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
@@ -38,12 +41,9 @@ namespace TheSandwichMakersHardwareStoreSolution
                 return;
             }
 
-            DatabaseHelper db = new DatabaseHelper();
-
             try
             {
-                db.OpenConnection();
-                if (db.AuthenticateUser(email, password) != false)
+                if (Login.AuthenticateUser(email, password) != false)
                 {
                     MessageBox.Show("Login succefully.");
                     main.HandleLogin(email);
@@ -56,10 +56,6 @@ namespace TheSandwichMakersHardwareStoreSolution
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-            }
-            finally
-            {
-                db.CloseConnection();
             }
         }
 

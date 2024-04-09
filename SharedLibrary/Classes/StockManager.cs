@@ -1,7 +1,7 @@
-﻿using TheSandwichMakersHardwareStoreSolution.Enums;
-using TheSandwichMakersHardwareStoreSolution.Helpers;
+﻿using SharedLibrary.Enums;
+using SharedLibrary.Helpers;
 
-namespace TheSandwichMakersHardwareStoreSolution.Classes
+namespace SharedLibrary.Classes
 {
     public class StockManager
     {

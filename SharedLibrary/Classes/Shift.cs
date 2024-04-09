@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TheSandwichMakersHardwareStoreSolution.Enums;
+using SharedLibrary.Enums;
 
-namespace TheSandwichMakersHardwareStoreSolution.Classes
+namespace SharedLibrary.Classes
 {
     public class Shift
     {

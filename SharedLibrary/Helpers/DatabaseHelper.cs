@@ -6,10 +6,10 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TheSandwichMakersHardwareStoreSolution.Classes;
-using TheSandwichMakersHardwareStoreSolution.Enums;
+using SharedLibrary.Classes;
+using SharedLibrary.Enums;
 
-namespace TheSandwichMakersHardwareStoreSolution.Helpers
+namespace SharedLibrary.Helpers
 {
     public class DatabaseHelper
     {

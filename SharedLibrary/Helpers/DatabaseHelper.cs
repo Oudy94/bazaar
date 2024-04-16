@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 using SharedLibrary.Classes;
@@ -48,7 +49,7 @@ namespace SharedLibrary.Helpers
                 throw new Exception($"Error closing database connection: {ex.Message}");
             }
         }
-        
+
         public bool AuthenticateUser(string email, string password)
         {
             try
@@ -60,7 +61,7 @@ namespace SharedLibrary.Helpers
                     return count > 0;
                 }
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 throw new Exception($"Error authenticating user: {ex.Message}", ex);
             }
@@ -1096,13 +1097,13 @@ namespace SharedLibrary.Helpers
                         Department department = new Department(
                             reader.GetInt32(reader.GetOrdinal("department_id")),
                             reader.GetString(reader.GetOrdinal("department_name"))
-                        );
+                         );
 
                         employees.Add(new Employee(
                             reader.GetInt32(reader.GetOrdinal("id")),
                             reader.GetString(reader.GetOrdinal("name")),
                             reader.GetString(reader.GetOrdinal("email")),
-                            reader.GetString(reader.GetOrdinal("password")), // Should be hashed
+                            reader.GetString(reader.GetOrdinal("password")),
                             (RoleEnum)reader.GetInt32(reader.GetOrdinal("role")) - 1,
                             reader.IsDBNull(reader.GetOrdinal("image")) ? null : reader.GetString(reader.GetOrdinal("image")),
                             reader.IsDBNull(reader.GetOrdinal("address")) ? null : reader.GetString(reader.GetOrdinal("address")),
@@ -1110,13 +1111,12 @@ namespace SharedLibrary.Helpers
                             reader.GetDecimal(reader.GetOrdinal("hourly_wage")),
                             reader.GetBoolean(reader.GetOrdinal("is_active")),
                             reader.GetString(reader.GetOrdinal("phone_number")),
-                            reader.GetInt32(reader.GetInt32("bsn")),
+                            reader.GetInt32(reader.GetOrdinal("bsn")),
                             reader.GetString(reader.GetOrdinal("bank_account"))
                         ));
                     }
                 }
             }
-
             return employees;
         }
 
@@ -1148,7 +1148,7 @@ namespace SharedLibrary.Helpers
                             reader.GetInt32(reader.GetOrdinal("id")),
                             reader.GetString(reader.GetOrdinal("name")),
                             reader.GetString(reader.GetOrdinal("email")),
-                            reader.GetString(reader.GetOrdinal("password")), // Should be hashed
+                            reader.GetString(reader.GetOrdinal("password")),
                             (RoleEnum)reader.GetInt32(reader.GetOrdinal("role")) - 1,
                             reader.IsDBNull(reader.GetOrdinal("image")) ? null : reader.GetString(reader.GetOrdinal("image")),
                             reader.IsDBNull(reader.GetOrdinal("address")) ? null : reader.GetString(reader.GetOrdinal("address")),
@@ -1156,13 +1156,12 @@ namespace SharedLibrary.Helpers
                             reader.GetDecimal(reader.GetOrdinal("hourly_wage")),
                             reader.GetBoolean(reader.GetOrdinal("is_active")),
                             reader.GetString(reader.GetOrdinal("phone_number")),
-                            reader.GetInt32(reader.GetInt32("bsn")),
+                            reader.GetInt32(reader.GetOrdinal("bsn")),
                             reader.GetString(reader.GetOrdinal("bank_account"))
                         ));
                     }
-                }
-            }
-            
+                 }
+             }
             return employees;
         }
 
@@ -1174,7 +1173,8 @@ namespace SharedLibrary.Helpers
                 SELECT e.*, d.id as department_id, d.name as department_name
                 FROM employee e
                 LEFT JOIN department_list d ON e.department = d.id
-                WHERE e.role = @Role AND e.department = @DepartmentId;
+                WHERE e.role = @Role
+                AND e.department = @DepartmentId;
             ";
 
             using (SqlCommand cmd = new SqlCommand(query, connection))
@@ -1195,7 +1195,7 @@ namespace SharedLibrary.Helpers
                             reader.GetInt32(reader.GetOrdinal("id")),
                             reader.GetString(reader.GetOrdinal("name")),
                             reader.GetString(reader.GetOrdinal("email")),
-                            reader.GetString(reader.GetOrdinal("password")), // Should be hashed
+                            reader.GetString(reader.GetOrdinal("password")), 
                             (RoleEnum)reader.GetInt32(reader.GetOrdinal("role")) - 1,
                             reader.IsDBNull(reader.GetOrdinal("image")) ? null : reader.GetString(reader.GetOrdinal("image")),
                             reader.IsDBNull(reader.GetOrdinal("address")) ? null : reader.GetString(reader.GetOrdinal("address")),
@@ -1203,7 +1203,7 @@ namespace SharedLibrary.Helpers
                             reader.GetDecimal(reader.GetOrdinal("hourly_wage")),
                             reader.GetBoolean(reader.GetOrdinal("is_active")),
                             reader.GetString(reader.GetOrdinal("phone_number")),
-                            reader.GetInt32(reader.GetInt32("bsn")),
+                            reader.GetInt32(reader.GetOrdinal("bsn")),
                             reader.GetString(reader.GetOrdinal("bank_account"))
                         ));
                     }
@@ -1217,12 +1217,11 @@ namespace SharedLibrary.Helpers
             List<Shift> shifts = new List<Shift>();
 
             string query = @"
-                SELECT s.id, s.date, s.shift_type
+                SELECT s.id, s.date, s.shift_type, s.start_time, s.end_time
                 FROM shift s
                 INNER JOIN shift_employee se ON s.id = se.shift_id
                 WHERE se.employee_id = @EmployeeId
-                AND s.date >= DATEADD(day, -30, GETDATE());
-            ";
+                AND s.date >= DATEADD(day, -30, GETDATE());";
 
             using (SqlCommand cmd = new SqlCommand(query, connection))
             {
@@ -1299,12 +1298,11 @@ namespace SharedLibrary.Helpers
             List<Shift> shifts = new List<Shift>();
 
             string query = @"
-                SELECT s.id, s.date, s.shift_type
+                SELECT s.id, s.date, s.shift_type, s.start_time, s.end_time
                 FROM shift s
                 INNER JOIN shift_employee se ON s.id = se.shift_id
                 WHERE se.employee_id = @EmployeeId
-                AND s.date = @Date;
-            ";
+                AND s.date = @Date;";
 
             using (SqlCommand cmd = new SqlCommand(query, connection))
             {

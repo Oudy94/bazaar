@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             tabControMain = new TabControl();
             tabPageMain = new TabPage();
             cmbDepartmentList = new ComboBox();
@@ -75,7 +76,6 @@
             txtBoxEmployeeBankAcc = new TextBox();
             label20 = new Label();
             txtBoxEmployeeBsn = new TextBox();
-            label22 = new Label();
             dtGrVEmployees = new DataGridView();
             txtBoxEmployeePhoneNum = new TextBox();
             label5 = new Label();
@@ -138,9 +138,13 @@
             tbNameProduct = new TextBox();
             label16 = new Label();
             tabPageShifts = new TabPage();
+            label34 = new Label();
+            label32 = new Label();
+            label30 = new Label();
             btnSaveEveningShiftTime = new Button();
             dtpEveningShiftEndTime = new DateTimePicker();
             dtpEveningShiftStartTime = new DateTimePicker();
+            label22 = new Label();
             btnSaveMorningShiftTime = new Button();
             dtpMorningShiftEndTime = new DateTimePicker();
             dtpMorningShiftStartTime = new DateTimePicker();
@@ -157,9 +161,9 @@
             lstBoxEveningShiftEmployees = new ListBox();
             lstBoxNoShiftEmployees = new ListBox();
             lstBoxMorningShiftEmployees = new ListBox();
-            label30 = new Label();
-            label32 = new Label();
-            label34 = new Label();
+            DaysOffRequestTab = new TabPage();
+            btRemoveDaysOffRequest = new Button();
+            dataGridViewDaysOffRequest = new DataGridView();
             tabControMain.SuspendLayout();
             tabPageMain.SuspendLayout();
             groupBox4.SuspendLayout();
@@ -182,6 +186,8 @@
             ((System.ComponentModel.ISupportInitialize)numericWholesalePrice).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericSKU).BeginInit();
             tabPageShifts.SuspendLayout();
+            DaysOffRequestTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewDaysOffRequest).BeginInit();
             SuspendLayout();
             // 
             // tabControMain
@@ -191,6 +197,7 @@
             tabControMain.Controls.Add(tabPageDepartment);
             tabControMain.Controls.Add(tabPageStock);
             tabControMain.Controls.Add(tabPageShifts);
+            tabControMain.Controls.Add(DaysOffRequestTab);
             tabControMain.Location = new Point(8, 8);
             tabControMain.Name = "tabControMain";
             tabControMain.SelectedIndex = 0;
@@ -700,15 +707,6 @@
             txtBoxEmployeeBsn.Name = "txtBoxEmployeeBsn";
             txtBoxEmployeeBsn.Size = new Size(152, 25);
             txtBoxEmployeeBsn.TabIndex = 22;
-            // 
-            // label22
-            // 
-            label22.AutoSize = true;
-            label22.Location = new Point(742, 409);
-            label22.Name = "label22";
-            label22.Size = new Size(67, 17);
-            label22.TabIndex = 20;
-            label22.Text = "Start time:";
             // 
             // dtGrVEmployees
             // 
@@ -1324,12 +1322,39 @@
             tabPageShifts.Controls.Add(lstBoxEveningShiftEmployees);
             tabPageShifts.Controls.Add(lstBoxNoShiftEmployees);
             tabPageShifts.Controls.Add(lstBoxMorningShiftEmployees);
-            tabPageShifts.Location = new Point(4, 26);
+            tabPageShifts.Location = new Point(4, 24);
             tabPageShifts.Name = "tabPageShifts";
-            tabPageShifts.Size = new Size(952, 517);
+            tabPageShifts.Size = new Size(952, 519);
             tabPageShifts.TabIndex = 3;
             tabPageShifts.Text = "Shifts";
             tabPageShifts.UseVisualStyleBackColor = true;
+            // 
+            // label34
+            // 
+            label34.AutoSize = true;
+            label34.Location = new Point(536, 445);
+            label34.Name = "label34";
+            label34.Size = new Size(62, 17);
+            label34.TabIndex = 27;
+            label34.Text = "End time:";
+            // 
+            // label32
+            // 
+            label32.AutoSize = true;
+            label32.Location = new Point(536, 409);
+            label32.Name = "label32";
+            label32.Size = new Size(67, 17);
+            label32.TabIndex = 26;
+            label32.Text = "Start time:";
+            // 
+            // label30
+            // 
+            label30.AutoSize = true;
+            label30.Location = new Point(742, 445);
+            label30.Name = "label30";
+            label30.Size = new Size(62, 17);
+            label30.TabIndex = 25;
+            label30.Text = "End time:";
             // 
             // btnSaveEveningShiftTime
             // 
@@ -1360,6 +1385,15 @@
             dtpEveningShiftStartTime.ShowUpDown = true;
             dtpEveningShiftStartTime.Size = new Size(106, 25);
             dtpEveningShiftStartTime.TabIndex = 21;
+            // 
+            // label22
+            // 
+            label22.AutoSize = true;
+            label22.Location = new Point(742, 409);
+            label22.Name = "label22";
+            label22.Size = new Size(67, 17);
+            label22.TabIndex = 20;
+            label22.Text = "Start time:";
             // 
             // btnSaveMorningShiftTime
             // 
@@ -1513,32 +1547,47 @@
             lstBoxMorningShiftEmployees.Size = new Size(189, 361);
             lstBoxMorningShiftEmployees.TabIndex = 0;
             // 
-            // label30
+            // DaysOffRequestTab
             // 
-            label30.AutoSize = true;
-            label30.Location = new Point(742, 445);
-            label30.Name = "label30";
-            label30.Size = new Size(62, 17);
-            label30.TabIndex = 25;
-            label30.Text = "End time:";
+            DaysOffRequestTab.Controls.Add(btRemoveDaysOffRequest);
+            DaysOffRequestTab.Controls.Add(dataGridViewDaysOffRequest);
+            DaysOffRequestTab.Location = new Point(4, 26);
+            DaysOffRequestTab.Name = "DaysOffRequestTab";
+            DaysOffRequestTab.Padding = new Padding(3);
+            DaysOffRequestTab.Size = new Size(952, 517);
+            DaysOffRequestTab.TabIndex = 5;
+            DaysOffRequestTab.Text = "Days Off Request";
+            DaysOffRequestTab.UseVisualStyleBackColor = true;
             // 
-            // label32
+            // btRemoveDaysOffRequest
             // 
-            label32.AutoSize = true;
-            label32.Location = new Point(536, 409);
-            label32.Name = "label32";
-            label32.Size = new Size(67, 17);
-            label32.TabIndex = 26;
-            label32.Text = "Start time:";
+            btRemoveDaysOffRequest.Location = new Point(728, 488);
+            btRemoveDaysOffRequest.Name = "btRemoveDaysOffRequest";
+            btRemoveDaysOffRequest.Size = new Size(218, 23);
+            btRemoveDaysOffRequest.TabIndex = 1;
+            btRemoveDaysOffRequest.Text = "Remove Selected Days Off Request";
+            btRemoveDaysOffRequest.UseVisualStyleBackColor = true;
+            btRemoveDaysOffRequest.Click += btRemoveDaysOffRequest_Click;
             // 
-            // label34
+            // dataGridViewDaysOffRequest
             // 
-            label34.AutoSize = true;
-            label34.Location = new Point(536, 445);
-            label34.Name = "label34";
-            label34.Size = new Size(62, 17);
-            label34.TabIndex = 27;
-            label34.Text = "End time:";
+            dataGridViewDaysOffRequest.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Window;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle1.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dataGridViewDaysOffRequest.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewDaysOffRequest.Location = new Point(6, 6);
+            dataGridViewDaysOffRequest.MultiSelect = false;
+            dataGridViewDaysOffRequest.Name = "dataGridViewDaysOffRequest";
+            dataGridViewDaysOffRequest.ReadOnly = true;
+            dataGridViewDaysOffRequest.RowTemplate.Height = 25;
+            dataGridViewDaysOffRequest.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridViewDaysOffRequest.Size = new Size(716, 505);
+            dataGridViewDaysOffRequest.TabIndex = 0;
             // 
             // MainControl
             // 
@@ -1579,6 +1628,8 @@
             ((System.ComponentModel.ISupportInitialize)numericSKU).EndInit();
             tabPageShifts.ResumeLayout(false);
             tabPageShifts.PerformLayout();
+            DaysOffRequestTab.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dataGridViewDaysOffRequest).EndInit();
             ResumeLayout(false);
         }
 
@@ -1716,5 +1767,8 @@
         private Label label34;
         private Label label32;
         private Label label30;
+        private TabPage DaysOffRequestTab;
+        private DataGridView dataGridViewDaysOffRequest;
+        private Button btRemoveDaysOffRequest;
     }
 }

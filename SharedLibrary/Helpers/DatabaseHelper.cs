@@ -1334,5 +1334,62 @@ namespace SharedLibrary.Helpers
 
             return shifts;
         }
+        
+        //daysoffrequest database management
+        public List<DaysOffRequest> GetDaysOffRequestsFromDatabase()
+        {
+			List<DaysOffRequest> daysOffRequests = new List<DaysOffRequest>();
+
+			string query = "SELECT id, employee_id, start_date, end_date, description FROM dayoffrequest";
+
+			using (SqlCommand cmd = new SqlCommand(query, connection))
+			{
+				using (SqlDataReader reader = cmd.ExecuteReader())
+				{
+					while (reader.Read())
+					{
+						DaysOffRequest daysOffRequest = new DaysOffRequest
+						(
+							reader.GetInt32(reader.GetOrdinal("id")),
+							reader.GetInt32(reader.GetOrdinal("employee_id")),
+							reader.GetDateTime(reader.GetOrdinal("start_date")),
+							reader.GetDateTime(reader.GetOrdinal("end_date")),
+							reader.GetString(reader.GetOrdinal("description"))
+						);
+						daysOffRequests.Add(daysOffRequest);
+					}
+				}
+			}
+
+			return daysOffRequests;
+		}
+
+        public void AddDaysOffRequestToDatabase(int employeeId, DateTime startDate, DateTime endDate, string description)
+        {
+            string query = "INSERT INTO dayoffrequest (employee_id, start_date, end_date, description) " +
+                "VALUES (@EmployeeId, @StartDate, @EndDate, @Description)";
+
+            using (SqlCommand cmd = new SqlCommand(query, connection))
+            {
+                cmd.Parameters.AddWithValue("@EmployeeId", employeeId);
+                cmd.Parameters.AddWithValue("@StartDate", startDate);
+                cmd.Parameters.AddWithValue("@EndDate", endDate);
+                cmd.Parameters.AddWithValue("@Description", description);
+
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void RemoveDaysOffRequestToDatabase(int id)
+        {
+            string query = "DELETE FROM dayoffrequest WHERE id = @Id";
+
+            using (SqlCommand cmd = new SqlCommand(query, connection))
+            {
+                cmd.Parameters.AddWithValue("@Id", id);
+
+                cmd.ExecuteNonQuery();
+            }
+        }
     }
 }

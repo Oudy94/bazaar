@@ -1,4 +1,16 @@
 ﻿@page
 @model BazaarWebApp.Pages.DaysOffRequestModel
 @{
+ViewData["Title"] = "Days off request";
 }
+
+<h1> Submit Day(s) Off Request</h1>
+<form method="post">
+    <label>Start Date</label>
+    <input asp-for="temporaryData.StartDate">
+    <label>End Date</label>
+    <input asp-for="temporaryData.EndDate">
+    <label>Description</label>
+    <input asp-for="temporaryData.Description">
+    <button type="submit"> Submit Request </button>
+</form>

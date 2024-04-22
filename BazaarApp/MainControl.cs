@@ -254,6 +254,7 @@ namespace TheSandwichMakersHardwareStoreSolution
                 lbEmployeeRole.Text = employee.Role.ToString();
                 lbEmployeeDepartment.Text = employee.Department.Name;
                 pbEmployeeImage.ImageLocation = employee.Image;
+                pbEmployeeImage.SizeMode = PictureBoxSizeMode.StretchImage;
 
                 // Get employee shifts info past 30 days
                 List<Shift> shifts = ShiftManager.GetEmployeeShifts(employee);
@@ -305,34 +306,42 @@ namespace TheSandwichMakersHardwareStoreSolution
         // On Manage click in Employee Info
         private void button4_Click(object sender, EventArgs e)
         {
+
+            tabControMain.SelectedTab = tabPageEmployee;
+            dtGrVEmployees.ClearSelection();
+
             // Get selected Employee from lstBoxFilteredEmployees
             if (lstBoxFilteredEmployees.SelectedItem is Employee employee)
             {
-                tabControMain.SelectedTab = tabPageEmployee;
-                txtBoxEmployeeName.Text = employee.Name;
-                txtBoxEmployeeEmail.Text = employee.Email;
-                txtBoxEmployeePswd.Text = employee.Password;
-                txtBoxEmployeeAddress.Text = employee.Address;
-                _currentImageUrl = employee.Image;
-                lblImage.Text = $"Image uploaded! URL: {_currentImageUrl}";
-                listBoxDepartments.SelectedIndex = listBoxDepartments.Items.OfType<Department>().ToList().FindIndex(d => d.Id == employee.Department.Id);
-                cmbBoxEmployeeRole.SelectedItem = employee.Role;
-                txtBoxEmployeeHourlyWage.Text = employee.HourlyWage.ToString();
-                cmbBoxEmployeeIsActive.SelectedItem = employee.IsActive;
+                foreach (DataGridViewRow row in dtGrVEmployees.Rows)
+                {
+                    if (row.Cells["Email"].Value.ToString() == employee.Email)
+                    {
+                        row.Selected = true;
+                        break;
+                    }
+                }
             }
-            tabControMain.SelectedTab = tabPageEmployee;
         }
 
         // On Manage click in Shelf requests
         private void button2_Click(object sender, EventArgs e)
         {
-            // Get selected shelf request
-            if (listBox2.SelectedItem is ShelfRequest request)
-            {
-                tabControMain.SelectedTab = tabPageStock;
-                numericQuantityShelfRequest.Value = request.Quantity;
-            }
+            
+            int selectedItem = Convert.ToInt32(listBox2.SelectedItem);
 
+            tabControMain.SelectedTab = tabPageStock;
+
+            dataGridView2.ClearSelection();
+            
+            foreach (DataGridViewRow row in dataGridView2.Rows)
+            {
+                if (Convert.ToInt32(row.Cells["Quantity"].Value) == selectedItem)
+                {
+                    row.Selected = true;
+                    break;
+                }
+            }
         }
 
         // Attaching Image For User
@@ -895,7 +904,7 @@ namespace TheSandwichMakersHardwareStoreSolution
             listBox2.Items.Clear();
             foreach (ShelfRequest request in StockManager.GetShelfRequests())
             {
-                listBox2.Items.Add(request);
+                listBox2.Items.Add(request.Quantity);
             }
         }
 

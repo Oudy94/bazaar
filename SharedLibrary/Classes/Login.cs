@@ -16,12 +16,12 @@ namespace SharedLibrary.Classes
             this._dbHelper = new DatabaseHelper();
         }
 
-        public bool AuthenticateUser(string email, string password)
+        public bool AuthenticateAdmin(string email, string password)
         {
             try
             {
                 _dbHelper.OpenConnection();
-                return _dbHelper.AuthenticateUser(email, password);
+                return _dbHelper.AuthenticateAdmin(email, password);
             }
             catch (Exception ex)
             {
@@ -32,5 +32,22 @@ namespace SharedLibrary.Classes
                 _dbHelper.CloseConnection();
             }
         }
-    }
+
+		public Employee AuthenticateUser(string email, string password)
+		{
+			try
+			{
+				_dbHelper.OpenConnection();
+				return _dbHelper.AuthenticateUser(email, password);
+			}
+			catch (Exception ex)
+			{
+				throw new Exception(ex.Message);
+			}
+			finally
+			{
+				_dbHelper.CloseConnection();
+			}
+		}
+	}
 }

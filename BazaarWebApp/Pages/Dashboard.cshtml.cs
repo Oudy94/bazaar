@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SharedLibrary.Classes;
@@ -5,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace BazaarWebApp.Pages
 {
+    [Authorize]
     public class DashboardModel : PageModel
     {
         private readonly EmployeeManager _employeeManager;

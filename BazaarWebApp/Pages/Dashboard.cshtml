@@ -2,3 +2,32 @@
 @model BazaarWebApp.Pages.DashboardModel
 @{
 }
+<h2>Employee Dashboard</h2>
+
+@if (Model.CurrentEmployee != null)
+{
+    <div>
+    <h3>Welcome, @Model.CurrentEmployee.Name</h3>
+    <ul>
+        <li>ID: @Model.CurrentEmployee.Id</li>
+        <li>Email: @Model.CurrentEmployee.Email</li>
+        <li>Role: @Model.CurrentEmployee.Role</li>
+        <li>Department: @Model.CurrentEmployee.Department</li>
+        <li>Hourly Wage: @Model.CurrentEmployee.HourlyWage</li>
+        <li>Active: @(Model.CurrentEmployee.IsActive ? "Yes" : "No")</li>
+        <li>Phone Number: @Model.CurrentEmployee.PhoneNumber</li>
+        <li>BSN: @Model.CurrentEmployee.BSN</li>
+        <li>Bank Account: @Model.CurrentEmployee.BankAccount</li>
+        <li>Address: @Model.CurrentEmployee.Address</li>
+        <li>Image: <img src="@Model.CurrentEmployee.Image" alt="Profile Image" /></li>
+        <li>Registered Date: @Model.CurrentEmployee.RegisterDate.ToShortDateString()</li>
+    </ul>
+    <a asp-page="/EditPersonalInformation" asp-route-id="@Model.CurrentEmployee.Id" class="btn btn-primary">Edit</a>
+
+
+</div>
+}
+else
+{
+    <p>No employee data available.</p>
+}

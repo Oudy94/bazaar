@@ -60,7 +60,7 @@ namespace SharedLibrary.Helpers
                     return count > 0;
                 }
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 throw new Exception($"Error authenticating user: {ex.Message}", ex);
             }
@@ -338,7 +338,7 @@ namespace SharedLibrary.Helpers
                 SELECT e.*, d.id as department_id, d.name as department_name
                 FROM employee e
                 LEFT JOIN department_list d ON e.department = d.id
-                WHERE e.department = @Id;
+                WHERE e.id = @Id;
             ";
 
             using (SqlCommand cmd = new SqlCommand(query, connection))
@@ -1192,7 +1192,7 @@ namespace SharedLibrary.Helpers
                     }
                 }
             }
-            
+
             return employees;
         }
 

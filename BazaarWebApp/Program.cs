@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using SharedLibrary.Classes;
 
 var builder = WebApplication.CreateBuilder(args);
 

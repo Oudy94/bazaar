@@ -112,7 +112,7 @@ namespace BazaarWebApp.Pages
                 Input.BankAccount
             );
 
-            return RedirectToPage("/Dashboard");
+            return RedirectToPage("/Index");
         }
 
 

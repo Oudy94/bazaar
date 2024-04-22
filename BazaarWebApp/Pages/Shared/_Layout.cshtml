@@ -24,7 +24,10 @@
                             <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/">Schedule</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/DaysOffRequest">Day Off Request</a>
                         </li>
                     </ul>
                 </div>
@@ -32,7 +35,7 @@
                     @{
                         if (User.Identity.IsAuthenticated)
                         {
-                            <a class="btn btn-light text-secondary position-relative me-2" asp-area="" asp-page="/Dashboard">
+                            <a class="btn btn-light text-secondary position-relative me-2" asp-area="" asp-page="/Index">
                                 <i class="fas fa-user"></i>
                             </a>
                             <form id="logoutForm" method="post" class="form-inline" asp-page="/Logout">

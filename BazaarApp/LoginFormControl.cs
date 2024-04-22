@@ -43,7 +43,7 @@ namespace TheSandwichMakersHardwareStoreSolution
 
             try
             {
-                if (Login.AuthenticateUser(email, password) != false)
+                if (Login.AuthenticateAdmin(email, password) != false)
                 {
                     MessageBox.Show("Login succefully.");
                     main.HandleLogin(email);

@@ -49,7 +49,7 @@ namespace SharedLibrary.Helpers
             }
         }
         
-        public bool AuthenticateUser(string email, string password)
+        public bool AuthenticateAdmin(string email, string password)
         {
             try
             {
@@ -66,56 +66,86 @@ namespace SharedLibrary.Helpers
             }
         }
 
-        //public Employee AuthenticateUser(string email, string password, List<Role> roles, List<Department> departments)
-        //{
-        //    Employee authenticatedEmployee = null;
-        //    try
-        //    {
-        //        string query = "SELECT * FROM employee WHERE email = @Email AND password = @Password";
-        //        SqlCommand command = new SqlCommand(query, connection);
-        //        command.Parameters.AddWithValue("@Email", email);
-        //        command.Parameters.AddWithValue("@Password", password);
+		public Employee AuthenticateUser(string email, string password)
+		{
+            Employee employee = null;
 
-        //        using (var reader = command.ExecuteReader())
-        //        {
-        //            if (reader.Read())
-        //            {
-        //                var role = roles.FirstOrDefault(r => r.Id == reader.GetInt32(reader.GetOrdinal("role")));
-        //                var department = departments.FirstOrDefault(d => d.Id == reader.GetInt32(reader.GetOrdinal("department")));
+            try
+            {
+				string query = $"SELECT * FROM [dbo].[employee] WHERE email = '{email}' AND password = '{password}';";
+				using (SqlCommand cmd = new SqlCommand(query, connection))
+				{
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            employee = new Employee
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("id")),
+                                Name = reader.GetString(reader.GetOrdinal("name"))
+                            };
+                        }
+                    }
+                }
+			}
+			catch (Exception ex)
+			{
+				throw new Exception($"Error authenticating user: {ex.Message}", ex);
+			}
 
-        //                if (role != null && department != null)
-        //                {
-        //                    authenticatedEmployee = new Employee(
-        //                        reader.GetInt32(reader.GetOrdinal("id")),
-        //                        reader.GetString(reader.GetOrdinal("name")),
-        //                        reader.GetString(reader.GetOrdinal("email")),
-        //                        reader.GetString(reader.GetOrdinal("password")), // Should be hashed
-        //                        role,
-        //                        reader.IsDBNull(reader.GetOrdinal("image")) ? null : reader.GetString(reader.GetOrdinal("image")),
-        //                        reader.IsDBNull(reader.GetOrdinal("address")) ? null : reader.GetString(reader.GetOrdinal("address")),
-        //                        department,
-        //                        reader.GetDecimal(reader.GetOrdinal("hourly_wage")),
-        //                        reader.GetBoolean(reader.GetOrdinal("is_active"))
-        //                    );
-        //                }
+            return employee;
+		}
 
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw new Exception("Authentication failed: " + ex.Message);
-        //    }
-        //    finally
-        //    {
-        //        UserSession.Instance.CurrentEmployee = authenticatedEmployee;
-        //    }
+		//public Employee AuthenticateUser(string email, string password, List<Role> roles, List<Department> departments)
+		//{
+		//    Employee authenticatedEmployee = null;
+		//    try
+		//    {
+		//        string query = "SELECT * FROM employee WHERE email = @Email AND password = @Password";
+		//        SqlCommand command = new SqlCommand(query, connection);
+		//        command.Parameters.AddWithValue("@Email", email);
+		//        command.Parameters.AddWithValue("@Password", password);
 
-        //    return authenticatedEmployee;
-        //}
+		//        using (var reader = command.ExecuteReader())
+		//        {
+		//            if (reader.Read())
+		//            {
+		//                var role = roles.FirstOrDefault(r => r.Id == reader.GetInt32(reader.GetOrdinal("role")));
+		//                var department = departments.FirstOrDefault(d => d.Id == reader.GetInt32(reader.GetOrdinal("department")));
 
-        // Department Management ==================================================
-        public void AddDepartmentToDB(string name)
+		//                if (role != null && department != null)
+		//                {
+		//                    authenticatedEmployee = new Employee(
+		//                        reader.GetInt32(reader.GetOrdinal("id")),
+		//                        reader.GetString(reader.GetOrdinal("name")),
+		//                        reader.GetString(reader.GetOrdinal("email")),
+		//                        reader.GetString(reader.GetOrdinal("password")), // Should be hashed
+		//                        role,
+		//                        reader.IsDBNull(reader.GetOrdinal("image")) ? null : reader.GetString(reader.GetOrdinal("image")),
+		//                        reader.IsDBNull(reader.GetOrdinal("address")) ? null : reader.GetString(reader.GetOrdinal("address")),
+		//                        department,
+		//                        reader.GetDecimal(reader.GetOrdinal("hourly_wage")),
+		//                        reader.GetBoolean(reader.GetOrdinal("is_active"))
+		//                    );
+		//                }
+
+		//            }
+		//        }
+		//    }
+		//    catch (Exception ex)
+		//    {
+		//        throw new Exception("Authentication failed: " + ex.Message);
+		//    }
+		//    finally
+		//    {
+		//        UserSession.Instance.CurrentEmployee = authenticatedEmployee;
+		//    }
+
+		//    return authenticatedEmployee;
+		//}
+
+		// Department Management ==================================================
+		public void AddDepartmentToDB(string name)
         {
             string query = "INSERT INTO department_list (name) VALUES (@Name)";
             using (SqlCommand cmd = new SqlCommand(query, connection))

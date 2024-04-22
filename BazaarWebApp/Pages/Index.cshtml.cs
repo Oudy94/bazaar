@@ -23,7 +23,6 @@ namespace BazaarWebApp.Pages
         {
             if (!User.Identity.IsAuthenticated)
             {
-                _logger.LogInformation("User is not authenticated, redirecting to login page.");
                 return RedirectToPage("/Login");
             }
 

@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -31,16 +32,20 @@ namespace BazaarWebApp.Pages
         }
 
 
-
         [TempData]
         public string Message { get; set; }
 
         public async Task<IActionResult> OnGet(int id)
         {
-            CurrentEmployee = _employeeManager.GetEmployeeById(id);
-            if (CurrentEmployee == null)
+            if (!User.Identity.IsAuthenticated)
             {
-                return NotFound("Employee not found");
+                return RedirectToPage("/Login");
+            }
+            int userId = int.Parse(User.FindFirstValue("id"));
+            CurrentEmployee = _employeeManager.GetEmployeeById(userId);
+            if (CurrentEmployee == null && CurrentEmployee.Id != id)
+            {
+                return RedirectToPage("/Index");
             }
 
             imagePath = CurrentEmployee.Image;
@@ -66,6 +71,7 @@ namespace BazaarWebApp.Pages
             ModelState.Remove("Input.Image");
             if (!ModelState.IsValid)
             {
+                TempData["AlertMessage"] = "Cannot have empty fields. Please check your input.";
                 return RedirectToPage(new { id = id });
             }
 
@@ -83,7 +89,7 @@ namespace BazaarWebApp.Pages
                 Input.BSN != CurrentEmployee.BSN ||
                 Input.BankAccount != CurrentEmployee.BankAccount ||
                 (Input.Password != null && !string.IsNullOrWhiteSpace(Input.Password));
-                // || Input.Image != null;
+            // || Input.Image != null;
 
             if (!hasChanged)
             {

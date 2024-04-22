@@ -65,6 +65,7 @@ namespace TheSandwichMakersHardwareStoreSolution
             RefreshShiftUI();
             RefreshProductInfoDisplay();
             RefreshShelfRequestDisplay();
+            RefreshDaysOffRequest();
 
             // Add roles to cmbRoleList
             cmbRoleList.DataSource = Enum.GetValues(typeof(RoleEnum));
@@ -1084,6 +1085,39 @@ namespace TheSandwichMakersHardwareStoreSolution
             }
 
             MessageBox.Show("Evening shift time is saved.");
+        }
+
+
+        //DaysOffRequest Tab
+
+        public DaysOffRequestManager DaysOffRequestManager = new DaysOffRequestManager();
+        private void btRemoveDaysOffRequest_Click(object sender, EventArgs e)
+        {
+            int id = GetIdSelectedRowDaysOffRequest();
+            DaysOffRequestManager.RemoveDaysOffRequest(id);
+            RefreshDaysOffRequest();
+        }
+
+        public void RefreshDaysOffRequest()
+        {
+            dataGridViewDaysOffRequest.DataSource = null;
+            dataGridViewDaysOffRequest.DataSource = DaysOffRequestManager.GetDaysOffRequest();
+        }
+
+        private int GetIdSelectedRowDaysOffRequest()
+        {
+            if (dataGridViewDaysOffRequest.SelectedRows.Count > 0)
+            {
+                int selectedrowindex = dataGridViewDaysOffRequest.SelectedCells[0].RowIndex;
+                DataGridViewRow selectedRow = dataGridViewDaysOffRequest.Rows[selectedrowindex];
+                int id = Convert.ToInt32(selectedRow.Cells["Id"].Value);
+                return id;
+            }
+            else
+            {
+                return -1;
+            }
+
         }
     }
 }

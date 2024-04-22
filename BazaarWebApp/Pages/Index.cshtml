@@ -4,7 +4,43 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-5">
+    <h2 class="mb-4">Employee Dashboard</h2>
+
+    @if (Model.CurrentEmployee != null)
+    {
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title">Welcome, @Model.CurrentEmployee.Name</h3>
+                <div class="d-flex flex-row justify-content-around align-items-center">
+
+                    <p class="card-text">
+                        <strong>ID:</strong> @Model.CurrentEmployee.Id<br />
+                        <strong>Email:</strong> @Model.CurrentEmployee.Email<br />
+                        <strong>Role:</strong> @Model.CurrentEmployee.Role<br />
+                        <strong>Department:</strong> @Model.CurrentEmployee.Department<br />
+                        <strong>Hourly Wage:</strong> $@Model.CurrentEmployee.HourlyWage.ToString("N2")<br />
+                        <strong>Active:</strong> @(Model.CurrentEmployee.IsActive ? "Yes" : "No")<br />
+                        <strong>Phone Number:</strong> @Model.CurrentEmployee.PhoneNumber<br />
+                        <strong>BSN:</strong> @Model.CurrentEmployee.BSN<br />
+                        <strong>Bank Account:</strong> @Model.CurrentEmployee.BankAccount<br />
+                        <strong>Address:</strong> @Model.CurrentEmployee.Address<br />
+                        <strong>Registered Date:</strong> @Model.CurrentEmployee.RegisterDate.ToShortDateString()
+                    </p>
+                    <div class="d-flex flex-column">
+                        <img src="@Model.CurrentEmployee.Image" alt="Profile Image" class="img-fluid mb-3" />
+                        <a asp-page="/EditPersonalInformation" asp-route-id="@Model.CurrentEmployee.Id"
+                            class="btn btn-primary">Edit
+                            Personal Information</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-warning" role="alert">
+            No employee data available.
+        </div>
+    }
 </div>

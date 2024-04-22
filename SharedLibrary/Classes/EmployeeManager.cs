@@ -12,7 +12,7 @@ namespace SharedLibrary.Classes
     {
         private readonly DatabaseHelper _dbHelper;
 
-        public EmployeeManager() 
+        public EmployeeManager()
         {
             this._dbHelper = new DatabaseHelper();
         }
@@ -44,7 +44,7 @@ namespace SharedLibrary.Classes
             try
             {
                 _dbHelper.OpenConnection();
-                _dbHelper.AddEmployeeToDB(name, email, password, role, image, address, department, hourlyWage, isActive, phone_number, bsn , bank_account);
+                _dbHelper.AddEmployeeToDB(name, email, password, role, image, address, department, hourlyWage, isActive, phone_number, bsn, bank_account);
             }
             catch (Exception ex)
             {
@@ -99,7 +99,7 @@ namespace SharedLibrary.Classes
             try
             {
                 _dbHelper.OpenConnection();
-                _dbHelper.UpdateEmployeeInDB(id, name, email, password, role, image, address, department, hourlyWage, isActive, phone_number, bsn , bank_account);
+                _dbHelper.UpdateEmployeeInDB(id, name, email, password, role, image, address, department, hourlyWage, isActive, phone_number, bsn, bank_account);
             }
             catch (Exception ex)
             {
@@ -107,7 +107,7 @@ namespace SharedLibrary.Classes
             }
             finally
             {
-                _dbHelper.CloseConnection(); 
+                _dbHelper.CloseConnection();
             }
         }
 

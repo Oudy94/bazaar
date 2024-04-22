@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,8 +29,8 @@ namespace SharedLibrary.Classes
         // Properties
         public int Id { get { return id; } set { id = value; } }
         public string Name { get { return name; } set { name = value; } }
-        public string Email { get { return email; } set { email = value; } }
-        public string Password { get { return password; } set { password = value; } }
+		public string Email { get { return email; } set { email = value; } }
+		public string Password { get { return password; } set { password = value; } }
         public RoleEnum Role { get { return role; } set { role = value; } }
         public DateTime RegisterDate { get { return registerDate; } set { registerDate = value; } }
         public string Image { get { return image; } set { image = value; } }
@@ -41,8 +42,13 @@ namespace SharedLibrary.Classes
         public int BSN { get { return bsn; } set { bsn = value; } }
         public string BankAccount { get { return bank_account; } set { bank_account = value; } }
 
-        // Constructor
-        public Employee(int id, string name, string email, string password, RoleEnum role, string image, string address, Department department, decimal hourlyWage, bool isActive, string phone_number, int bsn, string bank_account)
+
+		// Constructor
+        public Employee()
+        {
+        }
+
+		public Employee(int id, string name, string email, string password, RoleEnum role, string image, string address, Department department, decimal hourlyWage, bool isActive, string phone_number, int bsn, string bank_account)
         {
             this.Id = id;
             this.Name = name;

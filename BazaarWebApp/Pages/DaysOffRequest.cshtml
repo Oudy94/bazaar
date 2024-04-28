@@ -4,8 +4,6 @@
     ViewData["Title"] = "Days off request";
 }
 
-<h1 class="mt-4 mb-3">Submit Day(s) Off Request</h1>
-
 @if (ViewData["Message"] != null)
 {
     <div class="alert alert-success">@ViewData["Message"]</div>
@@ -16,21 +14,32 @@
     <div class="alert alert-danger">@ViewData["Error"]</div>
 }
 
-<form method="post" class="form-group">
-    <div class="mb-3">
-        <label class="form-label">Start Date</label>
-        <input asp-for="temporaryData.StartDate" class="form-control">
-        <span asp-validation-for="temporaryData.StartDate" class="text-danger"></span>
-    </div>
-    <div class="mb-3">
-        <label class="form-label">End Date</label>
-        <input asp-for="temporaryData.EndDate" class="form-control">
-        <span asp-validation-for="temporaryData.EndDate" class="text-danger"></span>
-    </div>
-    <div class="mb-3">
-        <label class="form-label">Description</label>
-        <input asp-for="temporaryData.Description" class="form-control">
-        <span asp-validation-for="temporaryData.Description" class="text-danger"></span>
-    </div>
-    <button type="submit" class="btn btn-primary">Submit Request</button>
-</form>
+<div class="container mt-5">
+    <h2 class="mb-5 text-center text-primary text-uppercase font-weight-bold">Submit Day(s) Off Request</h2>
+
+    @if (Model.CurrentEmployee != null)
+    {
+        <div class="card border border-primary">
+            <div class="card-body p-5">
+                <form method="post" class="form-group">
+                    <div class="mb-3">
+                        <label class="form-label">Start Date</label>
+                        <input asp-for="temporaryData.StartDate" class="form-control">
+                        <span asp-validation-for="temporaryData.StartDate" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">End Date</label>
+                        <input asp-for="temporaryData.EndDate" class="form-control">
+                        <span asp-validation-for="temporaryData.EndDate" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <input asp-for="temporaryData.Description" class="form-control">
+                        <span asp-validation-for="temporaryData.Description" class="text-danger"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit Request</button>
+                </form>
+            </div>
+        </div>
+    }
+</div>

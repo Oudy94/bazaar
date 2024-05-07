@@ -725,29 +725,31 @@ namespace SharedLibrary.Helpers
         // Item Management ==================================================
 
         // ShelfRequest Management ==================================================
-        public void AddShelfRequestToDB(int itemId, int quantity)
+        public void AddShelfRequestToDB(int itemId, int quantity, ShelfRequestType type)
         {
-            string query = "INSERT INTO shelf_request (item_id, quantity) " +
-                "VALUES (@ItemId, @Quantity)";
+            string query = "INSERT INTO shelf_request (item_id, quantity, type) " +
+                "VALUES (@ItemId, @Quantity, @Type)";
 
             using (SqlCommand cmd = new SqlCommand(query, connection))
             {
                 cmd.Parameters.AddWithValue("@ItemId", itemId);
                 cmd.Parameters.AddWithValue("@Quantity", quantity);
+                cmd.Parameters.AddWithValue("@Type",  (int)type);
 
                 cmd.ExecuteNonQuery();
             }
         }
 
-        public void UpdateShelfRequest(int id, int itemId, int quantity)
-        {
-            string query = "UPDATE shelf_request SET item_id = @ItemId, quantity = @Quantity WHERE id = @Id";
+        public void UpdateShelfRequest(int id, int itemId, int quantity, ShelfRequestType type)
+		{
+            string query = "UPDATE shelf_request SET item_id = @ItemId, quantity = @Quantity, type = @Type WHERE id = @Id";
 
             using (SqlCommand cmd = new SqlCommand(query, connection))
             {
                 cmd.Parameters.AddWithValue("@ItemId", itemId);
                 cmd.Parameters.AddWithValue("@Quantity", quantity);
-                cmd.Parameters.AddWithValue("@Id", id);
+				cmd.Parameters.AddWithValue("@Type", (int)type);
+				cmd.Parameters.AddWithValue("@Id", id);
 
                 cmd.ExecuteNonQuery();
             }
@@ -762,7 +764,7 @@ namespace SharedLibrary.Helpers
 
                 try
                 {
-                    string selectQuery = "SELECT item_id, quantity FROM shelf_request WHERE id = @ShelfRequestId";
+                    string selectQuery = "SELECT item_id, quantity, type FROM shelf_request WHERE id = @ShelfRequestId";
                     cmd.CommandText = selectQuery;
                     cmd.Parameters.AddWithValue("@ShelfRequestId", shelfRequestId);
                     cmd.Connection = connection;
@@ -773,31 +775,49 @@ namespace SharedLibrary.Helpers
                         {
                             int itemId = reader.GetInt32(reader.GetOrdinal("item_id"));
                             int quantityToAdd = reader.GetInt32(reader.GetOrdinal("quantity"));
+							ShelfRequestType type = (ShelfRequestType)reader.GetInt32(reader.GetOrdinal("type"));
+
                             reader.Close();
 
-                            string checkQuantityQuery = "SELECT quantity_warehouse FROM item WHERE id = @ItemId";
-                            cmd.CommandText = checkQuantityQuery;
-                            cmd.Parameters.Clear();
-                            cmd.Parameters.AddWithValue("@ItemId", itemId);
-                            int warehouseQuantity = Convert.ToInt32(cmd.ExecuteScalar());
-
-                            if (warehouseQuantity < quantityToAdd)
+                            if (type == ShelfRequestType.INVENTORY)
                             {
-                                transaction.Rollback();
-                                throw new Exception("Not enough items in the warehouse.");
-                            }
+								string checkQuantityQuery = "SELECT quantity_warehouse FROM item WHERE id = @ItemId";
+								cmd.CommandText = checkQuantityQuery;
+								cmd.Parameters.Clear();
+								cmd.Parameters.AddWithValue("@ItemId", itemId);
+								int warehouseQuantity = Convert.ToInt32(cmd.ExecuteScalar());
 
-                            string updateQuery = @"
-                        UPDATE item 
-                        SET 
-                            quantity_warehouse = quantity_warehouse - @QuantityToAdd,
-                            quantity_store = quantity_store + @QuantityToAdd 
-                        WHERE id = @ItemId";
-                            cmd.CommandText = updateQuery;
-                            cmd.Parameters.Clear();
-                            cmd.Parameters.AddWithValue("@QuantityToAdd", quantityToAdd);
-                            cmd.Parameters.AddWithValue("@ItemId", itemId);
-                            cmd.ExecuteNonQuery();
+								if (warehouseQuantity < quantityToAdd)
+								{
+									transaction.Rollback();
+									throw new Exception("Not enough items in the warehouse.");
+								}
+
+								string updateQuery = @"
+                                UPDATE item 
+                                SET 
+                                quantity_warehouse = quantity_warehouse - @QuantityToAdd,
+                                quantity_store = quantity_store + @QuantityToAdd 
+                                WHERE id = @ItemId";
+								cmd.CommandText = updateQuery;
+								cmd.Parameters.Clear();
+								cmd.Parameters.AddWithValue("@QuantityToAdd", quantityToAdd);
+								cmd.Parameters.AddWithValue("@ItemId", itemId);
+								cmd.ExecuteNonQuery();
+							}
+                            else if (type == ShelfRequestType.WAREHOUSE)
+                            {
+								string updateQuery = @"
+                                UPDATE item 
+                                SET 
+                                quantity_warehouse = quantity_warehouse + @QuantityToAdd
+                                WHERE id = @ItemId";
+								cmd.CommandText = updateQuery;
+								cmd.Parameters.Clear();
+								cmd.Parameters.AddWithValue("@QuantityToAdd", quantityToAdd);
+								cmd.Parameters.AddWithValue("@ItemId", itemId);
+								cmd.ExecuteNonQuery();
+							}
                         }
                         else
                         {
@@ -826,15 +846,25 @@ namespace SharedLibrary.Helpers
         }
 
 
-        public List<ShelfRequest> GetShelfRequestFromDB()
-        {
-            List<ShelfRequest> shelfRequests = new List<ShelfRequest>();
+		public List<ShelfRequest> GetShelfRequestFromDB(ShelfRequestType? type = null)
+		{
+			List<ShelfRequest> shelfRequests = new List<ShelfRequest>();
 
-            string query = "SELECT id, item_id, quantity FROM shelf_request";
+            string query = "SELECT id, item_id, quantity, type FROM shelf_request";
+
+            if (type != null)
+            {
+                query += " WHERE type = @Type";
+			}
 
             using (SqlCommand cmd = new SqlCommand(query, connection))
             {
-                using (SqlDataReader reader = cmd.ExecuteReader())
+                if (type != null)
+                { 
+                    cmd.Parameters.AddWithValue("@Type", type);
+                }
+
+				using (SqlDataReader reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
                     {
@@ -842,7 +872,8 @@ namespace SharedLibrary.Helpers
                         (
                             reader.GetInt32(reader.GetOrdinal("id")),
                             reader.GetInt32(reader.GetOrdinal("item_id")),
-                            reader.GetInt32(reader.GetOrdinal("quantity"))
+                            reader.GetInt32(reader.GetOrdinal("quantity")),
+                            (ShelfRequestType)reader.GetInt32(reader.GetOrdinal("type"))
                         );
                         shelfRequests.Add(shelfRequest);
                     }

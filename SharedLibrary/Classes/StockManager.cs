@@ -179,5 +179,31 @@ namespace SharedLibrary.Classes
                 _dbHelper.CloseConnection();
             }
         }
+
+        public bool DataBaseContainsId(int id)
+        {
+            try
+            {
+                _dbHelper.OpenConnection();
+                if (_dbHelper.ListItemIdInDatabase().Contains( id))
+                {
+                    return true;
+                }
+                else 
+                {
+                    return false;
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
+            }
+            
+        }
     }
 }

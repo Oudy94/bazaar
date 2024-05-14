@@ -722,6 +722,26 @@ namespace SharedLibrary.Helpers
             return item;
         }
 
+        public List<int> ListItemIdInDatabase()
+        {
+            List<int> Ids = new List<int>();
+
+            string query = "SELECT id FROM item";
+
+            using (SqlCommand cmd = new SqlCommand(query, connection))
+            {
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Ids.Add(reader.GetInt32(reader.GetOrdinal("id")));
+                    }
+                }
+            }
+
+            return Ids;
+        }
+
         // Item Management ==================================================
 
         // ShelfRequest Management ==================================================

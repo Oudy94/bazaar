@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using SharedLibrary.Classes;
+using SharedLibrary.Enums;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Threading.Tasks;
-using SharedLibrary.Classes;
-using SharedLibrary.Enums;
 
 namespace SharedLibrary.Helpers
 {
@@ -49,7 +42,7 @@ namespace SharedLibrary.Helpers
                 throw new Exception($"Error closing database connection: {ex.Message}");
             }
         }
-        
+
         public bool AuthenticateAdmin(string email, string password)
         {
             try
@@ -67,15 +60,15 @@ namespace SharedLibrary.Helpers
             }
         }
 
-		public Employee AuthenticateUser(string email, string password)
-		{
+        public Employee AuthenticateUser(string email, string password)
+        {
             Employee employee = null;
 
             try
             {
-				string query = $"SELECT * FROM [dbo].[employee] WHERE email = '{email}' AND password = '{password}';";
-				using (SqlCommand cmd = new SqlCommand(query, connection))
-				{
+                string query = $"SELECT * FROM [dbo].[employee] WHERE email = '{email}' AND password = '{password}';";
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                {
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
@@ -88,65 +81,65 @@ namespace SharedLibrary.Helpers
                         }
                     }
                 }
-			}
-			catch (Exception ex)
-			{
-				throw new Exception($"Error authenticating user: {ex.Message}", ex);
-			}
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error authenticating user: {ex.Message}", ex);
+            }
 
             return employee;
-		}
+        }
 
-		//public Employee AuthenticateUser(string email, string password, List<Role> roles, List<Department> departments)
-		//{
-		//    Employee authenticatedEmployee = null;
-		//    try
-		//    {
-		//        string query = "SELECT * FROM employee WHERE email = @Email AND password = @Password";
-		//        SqlCommand command = new SqlCommand(query, connection);
-		//        command.Parameters.AddWithValue("@Email", email);
-		//        command.Parameters.AddWithValue("@Password", password);
+        //public Employee AuthenticateUser(string email, string password, List<Role> roles, List<Department> departments)
+        //{
+        //    Employee authenticatedEmployee = null;
+        //    try
+        //    {
+        //        string query = "SELECT * FROM employee WHERE email = @Email AND password = @Password";
+        //        SqlCommand command = new SqlCommand(query, connection);
+        //        command.Parameters.AddWithValue("@Email", email);
+        //        command.Parameters.AddWithValue("@Password", password);
 
-		//        using (var reader = command.ExecuteReader())
-		//        {
-		//            if (reader.Read())
-		//            {
-		//                var role = roles.FirstOrDefault(r => r.Id == reader.GetInt32(reader.GetOrdinal("role")));
-		//                var department = departments.FirstOrDefault(d => d.Id == reader.GetInt32(reader.GetOrdinal("department")));
+        //        using (var reader = command.ExecuteReader())
+        //        {
+        //            if (reader.Read())
+        //            {
+        //                var role = roles.FirstOrDefault(r => r.Id == reader.GetInt32(reader.GetOrdinal("role")));
+        //                var department = departments.FirstOrDefault(d => d.Id == reader.GetInt32(reader.GetOrdinal("department")));
 
-		//                if (role != null && department != null)
-		//                {
-		//                    authenticatedEmployee = new Employee(
-		//                        reader.GetInt32(reader.GetOrdinal("id")),
-		//                        reader.GetString(reader.GetOrdinal("name")),
-		//                        reader.GetString(reader.GetOrdinal("email")),
-		//                        reader.GetString(reader.GetOrdinal("password")), // Should be hashed
-		//                        role,
-		//                        reader.IsDBNull(reader.GetOrdinal("image")) ? null : reader.GetString(reader.GetOrdinal("image")),
-		//                        reader.IsDBNull(reader.GetOrdinal("address")) ? null : reader.GetString(reader.GetOrdinal("address")),
-		//                        department,
-		//                        reader.GetDecimal(reader.GetOrdinal("hourly_wage")),
-		//                        reader.GetBoolean(reader.GetOrdinal("is_active"))
-		//                    );
-		//                }
+        //                if (role != null && department != null)
+        //                {
+        //                    authenticatedEmployee = new Employee(
+        //                        reader.GetInt32(reader.GetOrdinal("id")),
+        //                        reader.GetString(reader.GetOrdinal("name")),
+        //                        reader.GetString(reader.GetOrdinal("email")),
+        //                        reader.GetString(reader.GetOrdinal("password")), // Should be hashed
+        //                        role,
+        //                        reader.IsDBNull(reader.GetOrdinal("image")) ? null : reader.GetString(reader.GetOrdinal("image")),
+        //                        reader.IsDBNull(reader.GetOrdinal("address")) ? null : reader.GetString(reader.GetOrdinal("address")),
+        //                        department,
+        //                        reader.GetDecimal(reader.GetOrdinal("hourly_wage")),
+        //                        reader.GetBoolean(reader.GetOrdinal("is_active"))
+        //                    );
+        //                }
 
-		//            }
-		//        }
-		//    }
-		//    catch (Exception ex)
-		//    {
-		//        throw new Exception("Authentication failed: " + ex.Message);
-		//    }
-		//    finally
-		//    {
-		//        UserSession.Instance.CurrentEmployee = authenticatedEmployee;
-		//    }
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception("Authentication failed: " + ex.Message);
+        //    }
+        //    finally
+        //    {
+        //        UserSession.Instance.CurrentEmployee = authenticatedEmployee;
+        //    }
 
-		//    return authenticatedEmployee;
-		//}
+        //    return authenticatedEmployee;
+        //}
 
-		// Department Management ==================================================
-		public void AddDepartmentToDB(string name)
+        // Department Management ==================================================
+        public void AddDepartmentToDB(string name)
         {
             string query = "INSERT INTO department_list (name) VALUES (@Name)";
             using (SqlCommand cmd = new SqlCommand(query, connection))
@@ -1277,7 +1270,7 @@ namespace SharedLibrary.Helpers
                             reader.GetInt32(reader.GetOrdinal("id")),
                             reader.GetString(reader.GetOrdinal("name")),
                             reader.GetString(reader.GetOrdinal("email")),
-                            reader.GetString(reader.GetOrdinal("password")), 
+                            reader.GetString(reader.GetOrdinal("password")),
                             (RoleEnum)reader.GetInt32(reader.GetOrdinal("role")) - 1,
                             reader.IsDBNull(reader.GetOrdinal("image")) ? null : reader.GetString(reader.GetOrdinal("image")),
                             reader.IsDBNull(reader.GetOrdinal("address")) ? null : reader.GetString(reader.GetOrdinal("address")),
@@ -1414,35 +1407,35 @@ namespace SharedLibrary.Helpers
 
             return shifts;
         }
-        
+
         //daysoffrequest database management
         public List<DaysOffRequest> GetDaysOffRequestsFromDatabase()
         {
-			List<DaysOffRequest> daysOffRequests = new List<DaysOffRequest>();
+            List<DaysOffRequest> daysOffRequests = new List<DaysOffRequest>();
 
-			string query = "SELECT id, employee_id, start_date, end_date, description FROM dayoffrequest";
+            string query = "SELECT id, employee_id, start_date, end_date, description FROM dayoffrequest";
 
-			using (SqlCommand cmd = new SqlCommand(query, connection))
-			{
-				using (SqlDataReader reader = cmd.ExecuteReader())
-				{
-					while (reader.Read())
-					{
-						DaysOffRequest daysOffRequest = new DaysOffRequest
-						(
-							reader.GetInt32(reader.GetOrdinal("id")),
-							reader.GetInt32(reader.GetOrdinal("employee_id")),
-							reader.GetDateTime(reader.GetOrdinal("start_date")),
-							reader.GetDateTime(reader.GetOrdinal("end_date")),
-							reader.GetString(reader.GetOrdinal("description"))
-						);
-						daysOffRequests.Add(daysOffRequest);
-					}
-				}
-			}
+            using (SqlCommand cmd = new SqlCommand(query, connection))
+            {
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        DaysOffRequest daysOffRequest = new DaysOffRequest
+                        (
+                            reader.GetInt32(reader.GetOrdinal("id")),
+                            reader.GetInt32(reader.GetOrdinal("employee_id")),
+                            reader.GetDateTime(reader.GetOrdinal("start_date")),
+                            reader.GetDateTime(reader.GetOrdinal("end_date")),
+                            reader.GetString(reader.GetOrdinal("description"))
+                        );
+                        daysOffRequests.Add(daysOffRequest);
+                    }
+                }
+            }
 
-			return daysOffRequests;
-		}
+            return daysOffRequests;
+        }
 
         public void AddDaysOffRequestToDatabase(int employeeId, DateTime startDate, DateTime endDate, string description)
         {
@@ -1470,6 +1463,73 @@ namespace SharedLibrary.Helpers
 
                 cmd.ExecuteNonQuery();
             }
+        }
+
+        public List<int> GetEmployeeShiftIDs(int employeeID)
+        {
+            string query = "SELECT * FROM shift_employee WHERE employee_id = @employeeID";
+
+            List<int> shiftIDs = new List<int>();
+
+            using (SqlCommand cmd = new SqlCommand(query, connection))
+            {
+                cmd.Parameters.AddWithValue("@employeeID", employeeID);
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        shiftIDs.Add(reader.GetInt32(reader.GetOrdinal("shift_id")));
+                    }
+                }
+            }
+
+            return shiftIDs;
+        }
+
+        public List<Shift> GetEmployeeSchedule30D(int employeeID)
+        {
+            List<Shift> EmployeeSchedule = new List<Shift>();
+
+            DateOnly currentDate = new DateOnly(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day);
+            DateOnly endDate = currentDate.AddDays(30);
+
+            OpenConnection();
+
+            List<int> employeeShiftIDs = GetEmployeeShiftIDs(employeeID);
+
+            string query = "SELECT * FROM shift WHERE id = @shiftID AND date >= @currentDate AND date <= @endDate";
+
+            foreach (int shiftID in employeeShiftIDs)
+            {
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@shiftID", shiftID);
+                    cmd.Parameters.AddWithValue("@currentDate", new DateTime(currentDate.Year, currentDate.Month, currentDate.Day));
+                    cmd.Parameters.AddWithValue("@endDate", new DateTime(endDate.Year, endDate.Month, endDate.Day));
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            DateTime dateTime = reader.GetDateTime(reader.GetOrdinal("date"));
+                            DateOnly date = new DateOnly(dateTime.Year, dateTime.Month, dateTime.Day);
+
+                            Shift shift = new Shift
+                            (
+                                reader.GetInt32(reader.GetOrdinal("id")),
+                                date,
+                                (ShiftTypeEnum)reader.GetInt32(reader.GetOrdinal("shift_type")) - 1,
+                                reader.GetDateTime(reader.GetOrdinal("start_time")),
+                                reader.GetDateTime(reader.GetOrdinal("end_time"))
+                            );
+
+                            EmployeeSchedule.Add(shift);
+                        }
+                    }
+                }
+            }
+            return EmployeeSchedule;
         }
     }
 }

@@ -1,0 +1,27 @@
+﻿@page
+@model BazaarWebApp.Pages.UserWorkScheduleModel
+@{
+    ViewData["Title"] = "User Work Schedule";
+}
+
+<h2>Work Schedule for next 30 days of @Model.EmployeeName</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Day</th>
+            <th>Shift</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var shift in Model.WorkSchedule)
+        {
+            <tr>
+                <td>@shift.StartTime.ToString("MM/dd/yyyy")</td>
+                <td>@shift.StartTime.ToString("dddd") @(shift.StartTime.Date == DateTime.Today ? "(Today)" : "")</td>
+                <td>@shift.ShiftType</td>
+            </tr>
+        }
+    </tbody>
+</table>

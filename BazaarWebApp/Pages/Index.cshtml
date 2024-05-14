@@ -5,34 +5,41 @@
 }
 
 <div class="container mt-5">
-    <h2 class="mb-4">Employee Dashboard</h2>
+    <h2 class="mb-5 text-center text-primary text-uppercase font-weight-bold">My Profile</h2>
 
     @if (Model.CurrentEmployee != null)
     {
-        <div class="card">
+        <div class="card border border-primary">
             <div class="card-body">
-                <h3 class="card-title">Welcome, @Model.CurrentEmployee.Name</h3>
-                <div class="d-flex flex-row justify-content-around align-items-center">
-
-                    <p class="card-text">
-                        <strong>ID:</strong> @Model.CurrentEmployee.Id<br />
-                        <strong>Email:</strong> @Model.CurrentEmployee.Email<br />
-                        <strong>Role:</strong> @Model.CurrentEmployee.Role<br />
-                        <strong>Department:</strong> @Model.CurrentEmployee.Department<br />
-                        <strong>Hourly Wage:</strong> $@Model.CurrentEmployee.HourlyWage.ToString("N2")<br />
-                        <strong>Active:</strong> @(Model.CurrentEmployee.IsActive ? "Yes" : "No")<br />
-                        <strong>Phone Number:</strong> @Model.CurrentEmployee.PhoneNumber<br />
-                        <strong>BSN:</strong> @Model.CurrentEmployee.BSN<br />
-                        <strong>Bank Account:</strong> @Model.CurrentEmployee.BankAccount<br />
-                        <strong>Address:</strong> @Model.CurrentEmployee.Address<br />
-                        <strong>Registered Date:</strong> @Model.CurrentEmployee.RegisterDate.ToShortDateString()
-                    </p>
+                <div class="d-flex flex-row justify-content-around align-items-start">
                     <div class="d-flex flex-column">
-                        <img src="@Model.CurrentEmployee.Image" alt="Profile Image" class="img-fluid mb-3" />
+                        <strong>
+                            <p class="fs-2 mb-0 font-weight-bold">@Model.CurrentEmployee.Name</p>
+                        </strong>
+                        <img src="@Model.CurrentEmployee.Image" alt="Profile Image" width="200" class="img-fluid my-4" />
                         <a asp-page="/EditPersonalInformation" asp-route-id="@Model.CurrentEmployee.Id"
                             class="btn btn-primary">Edit
                             Personal Information</a>
                     </div>
+
+                    <p class="card-text d-flex flex-column">
+                        <strong class="fs-2">Personal Information</strong><br />
+
+                        <strong>Email:</strong> @Model.CurrentEmployee.Email<br />
+                        <strong>Address:</strong> @Model.CurrentEmployee.Address<br />
+                        <strong>Phone Number:</strong> @Model.CurrentEmployee.PhoneNumber<br />
+                        <strong>BSN:</strong> @Model.CurrentEmployee.BSN<br />
+                        <strong>Bank Account:</strong> @Model.CurrentEmployee.BankAccount<br />
+                    </p>
+                    <p class="card-text d-flex flex-column">
+                        <strong class="fs-2">Company Information</strong><br />
+                        <strong>ID:</strong> @Model.CurrentEmployee.Id<br />
+                        <strong>Role:</strong> @Model.CurrentEmployee.Role<br />
+                        <strong>Department:</strong> @Model.CurrentEmployee.Department<br />
+                        <strong>Hourly Wage:</strong> $@Model.CurrentEmployee.HourlyWage.ToString("N2")<br />
+                        <strong>Registered Date:</strong> @Model.CurrentEmployee.RegisterDate.ToShortDateString()<br />
+                        <strong>Active:</strong> @(Model.CurrentEmployee.IsActive ? "Yes" : "No")<br />
+                    </p>
                 </div>
             </div>
         </div>

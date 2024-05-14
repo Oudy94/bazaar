@@ -36,14 +36,14 @@ namespace SharedLibrary.Classes
             return items;
         }
 
-        public List<ShelfRequest> GetShelfRequests()
+        public List<ShelfRequest> GetShelfRequests(ShelfRequestType? type = null)
         {
             List<ShelfRequest> shelfRequests = new List<ShelfRequest>();
 
             try
             {
                 _dbHelper.OpenConnection();
-                shelfRequests = _dbHelper.GetShelfRequestFromDB();
+                shelfRequests = _dbHelper.GetShelfRequestFromDB(type);
             }
             catch (Exception ex)
             {
@@ -128,12 +128,12 @@ namespace SharedLibrary.Classes
             return item;
         }
 
-        public void AddShelfRequest(int itemId, int quantity)
+        public void AddShelfRequest(int itemId, int quantity, ShelfRequestType type)
         {
             try
             {
                 _dbHelper.OpenConnection();
-                _dbHelper.AddShelfRequestToDB(itemId, quantity);
+                _dbHelper.AddShelfRequestToDB(itemId, quantity, type);
 
             }
             catch (Exception ex)
@@ -146,12 +146,12 @@ namespace SharedLibrary.Classes
             }
         }
 
-        public void EditShelfRequest(int id, int itemId, int quantity)
+        public void EditShelfRequest(int id, int itemId, int quantity, ShelfRequestType type)
         {
             try
             {
                 _dbHelper.OpenConnection();
-                _dbHelper.UpdateShelfRequest(id, itemId, quantity);
+                _dbHelper.UpdateShelfRequest(id, itemId, quantity, type);
             }
             catch (Exception ex)
             {
@@ -167,7 +167,6 @@ namespace SharedLibrary.Classes
         {
             try
             {
-                //TO-DO: deduct quantity item from warehouse
                 _dbHelper.OpenConnection();
                 _dbHelper.FulFillShelfRequestInDB(id);
             }
@@ -179,6 +178,32 @@ namespace SharedLibrary.Classes
             {
                 _dbHelper.CloseConnection();
             }
+        }
+
+        public bool DataBaseContainsId(int id)
+        {
+            try
+            {
+                _dbHelper.OpenConnection();
+                if (_dbHelper.ListItemIdInDatabase().Contains( id))
+                {
+                    return true;
+                }
+                else 
+                {
+                    return false;
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
+            }
+            
         }
     }
 }

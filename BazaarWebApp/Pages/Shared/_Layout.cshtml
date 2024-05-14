@@ -1,33 +1,51 @@
-﻿<!DOCTYPE html>
+@using System.Security.Claims
+@* @inject SharedLibrary.Classes.EmployeeManager _employeeManager
+
+@{
+int userId = int.Parse(User.FindFirstValue("id"));
+var currentEmployee = _employeeManager.GetEmployeeById(userId);
+} *@
+
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - BazaarWebApp</title>
+    @* <script src="https://cdn.tailwindcss.com"></script> *@
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/BazaarWebApp.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
+
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">BazaarWebApp</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <a class="navbar-brand" asp-area="" asp-page="/Index"><img src="/images/logo_nobg.png" width="50" /></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                    <ul class="navbar-nav me-auto mb-0">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                            <a class="nav-link text-dark text-primary-hover" asp-area="" asp-page="/Index">Profile</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark" href="#" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">Schedule</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" asp-area="" asp-page="/UserWorkSchedule">View</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-page="/DaysOffRequest">Request Days Off</a>
+                                </li>
+                            </ul>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/UserWorkSchedule">Schedule</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/DaysOffRequest">Day Off Request</a>
+                            <a class="nav-link text-dark text-primary-hover" asp-area="" asp-page="/ShelfRequest">Shelf Request</a>
                         </li>
                     </ul>
                 </div>
@@ -35,17 +53,15 @@
                     @{
                         if (User.Identity.IsAuthenticated)
                         {
-                            <a class="btn btn-light text-secondary position-relative me-2" asp-area="" asp-page="/Index">
-                                <i class="fas fa-user"></i>
-                            </a>
                             <form id="logoutForm" method="post" class="form-inline" asp-page="/Logout">
-                                <button type="submit" class="btn btn-light text-secondary position-relative me-2"><i class="fas fa-sign-out"></i> Logout</button>
+                                <button type="submit" class="btn btn-outline-primary position-relative me-2"><i
+                                        class="fas fa-sign-out"></i> Logout</button>
                             </form>
                         }
                         else
                         {
-                            <a class="btn btn-light text-secondary position-relative me-2" asp-area="" asp-page="/Login">
-                                <i class="fas fa-sign-in"></i>
+                            <a class="btn btn-outline-primary position-relative me-2" asp-area="" asp-page="/Login">
+                                <i class="fas fa-sign-in"></i> Login
                             </a>
                         }
                     }
@@ -59,19 +75,14 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - BazaarWebApp - <a asp-area="" asp-page="/Privacy">Privacy</a>
-        </div>
-    </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script>
-        document.getElementById("logoutForm").addEventListener("submit", function(event) {
+        document.getElementById("logoutForm").addEventListener("submit", function (event) {
             var confirmed = confirm("Are you sure you want to logout?");
-        
+
             if (!confirmed) {
                 event.preventDefault();
             }
@@ -80,4 +91,5 @@
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+
 </html>

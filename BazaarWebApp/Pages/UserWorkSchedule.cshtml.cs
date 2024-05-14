@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SharedLibrary.Classes;
 using SharedLibrary.Helpers;
+using System;
 using System.Security.Claims;
 
 namespace BazaarWebApp.Pages
@@ -13,7 +13,11 @@ namespace BazaarWebApp.Pages
         private readonly EmployeeManager _employeeManager = new EmployeeManager();
         private readonly DatabaseHelper _databaseHelper = new DatabaseHelper();
 
-        public List<Shift> WorkSchedule;
+        public List<Shift> ImproperWorkSchedule;
+
+        public List<(DateOnly, SharedLibrary.Enums.ShiftTypeEnum)> ProperSchedule = new List<(DateOnly, SharedLibrary.Enums.ShiftTypeEnum)>();
+
+
         public string EmployeeName;
 
         public async Task<IActionResult> OnGetAsync()
@@ -29,9 +33,23 @@ namespace BazaarWebApp.Pages
 
             EmployeeName = currentEmployee.Name;
 
-            WorkSchedule = _databaseHelper.GetEmployeeSchedule30D(userID);
+            ImproperWorkSchedule = _databaseHelper.GetEmployeeSchedule30D(userID);
 
-            Console.WriteLine(WorkSchedule.Count);
+            foreach(Shift shift in ImproperWorkSchedule)
+            {
+                Console.WriteLine(shift.Date);
+            }
+
+            foreach (Shift shift in ImproperWorkSchedule)
+            {
+                // Iterate through the week days from Monday to Friday
+                for (int i = 0; i < 5; i++)
+                {
+                    {
+                        ProperSchedule.Add((shift.Date.AddDays(i), shift.ShiftType)); ;
+                    }
+                }
+            }
 
             return Page();
         }

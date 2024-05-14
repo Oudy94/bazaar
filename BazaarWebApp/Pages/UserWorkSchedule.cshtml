@@ -4,7 +4,7 @@
     ViewData["Title"] = "User Work Schedule";
 }
 
-<h2>Work Schedule for next 30 days of @Model.EmployeeName</h2>
+<h2>@Model.EmployeeName's work schedule for current & next week</h2>
 
 <table class="table">
     <thead>
@@ -15,12 +15,15 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var shift in Model.WorkSchedule)
+        @foreach (var shift in Model.ProperSchedule)
         {
+            var shiftDate = shift.Item1;
+            var shiftType = shift.Item2;
+
             <tr>
-                <td>@shift.StartTime.ToString("MM/dd/yyyy")</td>
-                <td>@shift.StartTime.ToString("dddd") @(shift.StartTime.Date == DateTime.Today ? "(Today)" : "")</td>
-                <td>@shift.ShiftType</td>
+                <td>@shiftDate.ToString("MM/dd/yyyy")</td>
+                <td>@shiftDate.ToString("dddd") @(shiftDate == new DateOnly(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day) ? "(Today)" : "")</td>
+                <td>@shiftType</td>
             </tr>
         }
     </tbody>

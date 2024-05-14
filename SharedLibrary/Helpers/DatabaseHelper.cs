@@ -1492,7 +1492,18 @@ namespace SharedLibrary.Helpers
             List<Shift> EmployeeSchedule = new List<Shift>();
 
             DateOnly currentDate = new DateOnly(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day);
-            DateOnly endDate = currentDate.AddDays(30);
+            DateOnly endDate = (new DateOnly(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day)).AddDays(7);
+
+            // Find current weeks monday
+            while (currentDate.DayOfWeek != DayOfWeek.Monday)
+            {
+                currentDate = currentDate.AddDays(-1);
+            }
+
+            while (endDate.DayOfWeek != DayOfWeek.Sunday) // Find the next Monday
+            {
+                endDate = endDate.AddDays(1);
+            }
 
             OpenConnection();
 

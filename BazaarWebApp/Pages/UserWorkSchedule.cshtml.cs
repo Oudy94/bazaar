@@ -35,11 +35,6 @@ namespace BazaarWebApp.Pages
 
             ImproperWorkSchedule = _databaseHelper.GetEmployeeSchedule30D(userID);
 
-            foreach(Shift shift in ImproperWorkSchedule)
-            {
-                Console.WriteLine(shift.Date);
-            }
-
             foreach (Shift shift in ImproperWorkSchedule)
             {
                 // Iterate through the week days from Monday to Friday

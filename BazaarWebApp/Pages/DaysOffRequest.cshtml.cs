@@ -63,7 +63,7 @@ namespace BazaarWebApp.Pages
                 return Page();
             }
 
-            _manager.AddDaysOffRequest(CurrentEmployee.Id, temporaryData.StartDate, temporaryData.EndDate, temporaryData.Description);
+            _manager.AddDaysOffRequest(CurrentEmployee.Id, temporaryData.StartDate, temporaryData.EndDate, temporaryData.Description, 0, "sick");
             ViewData["Message"] = "Your days off request has been successfully submitted.";
 
             return Page();

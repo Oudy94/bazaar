@@ -2,6 +2,9 @@
 using SharedLibrary.Enums;
 using System.Data;
 using System.Data.SqlClient;
+using static System.Net.Mime.MediaTypeNames;
+using System.Net;
+using System.Xml.Linq;
 
 namespace SharedLibrary.Helpers
 {
@@ -863,7 +866,11 @@ namespace SharedLibrary.Helpers
 		{
 			List<ShelfRequest> shelfRequests = new List<ShelfRequest>();
 
-            string query = "SELECT id, item_id, quantity, type FROM shelf_request";
+            string query = @"
+                SELECT s.*, i.id as item_id, i.name as item_name
+                FROM shelf_request s
+                LEFT JOIN item i ON s.item_id = i.id;
+            ";
 
             if (type != null)
             {
@@ -881,10 +888,13 @@ namespace SharedLibrary.Helpers
                 {
                     while (reader.Read())
                     {
+                        string itemName = reader.GetString("item_name");
+
                         ShelfRequest shelfRequest = new ShelfRequest
                         (
                             reader.GetInt32(reader.GetOrdinal("id")),
                             reader.GetInt32(reader.GetOrdinal("item_id")),
+                            itemName,
                             reader.GetInt32(reader.GetOrdinal("quantity")),
                             (ShelfRequestType)reader.GetInt32(reader.GetOrdinal("type"))
                         );
@@ -1413,7 +1423,11 @@ namespace SharedLibrary.Helpers
         {
             List<DaysOffRequest> daysOffRequests = new List<DaysOffRequest>();
 
-            string query = "SELECT id, employee_id, start_date, end_date, description FROM dayoffrequest";
+            string query = @"
+                SELECT d.*, e.id as employee_id, e.name as employee_name
+                FROM dayoffrequest d
+                LEFT JOIN employee e ON d.employee_id = e.id;
+            " ;
 
             using (SqlCommand cmd = new SqlCommand(query, connection))
             {
@@ -1421,13 +1435,35 @@ namespace SharedLibrary.Helpers
                 {
                     while (reader.Read())
                     {
+                        string employeeName = reader.GetString("employee_name");
+                        int intStatus = reader.GetInt32(reader.GetOrdinal("status"));
+                        string status;
+                        if (intStatus == 0)
+                        {
+                            status = "pending";
+                        }
+                        else if (intStatus == 1)
+                        {
+                            status = "aproved";
+                        }
+                        else if (intStatus == 2)
+                        {
+                            status = "declined";
+                        }
+                        else
+                        {
+                            status = "failed to load";
+                        }
                         DaysOffRequest daysOffRequest = new DaysOffRequest
                         (
                             reader.GetInt32(reader.GetOrdinal("id")),
                             reader.GetInt32(reader.GetOrdinal("employee_id")),
+                            employeeName,
                             reader.GetDateTime(reader.GetOrdinal("start_date")),
                             reader.GetDateTime(reader.GetOrdinal("end_date")),
-                            reader.GetString(reader.GetOrdinal("description"))
+                            reader.GetString(reader.GetOrdinal("description")),
+                            status,
+                            reader.GetString(reader.GetOrdinal("type"))
                         );
                         daysOffRequests.Add(daysOffRequest);
                     }
@@ -1437,10 +1473,10 @@ namespace SharedLibrary.Helpers
             return daysOffRequests;
         }
 
-        public void AddDaysOffRequestToDatabase(int employeeId, DateTime startDate, DateTime endDate, string description)
+        public void AddDaysOffRequestToDatabase(int employeeId, DateTime startDate, DateTime endDate, string description, int status, string type)
         {
-            string query = "INSERT INTO dayoffrequest (employee_id, start_date, end_date, description) " +
-                "VALUES (@EmployeeId, @StartDate, @EndDate, @Description)";
+            string query = "INSERT INTO dayoffrequest (employee_id, start_date, end_date, description, status, type) " +
+                "VALUES (@EmployeeId, @StartDate, @EndDate, @Description, @Status, @Type)";
 
             using (SqlCommand cmd = new SqlCommand(query, connection))
             {
@@ -1448,6 +1484,22 @@ namespace SharedLibrary.Helpers
                 cmd.Parameters.AddWithValue("@StartDate", startDate);
                 cmd.Parameters.AddWithValue("@EndDate", endDate);
                 cmd.Parameters.AddWithValue("@Description", description);
+                cmd.Parameters.AddWithValue("@Status", status);
+                cmd.Parameters.AddWithValue("@Type", type);
+
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void ChangeStatusDaysOffRequest(int id, int status)
+        {
+            string query = @"UPDATE dayoffrequest 
+                            SET status = @Status
+                            WHERE id = @Id";
+            using (SqlCommand cmd = new SqlCommand(query, connection))
+            {
+                cmd.Parameters.AddWithValue("@Id", id);
+                cmd.Parameters.AddWithValue("@Status", status);
 
                 cmd.ExecuteNonQuery();
             }

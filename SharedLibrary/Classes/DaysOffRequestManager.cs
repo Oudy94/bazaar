@@ -31,13 +31,13 @@ public class DaysOffRequestManager
 		return daysoffrequests;
 	}
 
-	public void AddDaysOffRequest(int employeeId, DateTime startDate, DateTime endDate, string description)
+	public void AddDaysOffRequest(int employeeId, DateTime startDate, DateTime endDate, string description, int status, string type)
 	{
 		
 		try
 		{
 			_dbHelper.OpenConnection();
-			_dbHelper.AddDaysOffRequestToDatabase(employeeId, startDate, endDate, description);
+			_dbHelper.AddDaysOffRequestToDatabase(employeeId, startDate, endDate, description, status, type);
 		}
 		catch (Exception ex)
 		{
@@ -65,4 +65,38 @@ public class DaysOffRequestManager
 			_dbHelper.CloseConnection();
 		}
 	}
+
+	public void AproveDaysOffRequest(int id)
+	{
+        try
+        {
+            _dbHelper.OpenConnection();
+            _dbHelper.ChangeStatusDaysOffRequest(id, 1);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+        finally
+        {
+            _dbHelper.CloseConnection();
+        }
+    }
+
+	public void DeclineDaysOffRequest(int id)
+	{
+        try
+        {
+            _dbHelper.OpenConnection();
+            _dbHelper.ChangeStatusDaysOffRequest(id, 2);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+        finally
+        {
+            _dbHelper.CloseConnection();
+        }
+    }
 }

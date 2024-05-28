@@ -11,13 +11,15 @@ namespace SharedLibrary.Classes
     {
         public int Id { get; }
         public int ItemId { get; set; }
+        public string ItemName {  get; set; }
         public int Quantity { get; set; }
         public ShelfRequestType Type { get; set; }
 
-        public ShelfRequest(int id, int itemId, int quantity, ShelfRequestType type)
+        public ShelfRequest(int id, int itemId,string itemName, int quantity, ShelfRequestType type)
         {
             Id = id;
             ItemId = itemId;
+            ItemName = itemName;
             Quantity = quantity;
             Type = type;
 		}

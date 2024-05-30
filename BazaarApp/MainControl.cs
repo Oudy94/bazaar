@@ -870,7 +870,7 @@ namespace TheSandwichMakersHardwareStoreSolution
 
         private void btAddShelfRequest_Click(object sender, EventArgs e)
         {
-            int itemId = GetIdSelectedRow();
+            int itemId = GetIdSelectedItemShelfRequestTab();
             StockManager.AddShelfRequest(itemId, Convert.ToInt16(numericQuantityShelfRequest.Value), (ShelfRequestType)cmbShelfRequestType.SelectedIndex);
             RefreshShelfRequestDisplay();
         }
@@ -878,7 +878,7 @@ namespace TheSandwichMakersHardwareStoreSolution
         private void btnEditRequest_Click(object sender, EventArgs e)
         {
             int id = GetIdSelectedRowShelfRequest();
-            int itemId = GetIdSelectedRow();
+            int itemId = GetIdSelectedItemShelfRequestTab();
             StockManager.EditShelfRequest(id, itemId, Convert.ToInt16(numericQuantityShelfRequest.Value), (ShelfRequestType)cmbShelfRequestType.SelectedIndex);
             RefreshShelfRequestDisplay();
         }
@@ -911,6 +911,22 @@ namespace TheSandwichMakersHardwareStoreSolution
             {
                 listBox2.Items.Add(request.Quantity);
             }
+            comboBoxSelectItemShelfRequest.Items.Clear();
+            foreach (Item item in StockManager.GetItems())
+            {
+                comboBoxSelectItemShelfRequest.Items.Add(item.Id + "-" + item.Name);
+            }
+        }
+        private int GetIdSelectedItemShelfRequestTab()
+        {
+            string temporary = comboBoxSelectItemShelfRequest.Text;
+            if (temporary != "")
+            {
+                string[] temporarySplit = temporary.Split("-");
+                int id = int.Parse(temporarySplit[0]);
+                return id;
+            }
+            return -1;
         }
 
         private int GetIdSelectedRowShelfRequest()

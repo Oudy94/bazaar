@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             tabControMain = new TabControl();
             tabPageMain = new TabPage();
             cmbDepartmentList = new ComboBox();
@@ -136,6 +136,8 @@
             cmbShelfRequestTypeFilter = new ComboBox();
             dataGridView2 = new DataGridView();
             groupBox2 = new GroupBox();
+            comboBoxSelectItemShelfRequest = new ComboBox();
+            label43 = new Label();
             cmbShelfRequestType = new ComboBox();
             label21 = new Label();
             numericQuantityShelfRequest = new NumericUpDown();
@@ -172,11 +174,11 @@
             btnAssignMorning = new Button();
             btnAssignEvening = new Button();
             DaysOffRequestTab = new TabPage();
+            btAproveDaysOffRequest = new Button();
+            btDeclineDaysOffRequest = new Button();
             label38 = new Label();
             btRemoveDaysOffRequest = new Button();
             dataGridViewDaysOffRequest = new DataGridView();
-            btDeclineDaysOffRequest = new Button();
-            btAproveDaysOffRequest = new Button();
             tabControMain.SuspendLayout();
             tabPageMain.SuspendLayout();
             groupBox4.SuspendLayout();
@@ -1248,10 +1250,10 @@
             tabShelfRequest.Controls.Add(groupBox6);
             tabShelfRequest.Controls.Add(dataGridView2);
             tabShelfRequest.Controls.Add(groupBox2);
-            tabShelfRequest.Location = new Point(4, 24);
+            tabShelfRequest.Location = new Point(4, 26);
             tabShelfRequest.Name = "tabShelfRequest";
             tabShelfRequest.Padding = new Padding(3);
-            tabShelfRequest.Size = new Size(1261, 681);
+            tabShelfRequest.Size = new Size(1261, 679);
             tabShelfRequest.TabIndex = 6;
             tabShelfRequest.Text = "Shelf Request";
             tabShelfRequest.UseVisualStyleBackColor = true;
@@ -1260,7 +1262,7 @@
             // 
             groupBox6.Controls.Add(label41);
             groupBox6.Controls.Add(cmbShelfRequestTypeFilter);
-            groupBox6.Location = new Point(3, 303);
+            groupBox6.Location = new Point(3, 331);
             groupBox6.Name = "groupBox6";
             groupBox6.Size = new Size(189, 235);
             groupBox6.TabIndex = 27;
@@ -1300,6 +1302,8 @@
             // 
             // groupBox2
             // 
+            groupBox2.Controls.Add(comboBoxSelectItemShelfRequest);
+            groupBox2.Controls.Add(label43);
             groupBox2.Controls.Add(cmbShelfRequestType);
             groupBox2.Controls.Add(label21);
             groupBox2.Controls.Add(numericQuantityShelfRequest);
@@ -1309,13 +1313,32 @@
             groupBox2.Controls.Add(label23);
             groupBox2.Location = new Point(6, 6);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(186, 280);
+            groupBox2.Size = new Size(186, 319);
             groupBox2.TabIndex = 26;
             groupBox2.TabStop = false;
             groupBox2.Text = "Manage Shelf Requests";
             // 
+            // comboBoxSelectItemShelfRequest
+            // 
+            comboBoxSelectItemShelfRequest.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxSelectItemShelfRequest.FormattingEnabled = true;
+            comboBoxSelectItemShelfRequest.Location = new Point(20, 154);
+            comboBoxSelectItemShelfRequest.Name = "comboBoxSelectItemShelfRequest";
+            comboBoxSelectItemShelfRequest.Size = new Size(139, 25);
+            comboBoxSelectItemShelfRequest.TabIndex = 28;
+            // 
+            // label43
+            // 
+            label43.AutoSize = true;
+            label43.Location = new Point(20, 134);
+            label43.Name = "label43";
+            label43.Size = new Size(33, 17);
+            label43.TabIndex = 27;
+            label43.Text = "Item";
+            // 
             // cmbShelfRequestType
             // 
+            cmbShelfRequestType.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbShelfRequestType.FormattingEnabled = true;
             cmbShelfRequestType.Items.AddRange(new object[] { "Inventory", "Warehouse" });
             cmbShelfRequestType.Location = new Point(20, 106);
@@ -1341,7 +1364,7 @@
             // 
             // btnEditRequest
             // 
-            btnEditRequest.Location = new Point(20, 187);
+            btnEditRequest.Location = new Point(20, 240);
             btnEditRequest.Name = "btnEditRequest";
             btnEditRequest.Size = new Size(139, 23);
             btnEditRequest.TabIndex = 16;
@@ -1351,7 +1374,7 @@
             // 
             // btnFulfillRequest
             // 
-            btnFulfillRequest.Location = new Point(20, 216);
+            btnFulfillRequest.Location = new Point(20, 269);
             btnFulfillRequest.Name = "btnFulfillRequest";
             btnFulfillRequest.Size = new Size(139, 23);
             btnFulfillRequest.TabIndex = 15;
@@ -1361,7 +1384,7 @@
             // 
             // btAddShelfRequest
             // 
-            btAddShelfRequest.Location = new Point(20, 158);
+            btAddShelfRequest.Location = new Point(20, 211);
             btAddShelfRequest.Name = "btAddShelfRequest";
             btAddShelfRequest.Size = new Size(139, 23);
             btAddShelfRequest.TabIndex = 14;
@@ -1680,13 +1703,33 @@
             DaysOffRequestTab.Controls.Add(label38);
             DaysOffRequestTab.Controls.Add(btRemoveDaysOffRequest);
             DaysOffRequestTab.Controls.Add(dataGridViewDaysOffRequest);
-            DaysOffRequestTab.Location = new Point(4, 26);
+            DaysOffRequestTab.Location = new Point(4, 24);
             DaysOffRequestTab.Name = "DaysOffRequestTab";
             DaysOffRequestTab.Padding = new Padding(3);
-            DaysOffRequestTab.Size = new Size(1261, 679);
+            DaysOffRequestTab.Size = new Size(1261, 681);
             DaysOffRequestTab.TabIndex = 5;
             DaysOffRequestTab.Text = "Days Off Request";
             DaysOffRequestTab.UseVisualStyleBackColor = true;
+            // 
+            // btAproveDaysOffRequest
+            // 
+            btAproveDaysOffRequest.Location = new Point(390, 15);
+            btAproveDaysOffRequest.Name = "btAproveDaysOffRequest";
+            btAproveDaysOffRequest.Size = new Size(258, 36);
+            btAproveDaysOffRequest.TabIndex = 10;
+            btAproveDaysOffRequest.Text = "Aprove Selected Days Off Request";
+            btAproveDaysOffRequest.UseVisualStyleBackColor = true;
+            btAproveDaysOffRequest.Click += btAproveDaysOffRequest_Click;
+            // 
+            // btDeclineDaysOffRequest
+            // 
+            btDeclineDaysOffRequest.Location = new Point(663, 15);
+            btDeclineDaysOffRequest.Name = "btDeclineDaysOffRequest";
+            btDeclineDaysOffRequest.Size = new Size(258, 36);
+            btDeclineDaysOffRequest.TabIndex = 9;
+            btDeclineDaysOffRequest.Text = "Decline Selected Days Off Request";
+            btDeclineDaysOffRequest.UseVisualStyleBackColor = true;
+            btDeclineDaysOffRequest.Click += btDeclineDaysOffRequest_Click;
             // 
             // label38
             // 
@@ -1711,14 +1754,14 @@
             // dataGridViewDaysOffRequest
             // 
             dataGridViewDaysOffRequest.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = SystemColors.Window;
-            dataGridViewCellStyle3.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle3.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
-            dataGridViewDaysOffRequest.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+            dataGridViewDaysOffRequest.DefaultCellStyle = dataGridViewCellStyle2;
             dataGridViewDaysOffRequest.Location = new Point(3, 57);
             dataGridViewDaysOffRequest.MultiSelect = false;
             dataGridViewDaysOffRequest.Name = "dataGridViewDaysOffRequest";
@@ -1727,26 +1770,6 @@
             dataGridViewDaysOffRequest.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridViewDaysOffRequest.Size = new Size(1252, 616);
             dataGridViewDaysOffRequest.TabIndex = 0;
-            // 
-            // btDeclineDaysOffRequest
-            // 
-            btDeclineDaysOffRequest.Location = new Point(663, 15);
-            btDeclineDaysOffRequest.Name = "btDeclineDaysOffRequest";
-            btDeclineDaysOffRequest.Size = new Size(258, 36);
-            btDeclineDaysOffRequest.TabIndex = 9;
-            btDeclineDaysOffRequest.Text = "Decline Selected Days Off Request";
-            btDeclineDaysOffRequest.UseVisualStyleBackColor = true;
-            btDeclineDaysOffRequest.Click += btDeclineDaysOffRequest_Click;
-            // 
-            // btAproveDaysOffRequest
-            // 
-            btAproveDaysOffRequest.Location = new Point(390, 15);
-            btAproveDaysOffRequest.Name = "btAproveDaysOffRequest";
-            btAproveDaysOffRequest.Size = new Size(258, 36);
-            btAproveDaysOffRequest.TabIndex = 10;
-            btAproveDaysOffRequest.Text = "Aprove Selected Days Off Request";
-            btAproveDaysOffRequest.UseVisualStyleBackColor = true;
-            btAproveDaysOffRequest.Click += btAproveDaysOffRequest_Click;
             // 
             // MainControl
             // 
@@ -1952,5 +1975,7 @@
 		private GroupBox groupBox9;
         private Button btAproveDaysOffRequest;
         private Button btDeclineDaysOffRequest;
+        private ComboBox comboBoxSelectItemShelfRequest;
+        private Label label43;
     }
 }

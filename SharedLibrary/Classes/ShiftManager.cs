@@ -61,14 +61,14 @@ namespace SharedLibrary.Classes
             return shifts;
         }
 
-        public void AssignEmployeeToShift(Employee employee, DateOnly date, ShiftTypeEnum shiftType, DateTime startTime, DateTime endTime)
+        public void AssignEmployeeToShift(Employee employee, DateOnly date, ShiftTypeEnum shiftType, DateTime? startTime = null, DateTime? endTime = null)
         {
             try
             {
                 _dbHelper.OpenConnection();
                 _dbHelper.AssignEmployeeToShiftInDB(employee, date, shiftType, startTime, endTime);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -95,7 +95,7 @@ namespace SharedLibrary.Classes
             }
         }
 
-        public void AutoAssignShift(List<Employee> unassignedEmployees, DateOnly date, DateTime morningStartTime, DateTime morningEndTime, DateTime eveningStartTime, DateTime eveningEndTime)
+        public void AutoAssignShift(List<Employee> unassignedEmployees, DateOnly date)
         {
             try
             {
@@ -107,12 +107,12 @@ namespace SharedLibrary.Classes
                 {
                     if (employeeCountMorningShift <= employeeCountEveningShift)
                     {
-                        _dbHelper.AssignEmployeeToShiftInDB(unassignedEmployees[i], date, ShiftTypeEnum.Morning, morningStartTime, morningEndTime);
+                        _dbHelper.AssignEmployeeToShiftInDB(unassignedEmployees[i], date, ShiftTypeEnum.Morning);
                         employeeCountMorningShift++;
                     }
                     else
                     {
-                        _dbHelper.AssignEmployeeToShiftInDB(unassignedEmployees[i], date, ShiftTypeEnum.Evening, eveningStartTime, eveningEndTime);
+                        _dbHelper.AssignEmployeeToShiftInDB(unassignedEmployees[i], date, ShiftTypeEnum.Evening);
                         employeeCountEveningShift++;
                     }
                 }
@@ -207,6 +207,48 @@ namespace SharedLibrary.Classes
             }
 
             return shiftTime;
+        }
+
+        public List<Shift> GetEmployeeShiftsOnMonthFromDB(int employeeId, int month, int year)
+        {
+            List<Shift> shifts = new List<Shift>();
+
+            try
+            {
+                _dbHelper.OpenConnection();
+                shifts = _dbHelper.GetEmployeeShiftsOnMonthFromDB(employeeId, month, year);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
+            }
+
+            return shifts;
+        } 
+        
+        public Dictionary<Tuple<DateOnly, ShiftTypeEnum>, int> GetShiftEmployeeCountForMonth(int month, int year)
+        {
+            Dictionary<Tuple<DateOnly, ShiftTypeEnum>, int> employeeCountByShift = new Dictionary<Tuple<DateOnly, ShiftTypeEnum>, int>();
+
+            try
+            {
+                _dbHelper.OpenConnection();
+                employeeCountByShift = _dbHelper.GetShiftEmployeeCountForMonthFromDB(month, year);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
+            }
+
+            return employeeCountByShift;
         }
     }
 }

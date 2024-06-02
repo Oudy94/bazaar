@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using SharedLibrary.Classes;
 using SharedLibrary.Enums;
 using SharedLibrary.Helpers;
+using System.Globalization;
 
 namespace TheSandwichMakersHardwareStoreSolution
 {
@@ -24,6 +25,9 @@ namespace TheSandwichMakersHardwareStoreSolution
 
         private string _currentImageUrl = string.Empty;
 
+        private Dictionary<DateOnly, ShiftTypeEnum> _employeeShiftMap;
+        public static int _year, _month;
+
         public MainControl()
         {
             InitializeComponent();
@@ -31,6 +35,10 @@ namespace TheSandwichMakersHardwareStoreSolution
             this.DepartmentManager = new DepartmentManager();
             this.EmployeeManager = new EmployeeManager();
             this.StockManager = new StockManager();
+
+            _employeeShiftMap = new Dictionary<DateOnly, ShiftTypeEnum>();
+            _month = DateTime.Now.Month;
+            _year = DateTime.Now.Year;
 
             InitializeUiElements();
         }
@@ -47,18 +55,6 @@ namespace TheSandwichMakersHardwareStoreSolution
             return UserSession.Instance.CurrentEmployee?.Role == RoleEnum.Owner || UserSession.Instance.CurrentEmployee?.Role == RoleEnum.Manager;
         }
 
-        private void tabControMain_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //    if(tabControMain.SelectedTab == tabPageShifts)
-            //    {
-
-            //    }
-            //    else if (tabControMain.SelectedTab == tabPageStock)
-            //    {
-
-            //    }
-        }
-
         private void InitializeUiElements()
         {
             RefreshEmployeesGrid();
@@ -66,6 +62,7 @@ namespace TheSandwichMakersHardwareStoreSolution
             RefreshProductInfoDisplay();
             RefreshShelfRequestDisplay();
             RefreshDaysOffRequest();
+            ShowShiftCalendar(_month, _year);
 
             // Add roles to cmbRoleList
             cmbRoleList.DataSource = Enum.GetValues(typeof(RoleEnum));
@@ -928,172 +925,219 @@ namespace TheSandwichMakersHardwareStoreSolution
             }
         }
 
-        private void btnAssignMorning_Click(object sender, EventArgs e)
+        //Shift Tab
+        private void ShowShiftCalendar(int month, int year)
         {
-            if (!ValidateShiftInput(lstBoxNoShiftEmployees))
+            flpCalendar.Controls.Clear();
+            lstEmployees.SelectedIndex = -1;
+
+            _month = month;
+            _year = year;
+
+            Dictionary<Tuple<DateOnly, ShiftTypeEnum>, int> employeeCountByShift = ShiftManager.GetShiftEmployeeCountForMonth(month, year);
+
+            string monthName = new DateTimeFormatInfo().GetMonthName(month);
+            lblMonth.Text = monthName.ToUpper() + " " + year;
+
+            DateTime startOfTheMonth = new DateTime(year, month, 1);
+            int daysInMonth = DateTime.DaysInMonth(year, month);
+            int startDayOfWeek = (int)startOfTheMonth.DayOfWeek;
+
+            for (int i = 1; i < startDayOfWeek; i++)
             {
-                return;
+                Panel emptyPanel = new Panel
+                {
+                    Size = new Size(140, 102),
+                    BorderStyle = BorderStyle.None
+                };
+                flpCalendar.Controls.Add(emptyPanel);
             }
 
-            Employee employee = (Employee)lstBoxNoShiftEmployees.SelectedItem;
-            DateTime dateTime = GetStartOfWeek(dtpShift.Value);
-            DateOnly date = new DateOnly(dateTime.Year, dateTime.Month, dateTime.Day);
-
-            ShiftManager.AssignEmployeeToShift(employee, date, ShiftTypeEnum.Morning, dtpMorningShiftStartTime.Value, dtpMorningShiftEndTime.Value);
-            RefreshShiftUI();
-        }
-
-        private void btnAssignEvening_Click(object sender, EventArgs e)
-        {
-            if (!ValidateShiftInput(lstBoxNoShiftEmployees))
+            for (int day = 1; day <= daysInMonth; day++)
             {
-                return;
+                DateOnly date = new DateOnly(year, month, day);
+                ShiftDayUC shiftDayUC = new ShiftDayUC(date);
+
+                int morningShiftCount = employeeCountByShift.TryGetValue(new Tuple<DateOnly, ShiftTypeEnum>(date, ShiftTypeEnum.Morning), out int morningCount) ? morningCount : 0;
+                int eveningShiftCount = employeeCountByShift.TryGetValue(new Tuple<DateOnly, ShiftTypeEnum>(date, ShiftTypeEnum.Evening), out int eveningCount) ? eveningCount : 0;
+
+                shiftDayUC.SetShiftCounts(morningShiftCount, eveningShiftCount);
+
+                flpCalendar.Controls.Add(shiftDayUC);
             }
-
-            Employee employee = (Employee)lstBoxNoShiftEmployees.SelectedItem;
-            DateTime dateTime = GetStartOfWeek(dtpShift.Value);
-            DateOnly date = new DateOnly(dateTime.Year, dateTime.Month, dateTime.Day);
-
-            ShiftManager.AssignEmployeeToShift(employee, date, ShiftTypeEnum.Evening, dtpEveningShiftStartTime.Value, dtpEveningShiftStartTime.Value);
-            RefreshShiftUI();
-        }
-
-        private void btnUnassignMorningShift_Click(object sender, EventArgs e)
-        {
-            if (!ValidateShiftInput(lstBoxMorningShiftEmployees))
-            {
-                return;
-            }
-
-            Employee employee = (Employee)lstBoxMorningShiftEmployees.SelectedItem;
-            DateTime dateTime = GetStartOfWeek(dtpShift.Value);
-            DateOnly date = new DateOnly(dateTime.Year, dateTime.Month, dateTime.Day);
-
-            ShiftManager.UnassignEmployeeFromShift(employee, date, ShiftTypeEnum.Morning);
-            RefreshShiftUI();
-        }
-
-        private void btnUnassignEveningShift_Click(object sender, EventArgs e)
-        {
-            if (!ValidateShiftInput(lstBoxEveningShiftEmployees))
-            {
-                return;
-            }
-
-            Employee employee = (Employee)lstBoxEveningShiftEmployees.SelectedItem;
-            DateTime dateTime = GetStartOfWeek(dtpShift.Value);
-            DateOnly date = new DateOnly(dateTime.Year, dateTime.Month, dateTime.Day);
-
-            ShiftManager.UnassignEmployeeFromShift(employee, date, ShiftTypeEnum.Evening);
-            RefreshShiftUI();
-        }
-
-        public bool ValidateShiftInput(ListBox listBox)
-        {
-            if (listBox.SelectedIndex < 0)
-            {
-                MessageBox.Show("you have to select employee first.");
-                return false;
-            }
-
-            if (GetStartOfWeek(dtpShift.Value).Date == DateTime.MinValue)
-            {
-                MessageBox.Show("you have to select correct date.");
-                return false;
-            }
-
-            return true;
-        }
-
-        private void dtpShift_ValueChanged(object sender, EventArgs e)
-        {
-            RefreshShiftUI();
         }
 
         public void RefreshShiftUI()
         {
-            DateTime dateTime = GetStartOfWeek(dtpShift.Value);
-            DateOnly date = new DateOnly(dateTime.Year, dateTime.Month, dateTime.Day);
-
-            lblSelectedShift.Text = $"{dateTime.Date.ToShortDateString()} to {dateTime.AddDays(7).Date.ToShortDateString()}";
-
-            lstBoxNoShiftEmployees.Items.Clear();
-            foreach (Employee employee in EmployeeManager.GetUnassignedEmployeesToShiftOnDate(date))
-            {
-                lstBoxNoShiftEmployees.Items.Add(employee);
-            }
-
-            lstBoxMorningShiftEmployees.Items.Clear();
-            foreach (Employee employee in EmployeeManager.GetAssignedEmployeesToShiftOnDate(date, ShiftTypeEnum.Morning))
-            {
-                lstBoxMorningShiftEmployees.Items.Add(employee);
-            }
-
-            lstBoxEveningShiftEmployees.Items.Clear();
-            foreach (Employee employee in EmployeeManager.GetAssignedEmployeesToShiftOnDate(date, ShiftTypeEnum.Evening))
-            {
-                lstBoxEveningShiftEmployees.Items.Add(employee);
-            }
-
-            (dtpMorningShiftStartTime.Value, dtpMorningShiftEndTime.Value) = ShiftManager.GetShiftTimes(date, ShiftTypeEnum.Morning);
-            (dtpEveningShiftStartTime.Value, dtpEveningShiftEndTime.Value) = ShiftManager.GetShiftTimes(date, ShiftTypeEnum.Evening);
+            lstEmployees.DataSource = EmployeeManager.GetEmployees();
+            lstEmployees.SelectedIndex = -1;
         }
 
-        private void btnAutoAssign_Click(object sender, EventArgs e)
+        private void btnPreviousMonth_Click(object sender, EventArgs e)
         {
-            if (GetStartOfWeek(dtpShift.Value).Date == DateTime.MinValue)
+            _month--;
+            if (_month < 1)
             {
-                MessageBox.Show("you have to select correct date.");
+                _month = 12;
+                _year--;
+            }
+
+            ShowShiftCalendar(_month, _year);
+        }
+
+        private void btnNextMonth_Click(object sender, EventArgs e)
+        {
+            _month++;
+            if (_month > 12)
+            {
+                _month = 1;
+                _year++;
+            }
+
+            ShowShiftCalendar(_month, _year);
+        }
+
+        private void txtEmployeeSearch_TextChanged(object sender, EventArgs e)
+        {
+            string searchText = txtEmployeeSearch.Text.ToLower();
+
+            lstEmployees.ClearSelected();
+
+            for (int i = 0; i < lstEmployees.Items.Count; i++)
+            {
+                string currentItem = lstEmployees.Items[i].ToString().ToLower();
+                if (currentItem.Contains(searchText))
+                {
+                    lstEmployees.SelectedIndex = i;
+                    break;
+                }
+            }
+        }
+
+        private void lstEmployees_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lstEmployees.SelectedItem != null)
+            {
+                Employee employee = (Employee)lstEmployees.SelectedItem;
+
+                _employeeShiftMap = ShiftManager.GetEmployeeShiftsOnMonthFromDB(employee.Id, _month, _year).ToDictionary(shift => shift.Date, shift => shift.ShiftType);
+
+                foreach (Control control in flpCalendar.Controls)
+                {
+                    if (control is ShiftDayUC shiftDayUC)
+                    {
+                        shiftDayUC.ResetShiftsStatus();
+
+                        if (shiftDayUC.Date >= DateOnly.FromDateTime(DateTime.Now))
+                        {
+                            shiftDayUC.EnableCheckBox();
+                        }
+
+                        if (_employeeShiftMap.TryGetValue(shiftDayUC.Date, out ShiftTypeEnum shiftType))
+                        {
+                            if (shiftType == ShiftTypeEnum.Morning)
+                            {
+                                shiftDayUC.CheckMorningShift();
+                            }
+                            else if (shiftType == ShiftTypeEnum.Evening)
+                            {
+                                shiftDayUC.CheckEveningShift();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void btnSaveShiftSchedule_Click(object sender, EventArgs e)
+        {
+            if (lstEmployees.SelectedItem == null)
+            {
+                MessageBox.Show("You have to select an employee.");
                 return;
             }
 
-            DateTime dateTime = GetStartOfWeek(dtpShift.Value);
-            DateOnly date = new DateOnly(dateTime.Year, dateTime.Month, dateTime.Day);
+            Dictionary<DateOnly, ShiftTypeEnum> addedShiftsMap = new Dictionary<DateOnly, ShiftTypeEnum>();
+            Dictionary<DateOnly, ShiftTypeEnum> removedShiftsMap = new Dictionary<DateOnly, ShiftTypeEnum>();
 
-            ShiftManager.AutoAssignShift(EmployeeManager.GetUnassignedEmployeesToShiftOnDate(date), date, dtpMorningShiftStartTime.Value, dtpMorningShiftEndTime.Value, dtpEveningShiftStartTime.Value, dtpEveningShiftEndTime.Value);
+            foreach (Control control in flpCalendar.Controls)
+            {
+                if (control is ShiftDayUC shiftDayUC)
+                {
+                    if (shiftDayUC.IsMorningShiftAdded())
+                    {
+                        addedShiftsMap.Add(shiftDayUC.Date, ShiftTypeEnum.Morning);
+                    }
+                    else if (shiftDayUC.IsEveningShiftAdded())
+                    {
+                        addedShiftsMap.Add(shiftDayUC.Date, ShiftTypeEnum.Evening);
+                    }
+
+                    if (shiftDayUC.IsMorningShiftRemoved())
+                    {
+                        removedShiftsMap.Add(shiftDayUC.Date, ShiftTypeEnum.Morning);
+                    }
+                    else if (shiftDayUC.IsEveningShiftRemoved())
+                    {
+                        removedShiftsMap.Add(shiftDayUC.Date, ShiftTypeEnum.Evening);
+                    }
+                }
+            }
+
+            if (addedShiftsMap.Count == 0 && removedShiftsMap.Count == 0)
+            {
+                MessageBox.Show("There was no change made.");
+                return;
+            }
+
+            Employee employee = (Employee)lstEmployees.SelectedItem;
+
+            foreach (var entry in addedShiftsMap)
+            {
+                DateOnly date = entry.Key;
+                ShiftTypeEnum shiftType = entry.Value;
+
+                ShiftManager.AssignEmployeeToShift(employee, date, shiftType);
+            }
+
+            foreach (var entry in removedShiftsMap)
+            {
+                DateOnly date = entry.Key;
+                ShiftTypeEnum shiftType = entry.Value;
+
+                ShiftManager.UnassignEmployeeFromShift(employee, date, shiftType);
+            }
+
+            MessageBox.Show("New Shifts assignment updated successfully.");
+            ShowShiftCalendar(_month, _year);
+        }
+
+        private void btnRefreshShiftSchedule_Click(object sender, EventArgs e)
+        {
             RefreshShiftUI();
+            ShowShiftCalendar(_month, _year);
         }
 
-        private DateTime GetStartOfWeek(DateTime dateTime)
+        private void btnAutoAssignDate_Click(object sender, EventArgs e)
         {
-            int diff = (7 + (dateTime.DayOfWeek - DayOfWeek.Monday)) % 7;
-            return dateTime.AddDays(-1 * diff).Date;
+            DateTime fromDate = dtpAutoAssignFrom.Value.Date;
+            DateTime toDate = dtpAutoAssignTo.Value.Date;
+
+            if (fromDate > toDate)
+            {
+                MessageBox.Show("From date must be less than or equal to To date.");
+                return;
+            }
+
+            for (DateTime date = fromDate; date.Date <= toDate; date = date.AddDays(1))
+            {
+                DateOnly dateOnly = new DateOnly(date.Year, date.Month, date.Day);
+                ShiftManager.AutoAssignShift(EmployeeManager.GetUnassignedEmployeesToShiftOnDate(dateOnly), dateOnly);
+            }
+
+            MessageBox.Show("Shift assigned successfully.");
+            ShowShiftCalendar(_month, _year);
         }
-
-        private void btnSaveMorningShiftTime_Click(object sender, EventArgs e)
-        {
-            DateTime dateTime = GetStartOfWeek(dtpShift.Value);
-            DateOnly date = new DateOnly(dateTime.Year, dateTime.Month, dateTime.Day);
-
-            try
-            {
-                ShiftManager.AddOrUpdateShift(date, ShiftTypeEnum.Morning, dtpMorningShiftStartTime.Value, dtpMorningShiftEndTime.Value);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-
-            MessageBox.Show("Morning shift time is saved.");
-        }
-
-        private void btnSaveEveningShiftTime_Click(object sender, EventArgs e)
-        {
-            DateTime dateTime = GetStartOfWeek(dtpShift.Value);
-            DateOnly date = new DateOnly(dateTime.Year, dateTime.Month, dateTime.Day);
-
-            try
-            {
-                ShiftManager.AddOrUpdateShift(date, ShiftTypeEnum.Evening, dtpEveningShiftStartTime.Value, dtpEveningShiftEndTime.Value);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-
-            MessageBox.Show("Evening shift time is saved.");
-        }
-
 
         //DaysOffRequest Tab
 
@@ -1143,12 +1187,5 @@ namespace TheSandwichMakersHardwareStoreSolution
         {
             RefreshShelfRequestDisplay();
         }
-
-        private void groupBox8_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        
     }
 }

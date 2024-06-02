@@ -28,7 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainControl));
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             tabControMain = new TabControl();
             tabPageMain = new TabPage();
             cmbDepartmentList = new ComboBox();
@@ -144,39 +145,37 @@
             btAddShelfRequest = new Button();
             label23 = new Label();
             tabPageShifts = new TabPage();
-            groupBox8 = new GroupBox();
-            label8 = new Label();
-            lstBoxEveningShiftEmployees = new ListBox();
-            label30 = new Label();
-            btnUnassignEveningShift = new Button();
-            btnSaveEveningShiftTime = new Button();
-            label22 = new Label();
-            dtpEveningShiftEndTime = new DateTimePicker();
-            dtpEveningShiftStartTime = new DateTimePicker();
-            lblSelectedShift = new Label();
-            label6 = new Label();
-            lstBoxNoShiftEmployees = new ListBox();
-            groupBox7 = new GroupBox();
-            label7 = new Label();
-            label34 = new Label();
-            lstBoxMorningShiftEmployees = new ListBox();
-            label32 = new Label();
-            btnUnassignMorningShift = new Button();
-            dtpMorningShiftStartTime = new DateTimePicker();
-            dtpMorningShiftEndTime = new DateTimePicker();
-            btnSaveMorningShiftTime = new Button();
-            groupBox9 = new GroupBox();
+            btnRefreshShiftSchedule = new Button();
+            btnNextMonth = new Button();
+            btnPreviousMonth = new Button();
+            lblMonth = new Label();
+            label50 = new Label();
+            label45 = new Label();
+            label43 = new Label();
             label9 = new Label();
-            dtpShift = new DateTimePicker();
-            btnAutoAssign = new Button();
-            btnAssignMorning = new Button();
-            btnAssignEvening = new Button();
+            label8 = new Label();
+            label7 = new Label();
+            btnAutoAssignDate = new Button();
+            label6 = new Label();
+            flpCalendar = new FlowLayoutPanel();
+            groupBox9 = new GroupBox();
+            btnSaveShiftSchedule = new Button();
+            label51 = new Label();
+            txtEmployeeSearch = new TextBox();
+            lstEmployees = new ListBox();
             DaysOffRequestTab = new TabPage();
+            btAproveDaysOffRequest = new Button();
+            btDeclineDaysOffRequest = new Button();
             label38 = new Label();
             btRemoveDaysOffRequest = new Button();
             dataGridViewDaysOffRequest = new DataGridView();
-            btDeclineDaysOffRequest = new Button();
-            btAproveDaysOffRequest = new Button();
+            backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            groupBox7 = new GroupBox();
+            groupBox8 = new GroupBox();
+            dtpAutoAssignFrom = new DateTimePicker();
+            label22 = new Label();
+            label30 = new Label();
+            dtpAutoAssignTo = new DateTimePicker();
             tabControMain.SuspendLayout();
             tabPageMain.SuspendLayout();
             groupBox4.SuspendLayout();
@@ -201,11 +200,11 @@
             groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericQuantityShelfRequest).BeginInit();
             tabPageShifts.SuspendLayout();
-            groupBox8.SuspendLayout();
-            groupBox7.SuspendLayout();
             groupBox9.SuspendLayout();
             DaysOffRequestTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewDaysOffRequest).BeginInit();
+            groupBox7.SuspendLayout();
+            groupBox8.SuspendLayout();
             SuspendLayout();
             // 
             // tabControMain
@@ -222,7 +221,6 @@
             tabControMain.SelectedIndex = 0;
             tabControMain.Size = new Size(1269, 709);
             tabControMain.TabIndex = 1;
-            tabControMain.SelectedIndexChanged += tabControMain_SelectedIndexChanged;
             // 
             // tabPageMain
             // 
@@ -1380,298 +1378,207 @@
             // 
             // tabPageShifts
             // 
-            tabPageShifts.Controls.Add(groupBox8);
-            tabPageShifts.Controls.Add(lblSelectedShift);
+            tabPageShifts.Controls.Add(label50);
+            tabPageShifts.Controls.Add(label45);
+            tabPageShifts.Controls.Add(label43);
+            tabPageShifts.Controls.Add(label9);
+            tabPageShifts.Controls.Add(label8);
+            tabPageShifts.Controls.Add(label7);
             tabPageShifts.Controls.Add(label6);
-            tabPageShifts.Controls.Add(lstBoxNoShiftEmployees);
-            tabPageShifts.Controls.Add(groupBox7);
+            tabPageShifts.Controls.Add(flpCalendar);
             tabPageShifts.Controls.Add(groupBox9);
-            tabPageShifts.Location = new Point(4, 24);
+            tabPageShifts.Controls.Add(groupBox7);
+            tabPageShifts.Controls.Add(groupBox8);
+            tabPageShifts.Location = new Point(4, 26);
             tabPageShifts.Name = "tabPageShifts";
-            tabPageShifts.Size = new Size(1261, 681);
+            tabPageShifts.Size = new Size(1261, 679);
             tabPageShifts.TabIndex = 3;
             tabPageShifts.Text = "Shifts";
             tabPageShifts.UseVisualStyleBackColor = true;
             // 
-            // groupBox8
+            // btnRefreshShiftSchedule
             // 
-            groupBox8.Controls.Add(label8);
-            groupBox8.Controls.Add(lstBoxEveningShiftEmployees);
-            groupBox8.Controls.Add(label30);
-            groupBox8.Controls.Add(btnUnassignEveningShift);
-            groupBox8.Controls.Add(btnSaveEveningShiftTime);
-            groupBox8.Controls.Add(label22);
-            groupBox8.Controls.Add(dtpEveningShiftEndTime);
-            groupBox8.Controls.Add(dtpEveningShiftStartTime);
-            groupBox8.Location = new Point(980, 94);
-            groupBox8.Name = "groupBox8";
-            groupBox8.Size = new Size(266, 575);
-            groupBox8.TabIndex = 30;
-            groupBox8.TabStop = false;
-            groupBox8.Text = "Evening Shift";
-            groupBox8.Enter += groupBox8_Enter;
+            btnRefreshShiftSchedule.FlatAppearance.BorderSize = 0;
+            btnRefreshShiftSchedule.FlatStyle = FlatStyle.Flat;
+            btnRefreshShiftSchedule.Image = Properties.Resources.refresh_page_option;
+            btnRefreshShiftSchedule.Location = new Point(182, 16);
+            btnRefreshShiftSchedule.Name = "btnRefreshShiftSchedule";
+            btnRefreshShiftSchedule.Size = new Size(25, 25);
+            btnRefreshShiftSchedule.TabIndex = 49;
+            btnRefreshShiftSchedule.UseVisualStyleBackColor = true;
+            btnRefreshShiftSchedule.Click += btnRefreshShiftSchedule_Click;
             // 
-            // label8
+            // btnNextMonth
             // 
-            label8.AutoSize = true;
-            label8.Font = new Font("Segoe UI Semibold", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
-            label8.Location = new Point(5, 22);
-            label8.Name = "label8";
-            label8.Size = new Size(151, 20);
-            label8.TabIndex = 28;
-            label8.Text = "Assigned Employees:";
+            btnNextMonth.FlatAppearance.BorderSize = 0;
+            btnNextMonth.FlatStyle = FlatStyle.Flat;
+            btnNextMonth.Image = (Image)resources.GetObject("btnNextMonth.Image");
+            btnNextMonth.Location = new Point(37, 54);
+            btnNextMonth.Name = "btnNextMonth";
+            btnNextMonth.Size = new Size(25, 25);
+            btnNextMonth.TabIndex = 44;
+            btnNextMonth.UseVisualStyleBackColor = true;
+            btnNextMonth.Click += btnNextMonth_Click;
             // 
-            // lstBoxEveningShiftEmployees
+            // btnPreviousMonth
             // 
-            lstBoxEveningShiftEmployees.FormattingEnabled = true;
-            lstBoxEveningShiftEmployees.ItemHeight = 17;
-            lstBoxEveningShiftEmployees.Location = new Point(6, 44);
-            lstBoxEveningShiftEmployees.Name = "lstBoxEveningShiftEmployees";
-            lstBoxEveningShiftEmployees.Size = new Size(250, 361);
-            lstBoxEveningShiftEmployees.TabIndex = 2;
+            btnPreviousMonth.FlatAppearance.BorderSize = 0;
+            btnPreviousMonth.FlatStyle = FlatStyle.Flat;
+            btnPreviousMonth.Image = (Image)resources.GetObject("btnPreviousMonth.Image");
+            btnPreviousMonth.Location = new Point(6, 54);
+            btnPreviousMonth.Name = "btnPreviousMonth";
+            btnPreviousMonth.Size = new Size(25, 25);
+            btnPreviousMonth.TabIndex = 43;
+            btnPreviousMonth.UseVisualStyleBackColor = true;
+            btnPreviousMonth.Click += btnPreviousMonth_Click;
             // 
-            // label30
+            // lblMonth
             // 
-            label30.AutoSize = true;
-            label30.Location = new Point(15, 516);
-            label30.Name = "label30";
-            label30.Size = new Size(62, 17);
-            label30.TabIndex = 25;
-            label30.Text = "End time:";
+            lblMonth.AutoSize = true;
+            lblMonth.Font = new Font("Century Gothic", 18F, FontStyle.Regular, GraphicsUnit.Point);
+            lblMonth.Location = new Point(6, 21);
+            lblMonth.Name = "lblMonth";
+            lblMonth.Size = new Size(102, 30);
+            lblMonth.TabIndex = 40;
+            lblMonth.Text = "MONTH";
             // 
-            // btnUnassignEveningShift
+            // label50
             // 
-            btnUnassignEveningShift.Location = new Point(6, 411);
-            btnUnassignEveningShift.Name = "btnUnassignEveningShift";
-            btnUnassignEveningShift.Size = new Size(248, 40);
-            btnUnassignEveningShift.TabIndex = 12;
-            btnUnassignEveningShift.Text = "Unassign Evening Shift";
-            btnUnassignEveningShift.UseVisualStyleBackColor = true;
-            btnUnassignEveningShift.Click += btnUnassignEveningShift_Click;
+            label50.AutoSize = true;
+            label50.Font = new Font("Century Gothic", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
+            label50.Location = new Point(1136, 14);
+            label50.Name = "label50";
+            label50.Size = new Size(80, 22);
+            label50.TabIndex = 39;
+            label50.Text = "Sunday";
             // 
-            // btnSaveEveningShiftTime
+            // label45
             // 
-            btnSaveEveningShiftTime.Location = new Point(5, 540);
-            btnSaveEveningShiftTime.Name = "btnSaveEveningShiftTime";
-            btnSaveEveningShiftTime.Size = new Size(249, 28);
-            btnSaveEveningShiftTime.TabIndex = 24;
-            btnSaveEveningShiftTime.Text = "Save Time";
-            btnSaveEveningShiftTime.UseVisualStyleBackColor = true;
-            btnSaveEveningShiftTime.Click += btnSaveEveningShiftTime_Click;
+            label45.AutoSize = true;
+            label45.Font = new Font("Century Gothic", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
+            label45.Location = new Point(856, 14);
+            label45.Name = "label45";
+            label45.Size = new Size(65, 22);
+            label45.TabIndex = 38;
+            label45.Text = "Friday";
             // 
-            // label22
+            // label43
             // 
-            label22.AutoSize = true;
-            label22.Location = new Point(15, 480);
-            label22.Name = "label22";
-            label22.Size = new Size(67, 17);
-            label22.TabIndex = 20;
-            label22.Text = "Start time:";
-            // 
-            // dtpEveningShiftEndTime
-            // 
-            dtpEveningShiftEndTime.CustomFormat = "";
-            dtpEveningShiftEndTime.Format = DateTimePickerFormat.Time;
-            dtpEveningShiftEndTime.Location = new Point(98, 510);
-            dtpEveningShiftEndTime.Name = "dtpEveningShiftEndTime";
-            dtpEveningShiftEndTime.ShowUpDown = true;
-            dtpEveningShiftEndTime.Size = new Size(106, 25);
-            dtpEveningShiftEndTime.TabIndex = 23;
-            // 
-            // dtpEveningShiftStartTime
-            // 
-            dtpEveningShiftStartTime.CustomFormat = "";
-            dtpEveningShiftStartTime.Format = DateTimePickerFormat.Time;
-            dtpEveningShiftStartTime.Location = new Point(98, 474);
-            dtpEveningShiftStartTime.Name = "dtpEveningShiftStartTime";
-            dtpEveningShiftStartTime.ShowUpDown = true;
-            dtpEveningShiftStartTime.Size = new Size(106, 25);
-            dtpEveningShiftStartTime.TabIndex = 21;
-            // 
-            // lblSelectedShift
-            // 
-            lblSelectedShift.AutoSize = true;
-            lblSelectedShift.Font = new Font("Segoe UI Semibold", 15.75F, FontStyle.Bold, GraphicsUnit.Point);
-            lblSelectedShift.Location = new Point(700, 21);
-            lblSelectedShift.Name = "lblSelectedShift";
-            lblSelectedShift.Size = new Size(178, 30);
-            lblSelectedShift.TabIndex = 28;
-            lblSelectedShift.Text = "1/1/1111 to 1/1/1111";
-            // 
-            // label6
-            // 
-            label6.AutoSize = true;
-            label6.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            label6.Location = new Point(389, 94);
-            label6.Name = "label6";
-            label6.Size = new Size(207, 25);
-            label6.TabIndex = 7;
-            label6.Text = "Unassigned Employees";
-            // 
-            // lstBoxNoShiftEmployees
-            // 
-            lstBoxNoShiftEmployees.FormattingEnabled = true;
-            lstBoxNoShiftEmployees.ItemHeight = 17;
-            lstBoxNoShiftEmployees.Location = new Point(389, 136);
-            lstBoxNoShiftEmployees.Name = "lstBoxNoShiftEmployees";
-            lstBoxNoShiftEmployees.Size = new Size(224, 531);
-            lstBoxNoShiftEmployees.TabIndex = 1;
-            // 
-            // groupBox7
-            // 
-            groupBox7.Controls.Add(label7);
-            groupBox7.Controls.Add(label34);
-            groupBox7.Controls.Add(lstBoxMorningShiftEmployees);
-            groupBox7.Controls.Add(label32);
-            groupBox7.Controls.Add(btnUnassignMorningShift);
-            groupBox7.Controls.Add(dtpMorningShiftStartTime);
-            groupBox7.Controls.Add(dtpMorningShiftEndTime);
-            groupBox7.Controls.Add(btnSaveMorningShiftTime);
-            groupBox7.Location = new Point(669, 94);
-            groupBox7.Name = "groupBox7";
-            groupBox7.Size = new Size(268, 575);
-            groupBox7.TabIndex = 29;
-            groupBox7.TabStop = false;
-            groupBox7.Text = "Morning Shift";
-            // 
-            // label7
-            // 
-            label7.AutoSize = true;
-            label7.Font = new Font("Segoe UI Semibold", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
-            label7.Location = new Point(13, 21);
-            label7.Name = "label7";
-            label7.Size = new Size(151, 20);
-            label7.TabIndex = 8;
-            label7.Text = "Assigned Employees:";
-            // 
-            // label34
-            // 
-            label34.AutoSize = true;
-            label34.Location = new Point(14, 510);
-            label34.Name = "label34";
-            label34.Size = new Size(62, 17);
-            label34.TabIndex = 27;
-            label34.Text = "End time:";
-            // 
-            // lstBoxMorningShiftEmployees
-            // 
-            lstBoxMorningShiftEmployees.FormattingEnabled = true;
-            lstBoxMorningShiftEmployees.ItemHeight = 17;
-            lstBoxMorningShiftEmployees.Location = new Point(13, 44);
-            lstBoxMorningShiftEmployees.Name = "lstBoxMorningShiftEmployees";
-            lstBoxMorningShiftEmployees.Size = new Size(250, 361);
-            lstBoxMorningShiftEmployees.TabIndex = 0;
-            // 
-            // label32
-            // 
-            label32.AutoSize = true;
-            label32.Location = new Point(14, 474);
-            label32.Name = "label32";
-            label32.Size = new Size(67, 17);
-            label32.TabIndex = 26;
-            label32.Text = "Start time:";
-            // 
-            // btnUnassignMorningShift
-            // 
-            btnUnassignMorningShift.Location = new Point(12, 411);
-            btnUnassignMorningShift.Name = "btnUnassignMorningShift";
-            btnUnassignMorningShift.Size = new Size(250, 40);
-            btnUnassignMorningShift.TabIndex = 5;
-            btnUnassignMorningShift.Text = "Unassign Morning Shift";
-            btnUnassignMorningShift.UseVisualStyleBackColor = true;
-            btnUnassignMorningShift.Click += btnUnassignMorningShift_Click;
-            // 
-            // dtpMorningShiftStartTime
-            // 
-            dtpMorningShiftStartTime.CustomFormat = "";
-            dtpMorningShiftStartTime.Format = DateTimePickerFormat.Time;
-            dtpMorningShiftStartTime.Location = new Point(97, 470);
-            dtpMorningShiftStartTime.Name = "dtpMorningShiftStartTime";
-            dtpMorningShiftStartTime.ShowUpDown = true;
-            dtpMorningShiftStartTime.Size = new Size(106, 25);
-            dtpMorningShiftStartTime.TabIndex = 14;
-            // 
-            // dtpMorningShiftEndTime
-            // 
-            dtpMorningShiftEndTime.CustomFormat = "";
-            dtpMorningShiftEndTime.Format = DateTimePickerFormat.Time;
-            dtpMorningShiftEndTime.Location = new Point(97, 506);
-            dtpMorningShiftEndTime.Name = "dtpMorningShiftEndTime";
-            dtpMorningShiftEndTime.ShowUpDown = true;
-            dtpMorningShiftEndTime.Size = new Size(106, 25);
-            dtpMorningShiftEndTime.TabIndex = 16;
-            // 
-            // btnSaveMorningShiftTime
-            // 
-            btnSaveMorningShiftTime.Location = new Point(12, 540);
-            btnSaveMorningShiftTime.Name = "btnSaveMorningShiftTime";
-            btnSaveMorningShiftTime.Size = new Size(250, 28);
-            btnSaveMorningShiftTime.TabIndex = 17;
-            btnSaveMorningShiftTime.Text = "Save Time";
-            btnSaveMorningShiftTime.UseVisualStyleBackColor = true;
-            btnSaveMorningShiftTime.Click += btnSaveMorningShiftTime_Click;
-            // 
-            // groupBox9
-            // 
-            groupBox9.Controls.Add(label9);
-            groupBox9.Controls.Add(dtpShift);
-            groupBox9.Controls.Add(btnAutoAssign);
-            groupBox9.Controls.Add(btnAssignMorning);
-            groupBox9.Controls.Add(btnAssignEvening);
-            groupBox9.Location = new Point(3, 3);
-            groupBox9.Name = "groupBox9";
-            groupBox9.Size = new Size(335, 664);
-            groupBox9.TabIndex = 31;
-            groupBox9.TabStop = false;
-            groupBox9.Text = "Manage Shifts";
+            label43.AutoSize = true;
+            label43.Font = new Font("Century Gothic", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
+            label43.Location = new Point(697, 14);
+            label43.Name = "label43";
+            label43.Size = new Size(92, 22);
+            label43.TabIndex = 37;
+            label43.Text = "Thursday";
             // 
             // label9
             // 
             label9.AutoSize = true;
-            label9.Location = new Point(41, 68);
+            label9.Font = new Font("Century Gothic", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
+            label9.Location = new Point(526, 14);
             label9.Name = "label9";
-            label9.Size = new Size(35, 17);
-            label9.TabIndex = 10;
-            label9.Text = "Date";
+            label9.Size = new Size(120, 22);
+            label9.TabIndex = 36;
+            label9.Text = "Wednesday";
             // 
-            // dtpShift
+            // label8
             // 
-            dtpShift.CustomFormat = "";
-            dtpShift.Location = new Point(41, 107);
-            dtpShift.Name = "dtpShift";
-            dtpShift.Size = new Size(220, 25);
-            dtpShift.TabIndex = 11;
-            dtpShift.ValueChanged += dtpShift_ValueChanged;
+            label8.AutoSize = true;
+            label8.Font = new Font("Century Gothic", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
+            label8.Location = new Point(388, 14);
+            label8.Name = "label8";
+            label8.Size = new Size(86, 22);
+            label8.TabIndex = 35;
+            label8.Text = "Tuesday";
             // 
-            // btnAutoAssign
+            // label7
             // 
-            btnAutoAssign.Location = new Point(31, 194);
-            btnAutoAssign.Name = "btnAutoAssign";
-            btnAutoAssign.Size = new Size(250, 88);
-            btnAutoAssign.TabIndex = 6;
-            btnAutoAssign.Text = "Auto Assign";
-            btnAutoAssign.UseVisualStyleBackColor = true;
-            btnAutoAssign.Click += btnAutoAssign_Click;
+            label7.AutoSize = true;
+            label7.Font = new Font("Century Gothic", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
+            label7.Location = new Point(248, 14);
+            label7.Name = "label7";
+            label7.Size = new Size(88, 22);
+            label7.TabIndex = 34;
+            label7.Text = "Monday";
             // 
-            // btnAssignMorning
+            // btnAutoAssignDate
             // 
-            btnAssignMorning.Location = new Point(76, 325);
-            btnAssignMorning.Name = "btnAssignMorning";
-            btnAssignMorning.Size = new Size(153, 40);
-            btnAssignMorning.TabIndex = 3;
-            btnAssignMorning.Text = "Assign Morning Shift";
-            btnAssignMorning.UseVisualStyleBackColor = true;
-            btnAssignMorning.Click += btnAssignMorning_Click;
+            btnAutoAssignDate.Location = new Point(147, 21);
+            btnAutoAssignDate.Name = "btnAutoAssignDate";
+            btnAutoAssignDate.Size = new Size(60, 56);
+            btnAutoAssignDate.TabIndex = 6;
+            btnAutoAssignDate.Text = "Auto Assign";
+            btnAutoAssignDate.UseVisualStyleBackColor = true;
+            btnAutoAssignDate.Click += btnAutoAssignDate_Click;
             // 
-            // btnAssignEvening
+            // label6
             // 
-            btnAssignEvening.Location = new Point(76, 371);
-            btnAssignEvening.Name = "btnAssignEvening";
-            btnAssignEvening.Size = new Size(153, 40);
-            btnAssignEvening.TabIndex = 4;
-            btnAssignEvening.Text = "Assign Evening Shift";
-            btnAssignEvening.UseVisualStyleBackColor = true;
-            btnAssignEvening.Click += btnAssignEvening_Click;
+            label6.AutoSize = true;
+            label6.Font = new Font("Century Gothic", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
+            label6.Location = new Point(986, 14);
+            label6.Name = "label6";
+            label6.Size = new Size(94, 22);
+            label6.TabIndex = 33;
+            label6.Text = "Saturday";
+            // 
+            // flpCalendar
+            // 
+            flpCalendar.BorderStyle = BorderStyle.FixedSingle;
+            flpCalendar.Location = new Point(222, 50);
+            flpCalendar.Name = "flpCalendar";
+            flpCalendar.Size = new Size(1036, 617);
+            flpCalendar.TabIndex = 32;
+            // 
+            // groupBox9
+            // 
+            groupBox9.Controls.Add(btnSaveShiftSchedule);
+            groupBox9.Controls.Add(label51);
+            groupBox9.Controls.Add(txtEmployeeSearch);
+            groupBox9.Controls.Add(lstEmployees);
+            groupBox9.Location = new Point(3, 192);
+            groupBox9.Name = "groupBox9";
+            groupBox9.Size = new Size(213, 475);
+            groupBox9.TabIndex = 31;
+            groupBox9.TabStop = false;
+            groupBox9.Text = "Manage Shift";
+            // 
+            // btnSaveShiftSchedule
+            // 
+            btnSaveShiftSchedule.Location = new Point(6, 423);
+            btnSaveShiftSchedule.Name = "btnSaveShiftSchedule";
+            btnSaveShiftSchedule.Size = new Size(201, 34);
+            btnSaveShiftSchedule.TabIndex = 48;
+            btnSaveShiftSchedule.Text = "Save Shift Schedule";
+            btnSaveShiftSchedule.UseVisualStyleBackColor = true;
+            btnSaveShiftSchedule.Click += btnSaveShiftSchedule_Click;
+            // 
+            // label51
+            // 
+            label51.AutoSize = true;
+            label51.Location = new Point(6, 22);
+            label51.Name = "label51";
+            label51.Size = new Size(50, 17);
+            label51.TabIndex = 0;
+            label51.Text = "Search:";
+            // 
+            // txtEmployeeSearch
+            // 
+            txtEmployeeSearch.Location = new Point(6, 42);
+            txtEmployeeSearch.Name = "txtEmployeeSearch";
+            txtEmployeeSearch.Size = new Size(201, 25);
+            txtEmployeeSearch.TabIndex = 47;
+            txtEmployeeSearch.TextChanged += txtEmployeeSearch_TextChanged;
+            // 
+            // lstEmployees
+            // 
+            lstEmployees.FormattingEnabled = true;
+            lstEmployees.ItemHeight = 17;
+            lstEmployees.Location = new Point(6, 73);
+            lstEmployees.Name = "lstEmployees";
+            lstEmployees.Size = new Size(201, 344);
+            lstEmployees.TabIndex = 45;
+            lstEmployees.SelectedIndexChanged += lstEmployees_SelectedIndexChanged;
             // 
             // DaysOffRequestTab
             // 
@@ -1680,13 +1587,33 @@
             DaysOffRequestTab.Controls.Add(label38);
             DaysOffRequestTab.Controls.Add(btRemoveDaysOffRequest);
             DaysOffRequestTab.Controls.Add(dataGridViewDaysOffRequest);
-            DaysOffRequestTab.Location = new Point(4, 26);
+            DaysOffRequestTab.Location = new Point(4, 24);
             DaysOffRequestTab.Name = "DaysOffRequestTab";
             DaysOffRequestTab.Padding = new Padding(3);
-            DaysOffRequestTab.Size = new Size(1261, 679);
+            DaysOffRequestTab.Size = new Size(1261, 681);
             DaysOffRequestTab.TabIndex = 5;
             DaysOffRequestTab.Text = "Days Off Request";
             DaysOffRequestTab.UseVisualStyleBackColor = true;
+            // 
+            // btAproveDaysOffRequest
+            // 
+            btAproveDaysOffRequest.Location = new Point(390, 15);
+            btAproveDaysOffRequest.Name = "btAproveDaysOffRequest";
+            btAproveDaysOffRequest.Size = new Size(258, 36);
+            btAproveDaysOffRequest.TabIndex = 10;
+            btAproveDaysOffRequest.Text = "Aprove Selected Days Off Request";
+            btAproveDaysOffRequest.UseVisualStyleBackColor = true;
+            btAproveDaysOffRequest.Click += btAproveDaysOffRequest_Click;
+            // 
+            // btDeclineDaysOffRequest
+            // 
+            btDeclineDaysOffRequest.Location = new Point(663, 15);
+            btDeclineDaysOffRequest.Name = "btDeclineDaysOffRequest";
+            btDeclineDaysOffRequest.Size = new Size(258, 36);
+            btDeclineDaysOffRequest.TabIndex = 9;
+            btDeclineDaysOffRequest.Text = "Decline Selected Days Off Request";
+            btDeclineDaysOffRequest.UseVisualStyleBackColor = true;
+            btDeclineDaysOffRequest.Click += btDeclineDaysOffRequest_Click;
             // 
             // label38
             // 
@@ -1711,14 +1638,14 @@
             // dataGridViewDaysOffRequest
             // 
             dataGridViewDaysOffRequest.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = SystemColors.Window;
-            dataGridViewCellStyle3.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle3.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
-            dataGridViewDaysOffRequest.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+            dataGridViewDaysOffRequest.DefaultCellStyle = dataGridViewCellStyle2;
             dataGridViewDaysOffRequest.Location = new Point(3, 57);
             dataGridViewDaysOffRequest.MultiSelect = false;
             dataGridViewDaysOffRequest.Name = "dataGridViewDaysOffRequest";
@@ -1728,25 +1655,66 @@
             dataGridViewDaysOffRequest.Size = new Size(1252, 616);
             dataGridViewDaysOffRequest.TabIndex = 0;
             // 
-            // btDeclineDaysOffRequest
+            // groupBox7
             // 
-            btDeclineDaysOffRequest.Location = new Point(663, 15);
-            btDeclineDaysOffRequest.Name = "btDeclineDaysOffRequest";
-            btDeclineDaysOffRequest.Size = new Size(258, 36);
-            btDeclineDaysOffRequest.TabIndex = 9;
-            btDeclineDaysOffRequest.Text = "Decline Selected Days Off Request";
-            btDeclineDaysOffRequest.UseVisualStyleBackColor = true;
-            btDeclineDaysOffRequest.Click += btDeclineDaysOffRequest_Click;
+            groupBox7.Controls.Add(btnNextMonth);
+            groupBox7.Controls.Add(btnRefreshShiftSchedule);
+            groupBox7.Controls.Add(btnPreviousMonth);
+            groupBox7.Controls.Add(lblMonth);
+            groupBox7.Location = new Point(3, 7);
+            groupBox7.Name = "groupBox7";
+            groupBox7.Size = new Size(213, 88);
+            groupBox7.TabIndex = 50;
+            groupBox7.TabStop = false;
+            groupBox7.Text = "Shift Schedule";
             // 
-            // btAproveDaysOffRequest
+            // groupBox8
             // 
-            btAproveDaysOffRequest.Location = new Point(390, 15);
-            btAproveDaysOffRequest.Name = "btAproveDaysOffRequest";
-            btAproveDaysOffRequest.Size = new Size(258, 36);
-            btAproveDaysOffRequest.TabIndex = 10;
-            btAproveDaysOffRequest.Text = "Aprove Selected Days Off Request";
-            btAproveDaysOffRequest.UseVisualStyleBackColor = true;
-            btAproveDaysOffRequest.Click += btAproveDaysOffRequest_Click;
+            groupBox8.Controls.Add(label30);
+            groupBox8.Controls.Add(dtpAutoAssignTo);
+            groupBox8.Controls.Add(label22);
+            groupBox8.Controls.Add(dtpAutoAssignFrom);
+            groupBox8.Controls.Add(btnAutoAssignDate);
+            groupBox8.Location = new Point(3, 101);
+            groupBox8.Name = "groupBox8";
+            groupBox8.Size = new Size(213, 85);
+            groupBox8.TabIndex = 51;
+            groupBox8.TabStop = false;
+            groupBox8.Text = "Auto Assign";
+            // 
+            // dtpAutoAssignFrom
+            // 
+            dtpAutoAssignFrom.Format = DateTimePickerFormat.Short;
+            dtpAutoAssignFrom.Location = new Point(53, 21);
+            dtpAutoAssignFrom.Name = "dtpAutoAssignFrom";
+            dtpAutoAssignFrom.Size = new Size(88, 25);
+            dtpAutoAssignFrom.TabIndex = 7;
+            // 
+            // label22
+            // 
+            label22.AutoSize = true;
+            label22.Location = new Point(6, 27);
+            label22.Name = "label22";
+            label22.Size = new Size(41, 17);
+            label22.TabIndex = 8;
+            label22.Text = "From:";
+            // 
+            // label30
+            // 
+            label30.AutoSize = true;
+            label30.Location = new Point(6, 58);
+            label30.Name = "label30";
+            label30.Size = new Size(25, 17);
+            label30.TabIndex = 10;
+            label30.Text = "To:";
+            // 
+            // dtpAutoAssignTo
+            // 
+            dtpAutoAssignTo.Format = DateTimePickerFormat.Short;
+            dtpAutoAssignTo.Location = new Point(53, 52);
+            dtpAutoAssignTo.Name = "dtpAutoAssignTo";
+            dtpAutoAssignTo.Size = new Size(88, 25);
+            dtpAutoAssignTo.TabIndex = 9;
             // 
             // MainControl
             // 
@@ -1755,7 +1723,7 @@
             Controls.Add(tabControMain);
             Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             Name = "MainControl";
-            Size = new Size(1280, 720);
+            Size = new Size(1280, 724);
             tabControMain.ResumeLayout(false);
             tabPageMain.ResumeLayout(false);
             tabPageMain.PerformLayout();
@@ -1790,15 +1758,15 @@
             ((System.ComponentModel.ISupportInitialize)numericQuantityShelfRequest).EndInit();
             tabPageShifts.ResumeLayout(false);
             tabPageShifts.PerformLayout();
-            groupBox8.ResumeLayout(false);
-            groupBox8.PerformLayout();
-            groupBox7.ResumeLayout(false);
-            groupBox7.PerformLayout();
             groupBox9.ResumeLayout(false);
             groupBox9.PerformLayout();
             DaysOffRequestTab.ResumeLayout(false);
             DaysOffRequestTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewDaysOffRequest).EndInit();
+            groupBox7.ResumeLayout(false);
+            groupBox7.PerformLayout();
+            groupBox8.ResumeLayout(false);
+            groupBox8.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -1879,17 +1847,7 @@
         private TextBox tbNameProduct;
         private Label label16;
         private TabPage tabPageShifts;
-        private DateTimePicker dtpShift;
-        private Label label9;
-        private Label label7;
-        private Label label6;
-        private Button btnAutoAssign;
-        private Button btnUnassignMorningShift;
-        private Button btnAssignEvening;
-        private Button btnAssignMorning;
-        private ListBox lstBoxEveningShiftEmployees;
-        private ListBox lstBoxNoShiftEmployees;
-        private ListBox lstBoxMorningShiftEmployees;
+        private Button btnAutoAssignDate;
         private TextBox txtBoxEmployeeAddress;
         private Label label49;
         private NumericUpDown numericQuantityWarehouse;
@@ -1898,7 +1856,6 @@
         private NumericUpDown numericSKU;
         private NumericUpDown numericQuantityStore;
         private Label label2;
-        private Button btnUnassignEveningShift;
         private Label labelExperationdate;
         private DateTimePicker dateTimePickerExperationdate;
         private TabPage tabPageDepartment;
@@ -1917,16 +1874,6 @@
         private TextBox txtBoxEmployeeBankAcc;
         private Label label20;
         private TextBox txtBoxEmployeeBsn;
-        private DateTimePicker dtpMorningShiftEndTime;
-        private DateTimePicker dtpMorningShiftStartTime;
-        private Button btnSaveMorningShiftTime;
-        private Button btnSaveEveningShiftTime;
-        private DateTimePicker dtpEveningShiftEndTime;
-        private DateTimePicker dtpEveningShiftStartTime;
-        private Label label22;
-        private Label label34;
-        private Label label32;
-        private Label label30;
         private TabPage DaysOffRequestTab;
         private DataGridView dataGridViewDaysOffRequest;
         private Button btRemoveDaysOffRequest;
@@ -1945,12 +1892,31 @@
 		private GroupBox groupBox6;
 		private Label label41;
 		private ComboBox cmbShelfRequestTypeFilter;
-		private Label lblSelectedShift;
-		private GroupBox groupBox7;
-		private GroupBox groupBox8;
-		private Label label8;
 		private GroupBox groupBox9;
         private Button btAproveDaysOffRequest;
         private Button btDeclineDaysOffRequest;
+        private Label label6;
+        private FlowLayoutPanel flpCalendar;
+        private Label label50;
+        private Label label45;
+        private Label label43;
+        private Label label9;
+        private Label label8;
+        private Label label7;
+        private Label lblMonth;
+        private Button btnNextMonth;
+        private Button btnPreviousMonth;
+        private ListBox lstEmployees;
+        private Label label51;
+        private TextBox txtEmployeeSearch;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private Button btnSaveShiftSchedule;
+        private Button btnRefreshShiftSchedule;
+        private GroupBox groupBox7;
+        private GroupBox groupBox8;
+        private Label label30;
+        private DateTimePicker dtpAutoAssignTo;
+        private Label label22;
+        private DateTimePicker dtpAutoAssignFrom;
     }
 }

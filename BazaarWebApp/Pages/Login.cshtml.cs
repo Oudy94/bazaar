@@ -15,7 +15,7 @@ namespace BazaarWebApp.Pages
 		[BindProperty]
 		public Credential Credential { get; set; }
 		public Employee Employee { get; set; }
-		public Login Login { get; set; }
+		public Login Login = new Login ();
 
         public void OnGet()
         {
@@ -42,7 +42,7 @@ namespace BazaarWebApp.Pages
 			claims.Add(new Claim("id", employee.Id.ToString()));
 
 			var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-			HttpContext.SignInAsync(new ClaimsPrincipal(claimsIdentity));
+			await HttpContext.SignInAsync(new ClaimsPrincipal(claimsIdentity));
 
 			return RedirectToPage("/Index");
 		}

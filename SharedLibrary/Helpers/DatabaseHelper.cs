@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using static System.Net.Mime.MediaTypeNames;
 using System.Net;
 using System.Xml.Linq;
+using System;
 
 namespace SharedLibrary.Helpers
 {
@@ -940,7 +941,7 @@ namespace SharedLibrary.Helpers
             return shifts;
         }
 
-        public void AssignEmployeeToShiftInDB(Employee employee, DateOnly date, ShiftTypeEnum shiftType, DateTime startTime, DateTime endTime)
+        public void AssignEmployeeToShiftInDB(Employee employee, DateOnly date, ShiftTypeEnum shiftType, DateTime? startTime = null, DateTime? endTime = null)
         {
             SqlTransaction transaction = null;
 
@@ -966,10 +967,13 @@ namespace SharedLibrary.Helpers
                         string insertQuery = "INSERT INTO shift (date, shift_type, start_time, end_time) OUTPUT INSERTED.Id VALUES (@Date, @ShiftType, @StartDate, @EndDate);";
                         using (SqlCommand insertCmd = new SqlCommand(insertQuery, connection, transaction))
                         {
+                            DateTime startShiftDateTime = startTime ?? date.ToDateTime(shiftType == ShiftTypeEnum.Morning ? new TimeOnly(9, 0) : new TimeOnly(16, 0));
+                            DateTime endShiftDateTime = endTime ?? date.ToDateTime(shiftType == ShiftTypeEnum.Morning ? new TimeOnly(16, 0) : new TimeOnly(23, 0));
+
                             insertCmd.Parameters.AddWithValue("@Date", new DateTime(date.Year, date.Month, date.Day));
                             insertCmd.Parameters.AddWithValue("@ShiftType", (int)shiftType + 1);
-                            insertCmd.Parameters.AddWithValue("@StartDate", startTime);
-                            insertCmd.Parameters.AddWithValue("@EndDate", endTime);
+                            insertCmd.Parameters.AddWithValue("@StartDate", startShiftDateTime);
+                            insertCmd.Parameters.AddWithValue("@EndDate", endShiftDateTime);
                             shiftId = Convert.ToInt32(insertCmd.ExecuteScalar());
                         }
                     }
@@ -1416,6 +1420,83 @@ namespace SharedLibrary.Helpers
             }
 
             return shifts;
+        }        
+        
+        public List<Shift> GetEmployeeShiftsOnMonthFromDB(int employeeId, int month, int year)
+        {
+            List<Shift> shifts = new List<Shift>();
+
+            string query = @"
+                SELECT s.id, s.date, s.shift_type, s.start_time, s.end_time
+                FROM shift s
+                INNER JOIN shift_employee se ON s.id = se.shift_id
+                WHERE employee_id = @EmployeeId
+                AND DATEPART(month, s.date) = @Month
+                AND DATEPART(year, s.date) = @Year";
+
+            using (SqlCommand cmd = new SqlCommand(query, connection))
+            {
+                cmd.Parameters.AddWithValue("@EmployeeId", employeeId);
+                cmd.Parameters.AddWithValue("@Month", month);
+                cmd.Parameters.AddWithValue("@Year", year);
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        DateTime dateTime = reader.GetDateTime(reader.GetOrdinal("date"));
+                        DateOnly shiftDate = new DateOnly(dateTime.Year, dateTime.Month, dateTime.Day);
+
+                        Shift shift = new Shift
+                        (
+                            reader.GetInt32(reader.GetOrdinal("id")),
+                            shiftDate,
+                            (ShiftTypeEnum)reader.GetInt32(reader.GetOrdinal("shift_type")) - 1,
+                            reader.GetDateTime(reader.GetOrdinal("start_time")),
+                            reader.GetDateTime(reader.GetOrdinal("end_time"))
+                        );
+
+                        shifts.Add(shift);
+                    }
+                }
+            }
+
+            return shifts;
+        }
+
+        public Dictionary<Tuple<DateOnly, ShiftTypeEnum>, int> GetShiftEmployeeCountForMonthFromDB(int month, int year)
+        {
+            Dictionary<Tuple<DateOnly, ShiftTypeEnum>, int> employeeCountByShift = new Dictionary<Tuple<DateOnly, ShiftTypeEnum>, int>();
+
+            string query = @"
+                            SELECT s.date, s.shift_type, COUNT(*) AS shift_count
+                            FROM shift s
+                            INNER JOIN shift_employee se ON s.id = se.shift_id
+                            WHERE DATEPART(month, s.date) = @Month AND DATEPART(year, s.date) = @Year
+                            GROUP BY s.date,s.shift_type;";
+
+            using (SqlCommand cmd = new SqlCommand(query, connection))
+            {
+                cmd.Parameters.AddWithValue("@Month", month);
+                cmd.Parameters.AddWithValue("@Year", year);
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        DateTime dateTime = reader.GetDateTime(0);
+                        ShiftTypeEnum shiftType = (ShiftTypeEnum)reader.GetInt32(1) -1;
+                        int shiftCount = reader.GetInt32(2);
+
+                        DateOnly shiftDate = new DateOnly(dateTime.Year, dateTime.Month, dateTime.Day);
+                        Tuple<DateOnly, ShiftTypeEnum> key = new Tuple<DateOnly, ShiftTypeEnum>(shiftDate, shiftType);
+
+                        employeeCountByShift[key] = shiftCount;
+                    }
+                }
+            }
+
+            return employeeCountByShift;
         }
 
         //daysoffrequest database management

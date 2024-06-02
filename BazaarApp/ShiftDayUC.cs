@@ -44,7 +44,7 @@ namespace TheSandwichMakersHardwareStoreSolution
             if (suppressCheckedChangedEvent)
                 return;
 
-            if (EmployeeHasMorningShift == chbMorningShift.Checked)
+            if (EmployeeHasMorningShift == chbMorningShift.Checked && EmployeeHasEveningShift == chbEveningShift.Checked)
             {
                 this.BackColor = Color.DarkGray;
             }
@@ -67,7 +67,7 @@ namespace TheSandwichMakersHardwareStoreSolution
             if (suppressCheckedChangedEvent)
                 return;
 
-            if (EmployeeHasEveningShift == chbEveningShift.Checked)
+            if (EmployeeHasMorningShift == chbMorningShift.Checked && EmployeeHasEveningShift == chbEveningShift.Checked)
             {
                 this.BackColor = Color.DarkGray;
             }

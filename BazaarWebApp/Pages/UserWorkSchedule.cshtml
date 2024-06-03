@@ -4,27 +4,94 @@
     ViewData["Title"] = "User Work Schedule";
 }
 
-<h2>@Model.EmployeeName's work schedule for current & next week</h2>
+<style>
+    #calendar {
+        max-height: 500px;
+        /* Adjust this value to your desired height */
+        overflow-y: auto;
+    }
+</style>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Date</th>
-            <th>Day</th>
-            <th>Shift</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var shift in Model.ProperSchedule)
+<h2>@Model.EmployeeName's Work Schedule</h2>
+
+<div class="d-flex justify-content-between mb-3">
+    <div>
+        <button class="btn btn-primary" onclick="navigate('prev')">Previous</button>
+        <button class="btn btn-primary" onclick="navigate('next')">Next</button>
+    </div>
+    <div>
+        <select id="viewMode" class="form-select" onchange="changeView()">
+            <option value="timeGridWeek">Week</option>
+            <option value="dayGridMonth">Month</option>
+        </select>
+    </div>
+</div>
+
+<h3 id="currentView"></h3>
+
+<div id='calendar'></div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        console.log("DOM fully loaded and parsed");
+
+        var calendarEl = document.getElementById('calendar');
+        console.log("Calendar element:", calendarEl);
+
+        var events = @Html.Raw(Json.Serialize(Model.Shifts.Select(s => new
         {
-            var shiftDate = shift.Item1;
-            var shiftType = shift.Item2;
+            title = s.ShiftType.ToString(),
+            start = s.Date.ToDateTime(new TimeOnly(s.StartTime.Hour, s.StartTime.Minute)).ToString("yyyy-MM-ddTHH:mm:ss"),
+            end = s.Date.ToDateTime(new TimeOnly(s.EndTime.Hour, s.EndTime.Minute)).ToString("yyyy-MM-ddTHH:mm:ss")
+        })));
 
-            <tr>
-                <td>@shiftDate.ToString("MM/dd/yyyy")</td>
-                <td>@shiftDate.ToString("dddd") @(shiftDate == new DateOnly(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day) ? "(Today)" : "")</td>
-                <td>@shiftType</td>
-            </tr>
+        console.log("Events data:", events);
+
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: '@Model.ViewMode',
+            initialDate: '@Model.CurrentDate.ToString("yyyy-MM-dd")',
+            events: events,
+            headerToolbar: false,
+            firstDay: 1,
+            height: 'auto' // Ensures the calendar adjusts its height to the content
+        });
+
+        console.log("Calendar initialized:", calendar);
+
+        calendar.render();
+        console.log("Calendar rendered");
+
+        document.getElementById('viewMode').value = '@Model.ViewMode';
+
+        function updateCurrentViewText() {
+            var currentDate = calendar.getDate();
+            console.log("Current date:", currentDate);
+
+            var viewMode = calendar.view.type;
+            var currentViewText = viewMode === 'timeGridWeek'
+                ? `Week of ${currentDate.toLocaleDateString()}`
+                : `${currentDate.toLocaleString('default', { month: 'long' })} ${currentDate.getFullYear()}`;
+
+            document.getElementById('currentView').innerText = currentViewText;
+            console.log("Updated current view text:", currentViewText);
         }
-    </tbody>
-</table>
+
+        updateCurrentViewText();
+
+        window.navigate = function (direction) {
+            var currentDate = calendar.getDate();
+            if (direction === 'prev') {
+                calendar.incrementDate({ days: (calendar.view.type === 'dayGridMonth') ? -30 : -7 });
+            } else {
+                calendar.incrementDate({ days: (calendar.view.type === 'dayGridMonth') ? 30 : 7 });
+            }
+            updateCurrentViewText();
+        }
+
+        window.changeView = function () {
+            var viewMode = document.getElementById('viewMode').value;
+            calendar.changeView(viewMode);
+            updateCurrentViewText();
+        }
+    });
+</script>

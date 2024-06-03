@@ -3,50 +3,53 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using SharedLibrary.Classes;
 using SharedLibrary.Helpers;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace BazaarWebApp.Pages
 {
-
     public class UserWorkScheduleModel : PageModel
     {
         private readonly EmployeeManager _employeeManager = new EmployeeManager();
-        private readonly DatabaseHelper _databaseHelper = new DatabaseHelper();
+        private readonly ShiftManager _shiftManager = new ShiftManager();
 
-        public List<Shift> ImproperWorkSchedule;
+        public List<Shift> Shifts { get; private set; }
+        public string EmployeeName { get; private set; }
+        public DateTime CurrentDate { get; private set; }
+        public string ViewMode { get; private set; } = "timeGridWeek";
 
-        public List<(DateOnly, SharedLibrary.Enums.ShiftTypeEnum)> ProperSchedule = new List<(DateOnly, SharedLibrary.Enums.ShiftTypeEnum)>();
-
-
-        public string EmployeeName;
-
-        public async Task<IActionResult> OnGetAsync()
+        public async Task<IActionResult> OnGetAsync(string viewMode = "timeGridWeek", DateTime? currentDate = null)
         {
             if (!User.Identity.IsAuthenticated)
             {
                 return RedirectToPage("/Login");
             }
 
-            int userID = int.Parse(User.FindFirstValue("id"));
-
-            var currentEmployee = _employeeManager.GetEmployeeById(userID);
-
+            int userId = int.Parse(User.FindFirstValue("id"));
+            var currentEmployee = _employeeManager.GetEmployeeById(userId);
             EmployeeName = currentEmployee.Name;
 
-            ImproperWorkSchedule = _databaseHelper.GetEmployeeSchedule30D(userID);
+            CurrentDate = currentDate ?? DateTime.Now;
+            ViewMode = viewMode;
 
-            foreach (Shift shift in ImproperWorkSchedule)
+            Shifts = ViewMode switch
             {
-                // Iterate through the week days from Monday to Friday
-                for (int i = 0; i < 5; i++)
-                {
-                    {
-                        ProperSchedule.Add((shift.Date.AddDays(i), shift.ShiftType)); ;
-                    }
-                }
-            }
+                "dayGridMonth" => _shiftManager.GetEmployeeShiftsOnMonthFromDB(userId, CurrentDate.Month, CurrentDate.Year),
+                _ => _shiftManager.GetEmployeeShifts(currentEmployee).Where(s => s.Date.ToDateTime(new TimeOnly()) >= CurrentDate.StartOfWeek(DayOfWeek.Monday) && s.Date.ToDateTime(new TimeOnly()) < CurrentDate.StartOfWeek(DayOfWeek.Monday).AddDays(7)).ToList()
+            };
 
             return Page();
+        }
+    }
+
+    public static class DateTimeExtensions
+    {
+        public static DateTime StartOfWeek(this DateTime dt, DayOfWeek startOfWeek)
+        {
+            int diff = (7 + (dt.DayOfWeek - startOfWeek)) % 7;
+            return dt.AddDays(-1 * diff).Date;
         }
     }
 }

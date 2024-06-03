@@ -19,7 +19,7 @@
 
     @if (Model.CurrentEmployee != null)
     {
-        <div class="card border border-primary">
+        <div class="card border border-primary mb-5">
             <div class="card-body p-5">
                 <form method="post" class="form-group">
                     <div class="mb-3">
@@ -37,9 +37,50 @@
                         <input asp-for="temporaryData.Description" class="form-control">
                         <span asp-validation-for="temporaryData.Description" class="text-danger"></span>
                     </div>
+                    <div class="mb-3">
+                        <label class="form-label">Type</label>
+                        <select asp-for="temporaryData.Type" class="form-control">
+                            <option value="">Select Leave Type</option>
+                            <option value="Sick Leave">Sick Leave</option>
+                            <option value="Regular Leave">Regular Leave</option>
+                        </select>
+                        <span asp-validation-for="temporaryData.Type" class="text-danger"></span>
+                    </div>
                     <button type="submit" class="btn btn-primary">Submit Request</button>
                 </form>
             </div>
         </div>
+        <div class="card border border-primary p-5">
+            <h3 class="text-center text-uppercase font-weight-bold">Your Days Off Requests</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Description</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var request in Model.UserDaysOffRequests)
+                    {
+                        <tr>
+                            <td>@request.StartDate.ToShortDateString()</td>
+                            <td>@request.EndDate.ToShortDateString()</td>
+                            <td>@request.Description</td>
+                            <td>@request.Type</td>
+                            <td style="color:@(request.Status == "1" ? "green" : request.Status == "2" ? "red": "#e38800")">
+                                @(request.Status == "1" ? "Approved" : request.Status == "2" ? "Not Approved" : "Pending")
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     }
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

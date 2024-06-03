@@ -1,4 +1,4 @@
-@using System.Security.Claims
+﻿@using System.Security.Claims
 @* @inject SharedLibrary.Classes.EmployeeManager _employeeManager
 
 @{
@@ -13,6 +13,7 @@ var currentEmployee = _employeeManager.GetEmployeeById(userId);
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - BazaarWebApp</title>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.13/index.global.min.js'></script>
     @* <script src="https://cdn.tailwindcss.com"></script> *@
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
@@ -33,7 +34,10 @@ var currentEmployee = _employeeManager.GetEmployeeById(userId);
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav me-auto mb-0">
                         <li class="nav-item">
-                            <a class="nav-link text-dark text-primary-hover" asp-area="" asp-page="/Index">Profile</a>
+                            <a class="nav-link text-dark text-primary-hover" asp-area="" asp-page="/Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark text-primary-hover" asp-area="" asp-page="/Profile">Profile</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-dark" href="#" role="button"

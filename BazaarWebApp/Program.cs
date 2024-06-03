@@ -7,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<EmployeeManager>();
 builder.Services.AddScoped<StockManager>();
+builder.Services.AddScoped<ShiftManager>();
+builder.Services.AddScoped<DaysOffRequestManager>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {

@@ -28,8 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainControl));
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainControl));
+            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle9 = new DataGridViewCellStyle();
             tabControMain = new TabControl();
             tabPageMain = new TabPage();
             cmbDepartmentList = new ComboBox();
@@ -145,17 +153,12 @@
             btAddShelfRequest = new Button();
             label23 = new Label();
             tabPageShifts = new TabPage();
-            btnRefreshShiftSchedule = new Button();
-            btnNextMonth = new Button();
-            btnPreviousMonth = new Button();
-            lblMonth = new Label();
             label50 = new Label();
             label45 = new Label();
             label43 = new Label();
             label9 = new Label();
             label8 = new Label();
             label7 = new Label();
-            btnAutoAssignDate = new Button();
             label6 = new Label();
             flpCalendar = new FlowLayoutPanel();
             groupBox9 = new GroupBox();
@@ -163,6 +166,17 @@
             label51 = new Label();
             txtEmployeeSearch = new TextBox();
             lstEmployees = new ListBox();
+            groupBox7 = new GroupBox();
+            btnNextMonth = new Button();
+            btnRefreshShiftSchedule = new Button();
+            btnPreviousMonth = new Button();
+            lblMonth = new Label();
+            groupBox8 = new GroupBox();
+            label30 = new Label();
+            dtpAutoAssignTo = new DateTimePicker();
+            label22 = new Label();
+            dtpAutoAssignFrom = new DateTimePicker();
+            btnAutoAssignDate = new Button();
             DaysOffRequestTab = new TabPage();
             btAproveDaysOffRequest = new Button();
             btDeclineDaysOffRequest = new Button();
@@ -170,12 +184,6 @@
             btRemoveDaysOffRequest = new Button();
             dataGridViewDaysOffRequest = new DataGridView();
             backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            groupBox7 = new GroupBox();
-            groupBox8 = new GroupBox();
-            dtpAutoAssignFrom = new DateTimePicker();
-            label22 = new Label();
-            label30 = new Label();
-            dtpAutoAssignTo = new DateTimePicker();
             tabControMain.SuspendLayout();
             tabPageMain.SuspendLayout();
             groupBox4.SuspendLayout();
@@ -201,10 +209,10 @@
             ((System.ComponentModel.ISupportInitialize)numericQuantityShelfRequest).BeginInit();
             tabPageShifts.SuspendLayout();
             groupBox9.SuspendLayout();
-            DaysOffRequestTab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridViewDaysOffRequest).BeginInit();
             groupBox7.SuspendLayout();
             groupBox8.SuspendLayout();
+            DaysOffRequestTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewDaysOffRequest).BeginInit();
             SuspendLayout();
             // 
             // tabControMain
@@ -264,6 +272,7 @@
             // 
             label44.AutoSize = true;
             label44.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            label44.ForeColor = Color.FromArgb(20, 102, 167);
             label44.Location = new Point(12, 630);
             label44.Name = "label44";
             label44.Size = new Size(97, 21);
@@ -315,19 +324,24 @@
             // 
             // button4
             // 
+            button4.BackColor = Color.FromArgb(20, 102, 167);
+            button4.FlatAppearance.BorderSize = 0;
+            button4.FlatStyle = FlatStyle.Flat;
             button4.Font = new Font("Segoe UI Semibold", 15.75F, FontStyle.Bold, GraphicsUnit.Point);
+            button4.ForeColor = SystemColors.ControlLightLight;
             button4.Location = new Point(702, 332);
             button4.Name = "button4";
             button4.Size = new Size(159, 51);
             button4.TabIndex = 47;
             button4.Text = "Manage";
-            button4.UseVisualStyleBackColor = true;
+            button4.UseVisualStyleBackColor = false;
             button4.Click += button4_Click;
             // 
             // label42
             // 
             label42.AutoSize = true;
             label42.Font = new Font("Segoe UI", 11F, FontStyle.Bold, GraphicsUnit.Point);
+            label42.ForeColor = Color.FromArgb(20, 102, 167);
             label42.Location = new Point(17, 370);
             label42.Name = "label42";
             label42.Size = new Size(88, 20);
@@ -348,6 +362,7 @@
             // 
             label40.AutoSize = true;
             label40.Font = new Font("Segoe UI", 11F, FontStyle.Bold, GraphicsUnit.Point);
+            label40.ForeColor = Color.FromArgb(20, 102, 167);
             label40.Location = new Point(185, 370);
             label40.Name = "label40";
             label40.Size = new Size(112, 20);
@@ -368,6 +383,7 @@
             // 
             label39.AutoSize = true;
             label39.Font = new Font("Segoe UI", 16F, FontStyle.Bold, GraphicsUnit.Point);
+            label39.ForeColor = Color.FromArgb(20, 102, 167);
             label39.Location = new Point(17, 289);
             label39.Name = "label39";
             label39.Size = new Size(202, 30);
@@ -378,6 +394,7 @@
             // 
             label37.AutoSize = true;
             label37.Font = new Font("Segoe UI", 11F, FontStyle.Bold, GraphicsUnit.Point);
+            label37.ForeColor = Color.FromArgb(20, 102, 167);
             label37.Location = new Point(185, 319);
             label37.Name = "label37";
             label37.Size = new Size(117, 20);
@@ -406,6 +423,7 @@
             // 
             label35.AutoSize = true;
             label35.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            label35.ForeColor = Color.FromArgb(20, 102, 167);
             label35.Location = new Point(424, 51);
             label35.Name = "label35";
             label35.Size = new Size(50, 21);
@@ -426,6 +444,7 @@
             // 
             label33.AutoSize = true;
             label33.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            label33.ForeColor = Color.FromArgb(20, 102, 167);
             label33.Location = new Point(17, 194);
             label33.Name = "label33";
             label33.Size = new Size(106, 21);
@@ -446,6 +465,7 @@
             // 
             label31.AutoSize = true;
             label31.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            label31.ForeColor = Color.FromArgb(20, 102, 167);
             label31.Location = new Point(17, 133);
             label31.Name = "label31";
             label31.Size = new Size(48, 21);
@@ -466,6 +486,7 @@
             // 
             label29.AutoSize = true;
             label29.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            label29.ForeColor = Color.FromArgb(20, 102, 167);
             label29.Location = new Point(17, 78);
             label29.Name = "label29";
             label29.Size = new Size(57, 21);
@@ -494,6 +515,7 @@
             // 
             label28.AutoSize = true;
             label28.Font = new Font("Segoe UI", 11F, FontStyle.Bold, GraphicsUnit.Point);
+            label28.ForeColor = Color.FromArgb(20, 102, 167);
             label28.Location = new Point(17, 319);
             label28.Name = "label28";
             label28.Size = new Size(123, 20);
@@ -513,6 +535,7 @@
             // 
             label26.AutoSize = true;
             label26.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            label26.ForeColor = Color.FromArgb(20, 102, 167);
             label26.Location = new Point(185, 26);
             label26.Name = "label26";
             label26.Size = new Size(62, 21);
@@ -523,6 +546,7 @@
             // 
             label25.AutoSize = true;
             label25.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            label25.ForeColor = Color.FromArgb(20, 102, 167);
             label25.Location = new Point(17, 29);
             label25.Name = "label25";
             label25.Size = new Size(60, 21);
@@ -574,13 +598,17 @@
             // 
             // button2
             // 
+            button2.BackColor = Color.FromArgb(20, 102, 167);
+            button2.FlatAppearance.BorderSize = 0;
+            button2.FlatStyle = FlatStyle.Flat;
             button2.Font = new Font("Segoe UI Semibold", 15.75F, FontStyle.Bold, GraphicsUnit.Point);
+            button2.ForeColor = SystemColors.ControlLightLight;
             button2.Location = new Point(702, 61);
             button2.Name = "button2";
             button2.Size = new Size(159, 51);
             button2.TabIndex = 46;
             button2.Text = "Manage";
-            button2.UseVisualStyleBackColor = true;
+            button2.UseVisualStyleBackColor = false;
             button2.Click += button2_Click;
             // 
             // listBox2
@@ -596,6 +624,7 @@
             // 
             label47.AutoSize = true;
             label47.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            label47.ForeColor = Color.FromArgb(20, 102, 167);
             label47.Location = new Point(7, 19);
             label47.Name = "label47";
             label47.Size = new Size(217, 21);
@@ -742,10 +771,31 @@
             dtGrVEmployees.AllowUserToOrderColumns = true;
             dtGrVEmployees.AllowUserToResizeColumns = false;
             dtGrVEmployees.AllowUserToResizeRows = false;
-            dtGrVEmployees.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dtGrVEmployees.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(20, 102, 167);
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle1.ForeColor = SystemColors.ControlLightLight;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dtGrVEmployees.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dtGrVEmployees.ColumnHeadersHeight = 35;
+            dtGrVEmployees.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.GradientActiveCaption;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            dtGrVEmployees.DefaultCellStyle = dataGridViewCellStyle2;
+            dtGrVEmployees.EnableHeadersVisualStyles = false;
             dtGrVEmployees.Location = new Point(6, 169);
             dtGrVEmployees.Name = "dtGrVEmployees";
             dtGrVEmployees.RowHeadersWidth = 62;
+            dataGridViewCellStyle3.BackColor = Color.White;
+            dtGrVEmployees.RowsDefaultCellStyle = dataGridViewCellStyle3;
             dtGrVEmployees.RowTemplate.Height = 25;
             dtGrVEmployees.Size = new Size(1243, 498);
             dtGrVEmployees.TabIndex = 2;
@@ -785,32 +835,44 @@
             // 
             // btnEditEmployee
             // 
+            btnEditEmployee.BackColor = Color.FromArgb(20, 102, 167);
+            btnEditEmployee.FlatAppearance.BorderSize = 0;
+            btnEditEmployee.FlatStyle = FlatStyle.Flat;
+            btnEditEmployee.ForeColor = SystemColors.ControlLightLight;
             btnEditEmployee.Location = new Point(1008, 70);
             btnEditEmployee.Name = "btnEditEmployee";
             btnEditEmployee.Size = new Size(177, 39);
             btnEditEmployee.TabIndex = 16;
             btnEditEmployee.Text = "Edit Employee";
-            btnEditEmployee.UseVisualStyleBackColor = true;
+            btnEditEmployee.UseVisualStyleBackColor = false;
             btnEditEmployee.Click += btnEditEmployee_Click;
             // 
             // btnRemoveEmployee
             // 
+            btnRemoveEmployee.BackColor = Color.FromArgb(20, 102, 167);
+            btnRemoveEmployee.FlatAppearance.BorderSize = 0;
+            btnRemoveEmployee.FlatStyle = FlatStyle.Flat;
+            btnRemoveEmployee.ForeColor = SystemColors.ControlLightLight;
             btnRemoveEmployee.Location = new Point(1008, 115);
             btnRemoveEmployee.Name = "btnRemoveEmployee";
             btnRemoveEmployee.Size = new Size(177, 39);
             btnRemoveEmployee.TabIndex = 15;
             btnRemoveEmployee.Text = "Remove Employee";
-            btnRemoveEmployee.UseVisualStyleBackColor = true;
+            btnRemoveEmployee.UseVisualStyleBackColor = false;
             btnRemoveEmployee.Click += btnRemoveEmployee_Click;
             // 
             // btnNewEmployee
             // 
+            btnNewEmployee.BackColor = Color.FromArgb(20, 102, 167);
+            btnNewEmployee.FlatAppearance.BorderSize = 0;
+            btnNewEmployee.FlatStyle = FlatStyle.Flat;
+            btnNewEmployee.ForeColor = SystemColors.ControlLightLight;
             btnNewEmployee.Location = new Point(1008, 25);
             btnNewEmployee.Name = "btnNewEmployee";
             btnNewEmployee.Size = new Size(177, 39);
             btnNewEmployee.TabIndex = 14;
             btnNewEmployee.Text = "New Employee";
-            btnNewEmployee.UseVisualStyleBackColor = true;
+            btnNewEmployee.UseVisualStyleBackColor = false;
             btnNewEmployee.Click += btnNewEmployee_Click;
             // 
             // cmbBoxEmployeeIsActive
@@ -848,12 +910,16 @@
             // 
             // btnEmployeeAttachImage
             // 
+            btnEmployeeAttachImage.BackColor = Color.FromArgb(20, 102, 167);
+            btnEmployeeAttachImage.FlatAppearance.BorderSize = 0;
+            btnEmployeeAttachImage.FlatStyle = FlatStyle.Flat;
+            btnEmployeeAttachImage.ForeColor = SystemColors.ControlLightLight;
             btnEmployeeAttachImage.Location = new Point(797, 37);
             btnEmployeeAttachImage.Name = "btnEmployeeAttachImage";
             btnEmployeeAttachImage.Size = new Size(133, 25);
             btnEmployeeAttachImage.TabIndex = 9;
             btnEmployeeAttachImage.Text = "Attach Image";
-            btnEmployeeAttachImage.UseVisualStyleBackColor = true;
+            btnEmployeeAttachImage.UseVisualStyleBackColor = false;
             btnEmployeeAttachImage.Click += btnEmployeeAttachImage_Click;
             // 
             // lblImage
@@ -946,6 +1012,7 @@
             // 
             label12.AutoSize = true;
             label12.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label12.ForeColor = Color.FromArgb(20, 102, 167);
             label12.Location = new Point(233, 3);
             label12.Name = "label12";
             label12.Size = new Size(125, 25);
@@ -968,12 +1035,16 @@
             // 
             // btnEditDepartment
             // 
+            btnEditDepartment.BackColor = Color.FromArgb(20, 102, 167);
+            btnEditDepartment.FlatAppearance.BorderSize = 0;
+            btnEditDepartment.FlatStyle = FlatStyle.Flat;
+            btnEditDepartment.ForeColor = SystemColors.ControlLightLight;
             btnEditDepartment.Location = new Point(12, 178);
             btnEditDepartment.Name = "btnEditDepartment";
             btnEditDepartment.Size = new Size(192, 55);
             btnEditDepartment.TabIndex = 21;
             btnEditDepartment.Text = "Edit Department";
-            btnEditDepartment.UseVisualStyleBackColor = true;
+            btnEditDepartment.UseVisualStyleBackColor = false;
             btnEditDepartment.Click += btnEditDepartment_Click;
             // 
             // txtBoxDepartmentName
@@ -985,12 +1056,16 @@
             // 
             // btnRemoveDepartment
             // 
+            btnRemoveDepartment.BackColor = Color.FromArgb(20, 102, 167);
+            btnRemoveDepartment.FlatAppearance.BorderSize = 0;
+            btnRemoveDepartment.FlatStyle = FlatStyle.Flat;
+            btnRemoveDepartment.ForeColor = SystemColors.ControlLightLight;
             btnRemoveDepartment.Location = new Point(12, 239);
             btnRemoveDepartment.Name = "btnRemoveDepartment";
             btnRemoveDepartment.Size = new Size(192, 55);
             btnRemoveDepartment.TabIndex = 20;
             btnRemoveDepartment.Text = "Remove Department";
-            btnRemoveDepartment.UseVisualStyleBackColor = true;
+            btnRemoveDepartment.UseVisualStyleBackColor = false;
             btnRemoveDepartment.Click += btnRemoveDepartment_Click;
             // 
             // label17
@@ -1004,12 +1079,16 @@
             // 
             // btnNewDepartment
             // 
+            btnNewDepartment.BackColor = Color.FromArgb(20, 102, 167);
+            btnNewDepartment.FlatAppearance.BorderSize = 0;
+            btnNewDepartment.FlatStyle = FlatStyle.Flat;
+            btnNewDepartment.ForeColor = SystemColors.ControlLightLight;
             btnNewDepartment.Location = new Point(12, 117);
             btnNewDepartment.Name = "btnNewDepartment";
             btnNewDepartment.Size = new Size(192, 55);
             btnNewDepartment.TabIndex = 19;
             btnNewDepartment.Text = "New Department";
-            btnNewDepartment.UseVisualStyleBackColor = true;
+            btnNewDepartment.UseVisualStyleBackColor = false;
             btnNewDepartment.Click += btnNewDepartment_Click;
             // 
             // listBoxDepartments
@@ -1026,16 +1105,35 @@
             // 
             tabPageStock.Controls.Add(dataGridView1);
             tabPageStock.Controls.Add(groupBox1);
-            tabPageStock.Location = new Point(4, 24);
+            tabPageStock.Location = new Point(4, 26);
             tabPageStock.Name = "tabPageStock";
-            tabPageStock.Size = new Size(1261, 681);
+            tabPageStock.Size = new Size(1261, 679);
             tabPageStock.TabIndex = 2;
             tabPageStock.Text = "Stock";
             tabPageStock.UseVisualStyleBackColor = true;
             // 
             // dataGridView1
             // 
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = Color.FromArgb(20, 102, 167);
+            dataGridViewCellStyle4.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle4.ForeColor = SystemColors.ControlLightLight;
+            dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
+            dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridView1.ColumnHeadersHeight = 35;
+            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = SystemColors.Window;
+            dataGridViewCellStyle5.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle5.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle5.SelectionBackColor = SystemColors.GradientActiveCaption;
+            dataGridViewCellStyle5.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = DataGridViewTriState.False;
+            dataGridView1.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridView1.EnableHeadersVisualStyles = false;
             dataGridView1.Location = new Point(215, 12);
             dataGridView1.MultiSelect = false;
             dataGridView1.Name = "dataGridView1";
@@ -1151,32 +1249,44 @@
             // 
             // btnEditProduct
             // 
+            btnEditProduct.BackColor = Color.FromArgb(20, 102, 167);
+            btnEditProduct.FlatAppearance.BorderSize = 0;
+            btnEditProduct.FlatStyle = FlatStyle.Flat;
+            btnEditProduct.ForeColor = SystemColors.ControlLightLight;
             btnEditProduct.Location = new Point(18, 538);
             btnEditProduct.Name = "btnEditProduct";
             btnEditProduct.Size = new Size(140, 57);
             btnEditProduct.TabIndex = 16;
             btnEditProduct.Text = "Edit Product";
-            btnEditProduct.UseVisualStyleBackColor = true;
+            btnEditProduct.UseVisualStyleBackColor = false;
             btnEditProduct.Click += btnEditProduct_Click;
             // 
             // btnRemoveProduct
             // 
+            btnRemoveProduct.BackColor = Color.FromArgb(20, 102, 167);
+            btnRemoveProduct.FlatAppearance.BorderSize = 0;
+            btnRemoveProduct.FlatStyle = FlatStyle.Flat;
+            btnRemoveProduct.ForeColor = SystemColors.ControlLightLight;
             btnRemoveProduct.Location = new Point(18, 601);
             btnRemoveProduct.Name = "btnRemoveProduct";
             btnRemoveProduct.Size = new Size(140, 57);
             btnRemoveProduct.TabIndex = 15;
             btnRemoveProduct.Text = "Remove Product";
-            btnRemoveProduct.UseVisualStyleBackColor = true;
+            btnRemoveProduct.UseVisualStyleBackColor = false;
             btnRemoveProduct.Click += btnRemoveProduct_Click;
             // 
             // btnNewProduct
             // 
+            btnNewProduct.BackColor = Color.FromArgb(20, 102, 167);
+            btnNewProduct.FlatAppearance.BorderSize = 0;
+            btnNewProduct.FlatStyle = FlatStyle.Flat;
+            btnNewProduct.ForeColor = SystemColors.ControlLightLight;
             btnNewProduct.Location = new Point(19, 475);
             btnNewProduct.Name = "btnNewProduct";
             btnNewProduct.Size = new Size(140, 57);
             btnNewProduct.TabIndex = 14;
             btnNewProduct.Text = "New Product";
-            btnNewProduct.UseVisualStyleBackColor = true;
+            btnNewProduct.UseVisualStyleBackColor = false;
             btnNewProduct.Click += btnNewProduct_Click;
             // 
             // label11
@@ -1286,7 +1396,26 @@
             // 
             // dataGridView2
             // 
-            dataGridView2.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView2.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = Color.FromArgb(20, 102, 167);
+            dataGridViewCellStyle6.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle6.ForeColor = SystemColors.ControlLightLight;
+            dataGridViewCellStyle6.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.True;
+            dataGridView2.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridView2.ColumnHeadersHeight = 35;
+            dataGridView2.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = SystemColors.Window;
+            dataGridViewCellStyle7.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle7.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle7.SelectionBackColor = SystemColors.GradientActiveCaption;
+            dataGridViewCellStyle7.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = DataGridViewTriState.False;
+            dataGridView2.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridView2.EnableHeadersVisualStyles = false;
             dataGridView2.Location = new Point(213, 16);
             dataGridView2.Name = "dataGridView2";
             dataGridView2.ReadOnly = true;
@@ -1339,32 +1468,44 @@
             // 
             // btnEditRequest
             // 
-            btnEditRequest.Location = new Point(20, 187);
+            btnEditRequest.BackColor = Color.FromArgb(20, 102, 167);
+            btnEditRequest.FlatAppearance.BorderSize = 0;
+            btnEditRequest.FlatStyle = FlatStyle.Flat;
+            btnEditRequest.ForeColor = SystemColors.ControlLightLight;
+            btnEditRequest.Location = new Point(20, 196);
             btnEditRequest.Name = "btnEditRequest";
-            btnEditRequest.Size = new Size(139, 23);
+            btnEditRequest.Size = new Size(139, 28);
             btnEditRequest.TabIndex = 16;
             btnEditRequest.Text = "Edit Request";
-            btnEditRequest.UseVisualStyleBackColor = true;
+            btnEditRequest.UseVisualStyleBackColor = false;
             btnEditRequest.Click += btnEditRequest_Click;
             // 
             // btnFulfillRequest
             // 
-            btnFulfillRequest.Location = new Point(20, 216);
+            btnFulfillRequest.BackColor = Color.FromArgb(20, 102, 167);
+            btnFulfillRequest.FlatAppearance.BorderSize = 0;
+            btnFulfillRequest.FlatStyle = FlatStyle.Flat;
+            btnFulfillRequest.ForeColor = SystemColors.ControlLightLight;
+            btnFulfillRequest.Location = new Point(20, 230);
             btnFulfillRequest.Name = "btnFulfillRequest";
-            btnFulfillRequest.Size = new Size(139, 23);
+            btnFulfillRequest.Size = new Size(139, 28);
             btnFulfillRequest.TabIndex = 15;
             btnFulfillRequest.Text = "Fulfill Request";
-            btnFulfillRequest.UseVisualStyleBackColor = true;
+            btnFulfillRequest.UseVisualStyleBackColor = false;
             btnFulfillRequest.Click += btnFulfillRequest_Click;
             // 
             // btAddShelfRequest
             // 
-            btAddShelfRequest.Location = new Point(20, 158);
+            btAddShelfRequest.BackColor = Color.FromArgb(20, 102, 167);
+            btAddShelfRequest.FlatAppearance.BorderSize = 0;
+            btAddShelfRequest.FlatStyle = FlatStyle.Flat;
+            btAddShelfRequest.ForeColor = SystemColors.ControlLightLight;
+            btAddShelfRequest.Location = new Point(20, 162);
             btAddShelfRequest.Name = "btAddShelfRequest";
-            btAddShelfRequest.Size = new Size(139, 23);
+            btAddShelfRequest.Size = new Size(139, 28);
             btAddShelfRequest.TabIndex = 14;
             btAddShelfRequest.Text = "New Request";
-            btAddShelfRequest.UseVisualStyleBackColor = true;
+            btAddShelfRequest.UseVisualStyleBackColor = false;
             btAddShelfRequest.Click += btAddShelfRequest_Click;
             // 
             // label23
@@ -1389,63 +1530,18 @@
             tabPageShifts.Controls.Add(groupBox9);
             tabPageShifts.Controls.Add(groupBox7);
             tabPageShifts.Controls.Add(groupBox8);
-            tabPageShifts.Location = new Point(4, 26);
+            tabPageShifts.Location = new Point(4, 24);
             tabPageShifts.Name = "tabPageShifts";
-            tabPageShifts.Size = new Size(1261, 679);
+            tabPageShifts.Size = new Size(1261, 681);
             tabPageShifts.TabIndex = 3;
             tabPageShifts.Text = "Shifts";
             tabPageShifts.UseVisualStyleBackColor = true;
-            // 
-            // btnRefreshShiftSchedule
-            // 
-            btnRefreshShiftSchedule.FlatAppearance.BorderSize = 0;
-            btnRefreshShiftSchedule.FlatStyle = FlatStyle.Flat;
-            btnRefreshShiftSchedule.Image = Properties.Resources.refresh_page_option;
-            btnRefreshShiftSchedule.Location = new Point(182, 16);
-            btnRefreshShiftSchedule.Name = "btnRefreshShiftSchedule";
-            btnRefreshShiftSchedule.Size = new Size(25, 25);
-            btnRefreshShiftSchedule.TabIndex = 49;
-            btnRefreshShiftSchedule.UseVisualStyleBackColor = true;
-            btnRefreshShiftSchedule.Click += btnRefreshShiftSchedule_Click;
-            // 
-            // btnNextMonth
-            // 
-            btnNextMonth.FlatAppearance.BorderSize = 0;
-            btnNextMonth.FlatStyle = FlatStyle.Flat;
-            btnNextMonth.Image = (Image)resources.GetObject("btnNextMonth.Image");
-            btnNextMonth.Location = new Point(37, 54);
-            btnNextMonth.Name = "btnNextMonth";
-            btnNextMonth.Size = new Size(25, 25);
-            btnNextMonth.TabIndex = 44;
-            btnNextMonth.UseVisualStyleBackColor = true;
-            btnNextMonth.Click += btnNextMonth_Click;
-            // 
-            // btnPreviousMonth
-            // 
-            btnPreviousMonth.FlatAppearance.BorderSize = 0;
-            btnPreviousMonth.FlatStyle = FlatStyle.Flat;
-            btnPreviousMonth.Image = (Image)resources.GetObject("btnPreviousMonth.Image");
-            btnPreviousMonth.Location = new Point(6, 54);
-            btnPreviousMonth.Name = "btnPreviousMonth";
-            btnPreviousMonth.Size = new Size(25, 25);
-            btnPreviousMonth.TabIndex = 43;
-            btnPreviousMonth.UseVisualStyleBackColor = true;
-            btnPreviousMonth.Click += btnPreviousMonth_Click;
-            // 
-            // lblMonth
-            // 
-            lblMonth.AutoSize = true;
-            lblMonth.Font = new Font("Century Gothic", 18F, FontStyle.Regular, GraphicsUnit.Point);
-            lblMonth.Location = new Point(6, 21);
-            lblMonth.Name = "lblMonth";
-            lblMonth.Size = new Size(102, 30);
-            lblMonth.TabIndex = 40;
-            lblMonth.Text = "MONTH";
             // 
             // label50
             // 
             label50.AutoSize = true;
             label50.Font = new Font("Century Gothic", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
+            label50.ForeColor = Color.FromArgb(20, 102, 167);
             label50.Location = new Point(1136, 14);
             label50.Name = "label50";
             label50.Size = new Size(80, 22);
@@ -1456,6 +1552,7 @@
             // 
             label45.AutoSize = true;
             label45.Font = new Font("Century Gothic", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
+            label45.ForeColor = Color.FromArgb(20, 102, 167);
             label45.Location = new Point(856, 14);
             label45.Name = "label45";
             label45.Size = new Size(65, 22);
@@ -1466,6 +1563,7 @@
             // 
             label43.AutoSize = true;
             label43.Font = new Font("Century Gothic", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
+            label43.ForeColor = Color.FromArgb(20, 102, 167);
             label43.Location = new Point(697, 14);
             label43.Name = "label43";
             label43.Size = new Size(92, 22);
@@ -1476,6 +1574,7 @@
             // 
             label9.AutoSize = true;
             label9.Font = new Font("Century Gothic", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
+            label9.ForeColor = Color.FromArgb(20, 102, 167);
             label9.Location = new Point(526, 14);
             label9.Name = "label9";
             label9.Size = new Size(120, 22);
@@ -1486,6 +1585,7 @@
             // 
             label8.AutoSize = true;
             label8.Font = new Font("Century Gothic", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
+            label8.ForeColor = Color.FromArgb(20, 102, 167);
             label8.Location = new Point(388, 14);
             label8.Name = "label8";
             label8.Size = new Size(86, 22);
@@ -1496,26 +1596,18 @@
             // 
             label7.AutoSize = true;
             label7.Font = new Font("Century Gothic", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
+            label7.ForeColor = Color.FromArgb(20, 102, 167);
             label7.Location = new Point(248, 14);
             label7.Name = "label7";
             label7.Size = new Size(88, 22);
             label7.TabIndex = 34;
             label7.Text = "Monday";
             // 
-            // btnAutoAssignDate
-            // 
-            btnAutoAssignDate.Location = new Point(147, 21);
-            btnAutoAssignDate.Name = "btnAutoAssignDate";
-            btnAutoAssignDate.Size = new Size(60, 56);
-            btnAutoAssignDate.TabIndex = 6;
-            btnAutoAssignDate.Text = "Auto Assign";
-            btnAutoAssignDate.UseVisualStyleBackColor = true;
-            btnAutoAssignDate.Click += btnAutoAssignDate_Click;
-            // 
             // label6
             // 
             label6.AutoSize = true;
             label6.Font = new Font("Century Gothic", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
+            label6.ForeColor = Color.FromArgb(20, 102, 167);
             label6.Location = new Point(986, 14);
             label6.Name = "label6";
             label6.Size = new Size(94, 22);
@@ -1545,12 +1637,16 @@
             // 
             // btnSaveShiftSchedule
             // 
+            btnSaveShiftSchedule.BackColor = Color.FromArgb(20, 102, 167);
+            btnSaveShiftSchedule.FlatAppearance.BorderSize = 0;
+            btnSaveShiftSchedule.FlatStyle = FlatStyle.Flat;
+            btnSaveShiftSchedule.ForeColor = SystemColors.ControlLightLight;
             btnSaveShiftSchedule.Location = new Point(6, 423);
             btnSaveShiftSchedule.Name = "btnSaveShiftSchedule";
             btnSaveShiftSchedule.Size = new Size(201, 34);
             btnSaveShiftSchedule.TabIndex = 48;
             btnSaveShiftSchedule.Text = "Save Shift Schedule";
-            btnSaveShiftSchedule.UseVisualStyleBackColor = true;
+            btnSaveShiftSchedule.UseVisualStyleBackColor = false;
             btnSaveShiftSchedule.Click += btnSaveShiftSchedule_Click;
             // 
             // label51
@@ -1580,81 +1676,6 @@
             lstEmployees.TabIndex = 45;
             lstEmployees.SelectedIndexChanged += lstEmployees_SelectedIndexChanged;
             // 
-            // DaysOffRequestTab
-            // 
-            DaysOffRequestTab.Controls.Add(btAproveDaysOffRequest);
-            DaysOffRequestTab.Controls.Add(btDeclineDaysOffRequest);
-            DaysOffRequestTab.Controls.Add(label38);
-            DaysOffRequestTab.Controls.Add(btRemoveDaysOffRequest);
-            DaysOffRequestTab.Controls.Add(dataGridViewDaysOffRequest);
-            DaysOffRequestTab.Location = new Point(4, 24);
-            DaysOffRequestTab.Name = "DaysOffRequestTab";
-            DaysOffRequestTab.Padding = new Padding(3);
-            DaysOffRequestTab.Size = new Size(1261, 681);
-            DaysOffRequestTab.TabIndex = 5;
-            DaysOffRequestTab.Text = "Days Off Request";
-            DaysOffRequestTab.UseVisualStyleBackColor = true;
-            // 
-            // btAproveDaysOffRequest
-            // 
-            btAproveDaysOffRequest.Location = new Point(390, 15);
-            btAproveDaysOffRequest.Name = "btAproveDaysOffRequest";
-            btAproveDaysOffRequest.Size = new Size(258, 36);
-            btAproveDaysOffRequest.TabIndex = 10;
-            btAproveDaysOffRequest.Text = "Aprove Selected Days Off Request";
-            btAproveDaysOffRequest.UseVisualStyleBackColor = true;
-            btAproveDaysOffRequest.Click += btAproveDaysOffRequest_Click;
-            // 
-            // btDeclineDaysOffRequest
-            // 
-            btDeclineDaysOffRequest.Location = new Point(663, 15);
-            btDeclineDaysOffRequest.Name = "btDeclineDaysOffRequest";
-            btDeclineDaysOffRequest.Size = new Size(258, 36);
-            btDeclineDaysOffRequest.TabIndex = 9;
-            btDeclineDaysOffRequest.Text = "Decline Selected Days Off Request";
-            btDeclineDaysOffRequest.UseVisualStyleBackColor = true;
-            btDeclineDaysOffRequest.Click += btDeclineDaysOffRequest_Click;
-            // 
-            // label38
-            // 
-            label38.AutoSize = true;
-            label38.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            label38.Location = new Point(6, 17);
-            label38.Name = "label38";
-            label38.Size = new Size(168, 25);
-            label38.TabIndex = 8;
-            label38.Text = "Days Off Requests";
-            // 
-            // btRemoveDaysOffRequest
-            // 
-            btRemoveDaysOffRequest.Location = new Point(997, 15);
-            btRemoveDaysOffRequest.Name = "btRemoveDaysOffRequest";
-            btRemoveDaysOffRequest.Size = new Size(258, 36);
-            btRemoveDaysOffRequest.TabIndex = 1;
-            btRemoveDaysOffRequest.Text = "Remove Selected Days Off Request";
-            btRemoveDaysOffRequest.UseVisualStyleBackColor = true;
-            btRemoveDaysOffRequest.Click += btRemoveDaysOffRequest_Click;
-            // 
-            // dataGridViewDaysOffRequest
-            // 
-            dataGridViewDaysOffRequest.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Window;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-            dataGridViewDaysOffRequest.DefaultCellStyle = dataGridViewCellStyle2;
-            dataGridViewDaysOffRequest.Location = new Point(3, 57);
-            dataGridViewDaysOffRequest.MultiSelect = false;
-            dataGridViewDaysOffRequest.Name = "dataGridViewDaysOffRequest";
-            dataGridViewDaysOffRequest.ReadOnly = true;
-            dataGridViewDaysOffRequest.RowTemplate.Height = 25;
-            dataGridViewDaysOffRequest.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridViewDaysOffRequest.Size = new Size(1252, 616);
-            dataGridViewDaysOffRequest.TabIndex = 0;
-            // 
             // groupBox7
             // 
             groupBox7.Controls.Add(btnNextMonth);
@@ -1667,6 +1688,53 @@
             groupBox7.TabIndex = 50;
             groupBox7.TabStop = false;
             groupBox7.Text = "Shift Schedule";
+            // 
+            // btnNextMonth
+            // 
+            btnNextMonth.FlatAppearance.BorderSize = 0;
+            btnNextMonth.FlatStyle = FlatStyle.Flat;
+            btnNextMonth.Image = (Image)resources.GetObject("btnNextMonth.Image");
+            btnNextMonth.Location = new Point(37, 54);
+            btnNextMonth.Name = "btnNextMonth";
+            btnNextMonth.Size = new Size(25, 25);
+            btnNextMonth.TabIndex = 44;
+            btnNextMonth.UseVisualStyleBackColor = true;
+            btnNextMonth.Click += btnNextMonth_Click;
+            // 
+            // btnRefreshShiftSchedule
+            // 
+            btnRefreshShiftSchedule.FlatAppearance.BorderSize = 0;
+            btnRefreshShiftSchedule.FlatStyle = FlatStyle.Flat;
+            btnRefreshShiftSchedule.Image = Properties.Resources.refresh_page_option;
+            btnRefreshShiftSchedule.Location = new Point(182, 16);
+            btnRefreshShiftSchedule.Name = "btnRefreshShiftSchedule";
+            btnRefreshShiftSchedule.Size = new Size(25, 25);
+            btnRefreshShiftSchedule.TabIndex = 49;
+            btnRefreshShiftSchedule.UseVisualStyleBackColor = true;
+            btnRefreshShiftSchedule.Click += btnRefreshShiftSchedule_Click;
+            // 
+            // btnPreviousMonth
+            // 
+            btnPreviousMonth.FlatAppearance.BorderSize = 0;
+            btnPreviousMonth.FlatStyle = FlatStyle.Flat;
+            btnPreviousMonth.Image = (Image)resources.GetObject("btnPreviousMonth.Image");
+            btnPreviousMonth.Location = new Point(6, 54);
+            btnPreviousMonth.Name = "btnPreviousMonth";
+            btnPreviousMonth.Size = new Size(25, 25);
+            btnPreviousMonth.TabIndex = 43;
+            btnPreviousMonth.UseVisualStyleBackColor = true;
+            btnPreviousMonth.Click += btnPreviousMonth_Click;
+            // 
+            // lblMonth
+            // 
+            lblMonth.AutoSize = true;
+            lblMonth.Font = new Font("Century Gothic", 18F, FontStyle.Regular, GraphicsUnit.Point);
+            lblMonth.ForeColor = Color.FromArgb(20, 102, 167);
+            lblMonth.Location = new Point(6, 21);
+            lblMonth.Name = "lblMonth";
+            lblMonth.Size = new Size(102, 30);
+            lblMonth.TabIndex = 40;
+            lblMonth.Text = "MONTH";
             // 
             // groupBox8
             // 
@@ -1681,23 +1749,6 @@
             groupBox8.TabIndex = 51;
             groupBox8.TabStop = false;
             groupBox8.Text = "Auto Assign";
-            // 
-            // dtpAutoAssignFrom
-            // 
-            dtpAutoAssignFrom.Format = DateTimePickerFormat.Short;
-            dtpAutoAssignFrom.Location = new Point(53, 21);
-            dtpAutoAssignFrom.Name = "dtpAutoAssignFrom";
-            dtpAutoAssignFrom.Size = new Size(88, 25);
-            dtpAutoAssignFrom.TabIndex = 7;
-            // 
-            // label22
-            // 
-            label22.AutoSize = true;
-            label22.Location = new Point(6, 27);
-            label22.Name = "label22";
-            label22.Size = new Size(41, 17);
-            label22.TabIndex = 8;
-            label22.Text = "From:";
             // 
             // label30
             // 
@@ -1715,6 +1766,136 @@
             dtpAutoAssignTo.Name = "dtpAutoAssignTo";
             dtpAutoAssignTo.Size = new Size(88, 25);
             dtpAutoAssignTo.TabIndex = 9;
+            // 
+            // label22
+            // 
+            label22.AutoSize = true;
+            label22.Location = new Point(6, 27);
+            label22.Name = "label22";
+            label22.Size = new Size(41, 17);
+            label22.TabIndex = 8;
+            label22.Text = "From:";
+            // 
+            // dtpAutoAssignFrom
+            // 
+            dtpAutoAssignFrom.Format = DateTimePickerFormat.Short;
+            dtpAutoAssignFrom.Location = new Point(53, 21);
+            dtpAutoAssignFrom.Name = "dtpAutoAssignFrom";
+            dtpAutoAssignFrom.Size = new Size(88, 25);
+            dtpAutoAssignFrom.TabIndex = 7;
+            // 
+            // btnAutoAssignDate
+            // 
+            btnAutoAssignDate.BackColor = Color.FromArgb(20, 102, 167);
+            btnAutoAssignDate.FlatAppearance.BorderSize = 0;
+            btnAutoAssignDate.FlatStyle = FlatStyle.Flat;
+            btnAutoAssignDate.ForeColor = SystemColors.ControlLightLight;
+            btnAutoAssignDate.Location = new Point(147, 21);
+            btnAutoAssignDate.Name = "btnAutoAssignDate";
+            btnAutoAssignDate.Size = new Size(60, 56);
+            btnAutoAssignDate.TabIndex = 6;
+            btnAutoAssignDate.Text = "Auto Assign";
+            btnAutoAssignDate.UseVisualStyleBackColor = false;
+            btnAutoAssignDate.Click += btnAutoAssignDate_Click;
+            // 
+            // DaysOffRequestTab
+            // 
+            DaysOffRequestTab.Controls.Add(btAproveDaysOffRequest);
+            DaysOffRequestTab.Controls.Add(btDeclineDaysOffRequest);
+            DaysOffRequestTab.Controls.Add(label38);
+            DaysOffRequestTab.Controls.Add(btRemoveDaysOffRequest);
+            DaysOffRequestTab.Controls.Add(dataGridViewDaysOffRequest);
+            DaysOffRequestTab.Location = new Point(4, 24);
+            DaysOffRequestTab.Name = "DaysOffRequestTab";
+            DaysOffRequestTab.Padding = new Padding(3);
+            DaysOffRequestTab.Size = new Size(1261, 681);
+            DaysOffRequestTab.TabIndex = 5;
+            DaysOffRequestTab.Text = "Days Off Request";
+            DaysOffRequestTab.UseVisualStyleBackColor = true;
+            // 
+            // btAproveDaysOffRequest
+            // 
+            btAproveDaysOffRequest.BackColor = Color.FromArgb(20, 102, 167);
+            btAproveDaysOffRequest.FlatAppearance.BorderSize = 0;
+            btAproveDaysOffRequest.FlatStyle = FlatStyle.Flat;
+            btAproveDaysOffRequest.ForeColor = SystemColors.ControlLightLight;
+            btAproveDaysOffRequest.Location = new Point(390, 15);
+            btAproveDaysOffRequest.Name = "btAproveDaysOffRequest";
+            btAproveDaysOffRequest.Size = new Size(258, 36);
+            btAproveDaysOffRequest.TabIndex = 10;
+            btAproveDaysOffRequest.Text = "Approve Selected Days Off Request";
+            btAproveDaysOffRequest.UseVisualStyleBackColor = false;
+            btAproveDaysOffRequest.Click += btAproveDaysOffRequest_Click;
+            // 
+            // btDeclineDaysOffRequest
+            // 
+            btDeclineDaysOffRequest.BackColor = Color.FromArgb(20, 102, 167);
+            btDeclineDaysOffRequest.FlatAppearance.BorderSize = 0;
+            btDeclineDaysOffRequest.FlatStyle = FlatStyle.Flat;
+            btDeclineDaysOffRequest.ForeColor = SystemColors.ControlLightLight;
+            btDeclineDaysOffRequest.Location = new Point(663, 15);
+            btDeclineDaysOffRequest.Name = "btDeclineDaysOffRequest";
+            btDeclineDaysOffRequest.Size = new Size(258, 36);
+            btDeclineDaysOffRequest.TabIndex = 9;
+            btDeclineDaysOffRequest.Text = "Decline Selected Days Off Request";
+            btDeclineDaysOffRequest.UseVisualStyleBackColor = false;
+            btDeclineDaysOffRequest.Click += btDeclineDaysOffRequest_Click;
+            // 
+            // label38
+            // 
+            label38.AutoSize = true;
+            label38.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label38.ForeColor = Color.FromArgb(20, 102, 167);
+            label38.Location = new Point(6, 17);
+            label38.Name = "label38";
+            label38.Size = new Size(168, 25);
+            label38.TabIndex = 8;
+            label38.Text = "Days Off Requests";
+            // 
+            // btRemoveDaysOffRequest
+            // 
+            btRemoveDaysOffRequest.BackColor = Color.FromArgb(20, 102, 167);
+            btRemoveDaysOffRequest.FlatAppearance.BorderSize = 0;
+            btRemoveDaysOffRequest.FlatStyle = FlatStyle.Flat;
+            btRemoveDaysOffRequest.ForeColor = SystemColors.ControlLightLight;
+            btRemoveDaysOffRequest.Location = new Point(997, 15);
+            btRemoveDaysOffRequest.Name = "btRemoveDaysOffRequest";
+            btRemoveDaysOffRequest.Size = new Size(258, 36);
+            btRemoveDaysOffRequest.TabIndex = 1;
+            btRemoveDaysOffRequest.Text = "Remove Selected Days Off Request";
+            btRemoveDaysOffRequest.UseVisualStyleBackColor = false;
+            btRemoveDaysOffRequest.Click += btRemoveDaysOffRequest_Click;
+            // 
+            // dataGridViewDaysOffRequest
+            // 
+            dataGridViewDaysOffRequest.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = Color.FromArgb(20, 102, 167);
+            dataGridViewCellStyle8.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle8.ForeColor = SystemColors.ControlLightLight;
+            dataGridViewCellStyle8.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = DataGridViewTriState.True;
+            dataGridViewDaysOffRequest.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewDaysOffRequest.ColumnHeadersHeight = 35;
+            dataGridViewDaysOffRequest.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dataGridViewCellStyle9.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = SystemColors.Window;
+            dataGridViewCellStyle9.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle9.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle9.SelectionBackColor = SystemColors.GradientActiveCaption;
+            dataGridViewCellStyle9.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = DataGridViewTriState.True;
+            dataGridViewDaysOffRequest.DefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewDaysOffRequest.EnableHeadersVisualStyles = false;
+            dataGridViewDaysOffRequest.Location = new Point(3, 57);
+            dataGridViewDaysOffRequest.MultiSelect = false;
+            dataGridViewDaysOffRequest.Name = "dataGridViewDaysOffRequest";
+            dataGridViewDaysOffRequest.ReadOnly = true;
+            dataGridViewDaysOffRequest.RowTemplate.Height = 25;
+            dataGridViewDaysOffRequest.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridViewDaysOffRequest.Size = new Size(1252, 616);
+            dataGridViewDaysOffRequest.TabIndex = 0;
             // 
             // MainControl
             // 
@@ -1760,13 +1941,13 @@
             tabPageShifts.PerformLayout();
             groupBox9.ResumeLayout(false);
             groupBox9.PerformLayout();
-            DaysOffRequestTab.ResumeLayout(false);
-            DaysOffRequestTab.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridViewDaysOffRequest).EndInit();
             groupBox7.ResumeLayout(false);
             groupBox7.PerformLayout();
             groupBox8.ResumeLayout(false);
             groupBox8.PerformLayout();
+            DaysOffRequestTab.ResumeLayout(false);
+            DaysOffRequestTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewDaysOffRequest).EndInit();
             ResumeLayout(false);
         }
 

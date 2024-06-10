@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainControl));
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             tabControMain = new TabControl();
             tabPageMain = new TabPage();
             cmbDepartmentList = new ComboBox();
@@ -55,11 +55,9 @@
             label29 = new Label();
             lbEmployeeEmail = new Label();
             pbEmployeeImage = new PictureBox();
-            label28 = new Label();
             label27 = new Label();
             label26 = new Label();
             label25 = new Label();
-            lbEmployeeAttendance = new Label();
             lbEmployeeName = new Label();
             groupBox3 = new GroupBox();
             label48 = new Label();
@@ -145,17 +143,12 @@
             btAddShelfRequest = new Button();
             label23 = new Label();
             tabPageShifts = new TabPage();
-            btnRefreshShiftSchedule = new Button();
-            btnNextMonth = new Button();
-            btnPreviousMonth = new Button();
-            lblMonth = new Label();
             label50 = new Label();
             label45 = new Label();
             label43 = new Label();
             label9 = new Label();
             label8 = new Label();
             label7 = new Label();
-            btnAutoAssignDate = new Button();
             label6 = new Label();
             flpCalendar = new FlowLayoutPanel();
             groupBox9 = new GroupBox();
@@ -163,6 +156,17 @@
             label51 = new Label();
             txtEmployeeSearch = new TextBox();
             lstEmployees = new ListBox();
+            groupBox7 = new GroupBox();
+            btnNextMonth = new Button();
+            btnRefreshShiftSchedule = new Button();
+            btnPreviousMonth = new Button();
+            lblMonth = new Label();
+            groupBox8 = new GroupBox();
+            label30 = new Label();
+            dtpAutoAssignTo = new DateTimePicker();
+            label22 = new Label();
+            dtpAutoAssignFrom = new DateTimePicker();
+            btnAutoAssignDate = new Button();
             DaysOffRequestTab = new TabPage();
             btAproveDaysOffRequest = new Button();
             btDeclineDaysOffRequest = new Button();
@@ -170,12 +174,6 @@
             btRemoveDaysOffRequest = new Button();
             dataGridViewDaysOffRequest = new DataGridView();
             backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            groupBox7 = new GroupBox();
-            groupBox8 = new GroupBox();
-            dtpAutoAssignFrom = new DateTimePicker();
-            label22 = new Label();
-            label30 = new Label();
-            dtpAutoAssignTo = new DateTimePicker();
             tabControMain.SuspendLayout();
             tabPageMain.SuspendLayout();
             groupBox4.SuspendLayout();
@@ -201,10 +199,10 @@
             ((System.ComponentModel.ISupportInitialize)numericQuantityShelfRequest).BeginInit();
             tabPageShifts.SuspendLayout();
             groupBox9.SuspendLayout();
-            DaysOffRequestTab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridViewDaysOffRequest).BeginInit();
             groupBox7.SuspendLayout();
             groupBox8.SuspendLayout();
+            DaysOffRequestTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewDaysOffRequest).BeginInit();
             SuspendLayout();
             // 
             // tabControMain
@@ -234,9 +232,9 @@
             tabPageMain.Controls.Add(label19);
             tabPageMain.Controls.Add(label18);
             tabPageMain.Controls.Add(cmbRoleList);
-            tabPageMain.Location = new Point(4, 26);
+            tabPageMain.Location = new Point(4, 30);
             tabPageMain.Name = "tabPageMain";
-            tabPageMain.Size = new Size(1261, 679);
+            tabPageMain.Size = new Size(1261, 675);
             tabPageMain.TabIndex = 0;
             tabPageMain.Text = "Main";
             tabPageMain.UseVisualStyleBackColor = true;
@@ -246,7 +244,7 @@
             cmbDepartmentList.FormattingEnabled = true;
             cmbDepartmentList.Location = new Point(164, 29);
             cmbDepartmentList.Name = "cmbDepartmentList";
-            cmbDepartmentList.Size = new Size(133, 25);
+            cmbDepartmentList.Size = new Size(133, 29);
             cmbDepartmentList.TabIndex = 47;
             cmbDepartmentList.SelectedIndexChanged += cmbDepartmentList_SelectedIndexChanged;
             // 
@@ -256,7 +254,7 @@
             label46.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
             label46.Location = new Point(12, 651);
             label46.Name = "label46";
-            label46.Size = new Size(90, 13);
+            label46.Size = new Size(108, 19);
             label46.TabIndex = 46;
             label46.Text = "Based On Filters";
             // 
@@ -266,7 +264,7 @@
             label44.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
             label44.Location = new Point(12, 630);
             label44.Name = "label44";
-            label44.Size = new Size(97, 21);
+            label44.Size = new Size(118, 28);
             label44.TabIndex = 45;
             label44.Text = "Employees:";
             // 
@@ -274,9 +272,9 @@
             // 
             lblFilteredCount.AutoSize = true;
             lblFilteredCount.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            lblFilteredCount.Location = new Point(115, 633);
+            lblFilteredCount.Location = new Point(126, 635);
             lblFilteredCount.Name = "lblFilteredCount";
-            lblFilteredCount.Size = new Size(170, 17);
+            lblFilteredCount.Size = new Size(221, 23);
             lblFilteredCount.TabIndex = 44;
             lblFilteredCount.Text = "{EmployeesDisplayedCount}";
             // 
@@ -300,11 +298,9 @@
             groupBox4.Controls.Add(label29);
             groupBox4.Controls.Add(lbEmployeeEmail);
             groupBox4.Controls.Add(pbEmployeeImage);
-            groupBox4.Controls.Add(label28);
             groupBox4.Controls.Add(label27);
             groupBox4.Controls.Add(label26);
             groupBox4.Controls.Add(label25);
-            groupBox4.Controls.Add(lbEmployeeAttendance);
             groupBox4.Controls.Add(lbEmployeeName);
             groupBox4.Location = new Point(336, 11);
             groupBox4.Name = "groupBox4";
@@ -328,9 +324,9 @@
             // 
             label42.AutoSize = true;
             label42.Font = new Font("Segoe UI", 11F, FontStyle.Bold, GraphicsUnit.Point);
-            label42.Location = new Point(17, 370);
+            label42.Location = new Point(151, 366);
             label42.Name = "label42";
-            label42.Size = new Size(88, 20);
+            label42.Size = new Size(109, 25);
             label42.TabIndex = 43;
             label42.Text = "Total Shifts";
             // 
@@ -338,9 +334,9 @@
             // 
             lbEmployeeTotal.AutoSize = true;
             lbEmployeeTotal.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            lbEmployeeTotal.Location = new Point(17, 391);
+            lbEmployeeTotal.Location = new Point(151, 391);
             lbEmployeeTotal.Name = "lbEmployeeTotal";
-            lbEmployeeTotal.Size = new Size(132, 17);
+            lbEmployeeTotal.Size = new Size(171, 23);
             lbEmployeeTotal.TabIndex = 42;
             lbEmployeeTotal.Text = "{EmployeeTotalShifts}";
             // 
@@ -348,9 +344,9 @@
             // 
             label40.AutoSize = true;
             label40.Font = new Font("Segoe UI", 11F, FontStyle.Bold, GraphicsUnit.Point);
-            label40.Location = new Point(185, 370);
+            label40.Location = new Point(230, 317);
             label40.Name = "label40";
-            label40.Size = new Size(112, 20);
+            label40.Size = new Size(142, 25);
             label40.TabIndex = 41;
             label40.Text = "Evening Shifts:";
             // 
@@ -358,9 +354,9 @@
             // 
             lbEmployeeEvening.AutoSize = true;
             lbEmployeeEvening.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            lbEmployeeEvening.Location = new Point(185, 391);
+            lbEmployeeEvening.Location = new Point(230, 342);
             lbEmployeeEvening.Name = "lbEmployeeEvening";
-            lbEmployeeEvening.Size = new Size(197, 17);
+            lbEmployeeEvening.Size = new Size(258, 23);
             lbEmployeeEvening.TabIndex = 40;
             lbEmployeeEvening.Text = "{EmployeeEveningShiftsNumber}";
             // 
@@ -368,9 +364,9 @@
             // 
             label39.AutoSize = true;
             label39.Font = new Font("Segoe UI", 16F, FontStyle.Bold, GraphicsUnit.Point);
-            label39.Location = new Point(17, 289);
+            label39.Location = new Point(17, 263);
             label39.Name = "label39";
-            label39.Size = new Size(202, 30);
+            label39.Size = new Size(249, 37);
             label39.TabIndex = 39;
             label39.Text = "In the last 30 days";
             // 
@@ -378,9 +374,9 @@
             // 
             label37.AutoSize = true;
             label37.Font = new Font("Segoe UI", 11F, FontStyle.Bold, GraphicsUnit.Point);
-            label37.Location = new Point(185, 319);
+            label37.Location = new Point(17, 317);
             label37.Name = "label37";
-            label37.Size = new Size(117, 20);
+            label37.Size = new Size(150, 25);
             label37.TabIndex = 38;
             label37.Text = "Morning Shifts:";
             // 
@@ -388,9 +384,9 @@
             // 
             lbEmployeeMorning.AutoSize = true;
             lbEmployeeMorning.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            lbEmployeeMorning.Location = new Point(185, 340);
+            lbEmployeeMorning.Location = new Point(17, 342);
             lbEmployeeMorning.Name = "lbEmployeeMorning";
-            lbEmployeeMorning.Size = new Size(202, 17);
+            lbEmployeeMorning.Size = new Size(263, 23);
             lbEmployeeMorning.TabIndex = 37;
             lbEmployeeMorning.Text = "{EmployeeMorningShiftsNumber}";
             // 
@@ -398,7 +394,7 @@
             // 
             dateTimePicker2.Location = new Point(424, 26);
             dateTimePicker2.Name = "dateTimePicker2";
-            dateTimePicker2.Size = new Size(239, 25);
+            dateTimePicker2.Size = new Size(239, 29);
             dateTimePicker2.TabIndex = 36;
             dateTimePicker2.ValueChanged += dateTimePicker2_ValueChanged;
             // 
@@ -408,7 +404,7 @@
             label35.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
             label35.Location = new Point(424, 51);
             label35.Name = "label35";
-            label35.Size = new Size(50, 21);
+            label35.Size = new Size(62, 28);
             label35.TabIndex = 35;
             label35.Text = "Shift:";
             // 
@@ -418,7 +414,7 @@
             lbEmployeeShiftOnDate.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             lbEmployeeShiftOnDate.Location = new Point(470, 54);
             lbEmployeeShiftOnDate.Name = "lbEmployeeShiftOnDate";
-            lbEmployeeShiftOnDate.Size = new Size(193, 17);
+            lbEmployeeShiftOnDate.Size = new Size(252, 23);
             lbEmployeeShiftOnDate.TabIndex = 34;
             lbEmployeeShiftOnDate.Text = "{EmployeeShiftForSelectedDate}";
             // 
@@ -428,7 +424,7 @@
             label33.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
             label33.Location = new Point(17, 194);
             label33.Name = "label33";
-            label33.Size = new Size(106, 21);
+            label33.Size = new Size(132, 28);
             label33.TabIndex = 33;
             label33.Text = "Department:";
             // 
@@ -438,7 +434,7 @@
             lbEmployeeDepartment.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             lbEmployeeDepartment.Location = new Point(17, 215);
             lbEmployeeDepartment.Name = "lbEmployeeDepartment";
-            lbEmployeeDepartment.Size = new Size(142, 17);
+            lbEmployeeDepartment.Size = new Size(186, 23);
             lbEmployeeDepartment.TabIndex = 32;
             lbEmployeeDepartment.Text = "{EmployeeDepartment}";
             // 
@@ -448,7 +444,7 @@
             label31.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
             label31.Location = new Point(17, 133);
             label31.Name = "label31";
-            label31.Size = new Size(48, 21);
+            label31.Size = new Size(59, 28);
             label31.TabIndex = 31;
             label31.Text = "Role:";
             // 
@@ -458,7 +454,7 @@
             lbEmployeeRole.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             lbEmployeeRole.Location = new Point(17, 154);
             lbEmployeeRole.Name = "lbEmployeeRole";
-            lbEmployeeRole.Size = new Size(99, 17);
+            lbEmployeeRole.Size = new Size(127, 23);
             lbEmployeeRole.TabIndex = 30;
             lbEmployeeRole.Text = "{EmployeeRole}";
             // 
@@ -468,7 +464,7 @@
             label29.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
             label29.Location = new Point(17, 78);
             label29.Name = "label29";
-            label29.Size = new Size(57, 21);
+            label29.Size = new Size(69, 28);
             label29.TabIndex = 29;
             label29.Text = "Email:";
             // 
@@ -478,7 +474,7 @@
             lbEmployeeEmail.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             lbEmployeeEmail.Location = new Point(17, 99);
             lbEmployeeEmail.Name = "lbEmployeeEmail";
-            lbEmployeeEmail.Size = new Size(104, 17);
+            lbEmployeeEmail.Size = new Size(135, 23);
             lbEmployeeEmail.TabIndex = 28;
             lbEmployeeEmail.Text = "{EmployeeEmail}";
             // 
@@ -490,23 +486,13 @@
             pbEmployeeImage.TabIndex = 27;
             pbEmployeeImage.TabStop = false;
             // 
-            // label28
-            // 
-            label28.AutoSize = true;
-            label28.Font = new Font("Segoe UI", 11F, FontStyle.Bold, GraphicsUnit.Point);
-            label28.Location = new Point(17, 319);
-            label28.Name = "label28";
-            label28.Size = new Size(123, 20);
-            label28.TabIndex = 26;
-            label28.Text = "Attendance (%):";
-            // 
             // label27
             // 
             label27.AutoSize = true;
             label27.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
             label27.Location = new Point(17, 159);
             label27.Name = "label27";
-            label27.Size = new Size(0, 21);
+            label27.Size = new Size(0, 28);
             label27.TabIndex = 25;
             // 
             // label26
@@ -515,7 +501,7 @@
             label26.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
             label26.Location = new Point(185, 26);
             label26.Name = "label26";
-            label26.Size = new Size(62, 21);
+            label26.Size = new Size(75, 28);
             label26.TabIndex = 24;
             label26.Text = "Image:";
             // 
@@ -525,19 +511,9 @@
             label25.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
             label25.Location = new Point(17, 29);
             label25.Name = "label25";
-            label25.Size = new Size(60, 21);
+            label25.Size = new Size(73, 28);
             label25.TabIndex = 23;
             label25.Text = "Name:";
-            // 
-            // lbEmployeeAttendance
-            // 
-            lbEmployeeAttendance.AutoSize = true;
-            lbEmployeeAttendance.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            lbEmployeeAttendance.Location = new Point(17, 340);
-            lbEmployeeAttendance.Name = "lbEmployeeAttendance";
-            lbEmployeeAttendance.Size = new Size(138, 17);
-            lbEmployeeAttendance.TabIndex = 22;
-            lbEmployeeAttendance.Text = "{EmployeeAttendance}";
             // 
             // lbEmployeeName
             // 
@@ -545,7 +521,7 @@
             lbEmployeeName.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             lbEmployeeName.Location = new Point(17, 50);
             lbEmployeeName.Name = "lbEmployeeName";
-            lbEmployeeName.Size = new Size(108, 17);
+            lbEmployeeName.Size = new Size(140, 23);
             lbEmployeeName.TabIndex = 21;
             lbEmployeeName.Text = "{EmployeeName}";
             // 
@@ -568,7 +544,7 @@
             label48.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label48.Location = new Point(230, 22);
             label48.Name = "label48";
-            label48.Size = new Size(131, 17);
+            label48.Size = new Size(169, 23);
             label48.TabIndex = 44;
             label48.Text = "{NumberOfRequests}";
             // 
@@ -586,10 +562,10 @@
             // listBox2
             // 
             listBox2.FormattingEnabled = true;
-            listBox2.ItemHeight = 17;
+            listBox2.ItemHeight = 21;
             listBox2.Location = new Point(7, 43);
             listBox2.Name = "listBox2";
-            listBox2.Size = new Size(290, 89);
+            listBox2.Size = new Size(290, 88);
             listBox2.TabIndex = 45;
             // 
             // label47
@@ -598,17 +574,17 @@
             label47.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
             label47.Location = new Point(7, 19);
             label47.Name = "label47";
-            label47.Size = new Size(217, 21);
+            label47.Size = new Size(270, 28);
             label47.TabIndex = 44;
             label47.Text = "Outstanding Shelf Request:";
             // 
             // lstBoxFilteredEmployees
             // 
             lstBoxFilteredEmployees.FormattingEnabled = true;
-            lstBoxFilteredEmployees.ItemHeight = 17;
+            lstBoxFilteredEmployees.ItemHeight = 21;
             lstBoxFilteredEmployees.Location = new Point(12, 58);
             lstBoxFilteredEmployees.Name = "lstBoxFilteredEmployees";
-            lstBoxFilteredEmployees.Size = new Size(285, 548);
+            lstBoxFilteredEmployees.Size = new Size(285, 529);
             lstBoxFilteredEmployees.TabIndex = 4;
             lstBoxFilteredEmployees.SelectedIndexChanged += lstBoxFilteredEmployees_SelectedIndexChanged;
             // 
@@ -617,7 +593,7 @@
             label19.AutoSize = true;
             label19.Location = new Point(164, 11);
             label19.Name = "label19";
-            label19.Size = new Size(77, 17);
+            label19.Size = new Size(102, 23);
             label19.TabIndex = 3;
             label19.Text = "Department";
             // 
@@ -626,7 +602,7 @@
             label18.AutoSize = true;
             label18.Location = new Point(12, 11);
             label18.Name = "label18";
-            label18.Size = new Size(34, 17);
+            label18.Size = new Size(43, 23);
             label18.TabIndex = 2;
             label18.Text = "Role";
             // 
@@ -635,16 +611,16 @@
             cmbRoleList.FormattingEnabled = true;
             cmbRoleList.Location = new Point(12, 29);
             cmbRoleList.Name = "cmbRoleList";
-            cmbRoleList.Size = new Size(133, 25);
+            cmbRoleList.Size = new Size(133, 29);
             cmbRoleList.TabIndex = 0;
             cmbRoleList.SelectedIndexChanged += cmbRoleList_SelectedIndexChanged;
             // 
             // tabPageEmployee
             // 
             tabPageEmployee.Controls.Add(groupBoxManageEmployees);
-            tabPageEmployee.Location = new Point(4, 24);
+            tabPageEmployee.Location = new Point(4, 29);
             tabPageEmployee.Name = "tabPageEmployee";
-            tabPageEmployee.Size = new Size(1261, 681);
+            tabPageEmployee.Size = new Size(1261, 676);
             tabPageEmployee.TabIndex = 1;
             tabPageEmployee.Text = "Employees";
             tabPageEmployee.UseVisualStyleBackColor = true;
@@ -691,7 +667,7 @@
             label36.AutoSize = true;
             label36.Location = new Point(480, 93);
             label36.Name = "label36";
-            label36.Size = new Size(32, 17);
+            label36.Size = new Size(42, 23);
             label36.TabIndex = 27;
             label36.Text = "BSN";
             // 
@@ -700,7 +676,7 @@
             cmbBoxEmployeeDepartment.FormattingEnabled = true;
             cmbBoxEmployeeDepartment.Location = new Point(322, 111);
             cmbBoxEmployeeDepartment.Name = "cmbBoxEmployeeDepartment";
-            cmbBoxEmployeeDepartment.Size = new Size(152, 25);
+            cmbBoxEmployeeDepartment.Size = new Size(152, 29);
             cmbBoxEmployeeDepartment.TabIndex = 26;
             // 
             // label24
@@ -708,7 +684,7 @@
             label24.AutoSize = true;
             label24.Location = new Point(322, 93);
             label24.Name = "label24";
-            label24.Size = new Size(77, 17);
+            label24.Size = new Size(102, 23);
             label24.TabIndex = 25;
             label24.Text = "Department";
             // 
@@ -716,7 +692,7 @@
             // 
             txtBoxEmployeeBankAcc.Location = new Point(639, 111);
             txtBoxEmployeeBankAcc.Name = "txtBoxEmployeeBankAcc";
-            txtBoxEmployeeBankAcc.Size = new Size(152, 25);
+            txtBoxEmployeeBankAcc.Size = new Size(152, 29);
             txtBoxEmployeeBankAcc.TabIndex = 24;
             // 
             // label20
@@ -724,7 +700,7 @@
             label20.AutoSize = true;
             label20.Location = new Point(639, 93);
             label20.Name = "label20";
-            label20.Size = new Size(36, 17);
+            label20.Size = new Size(49, 23);
             label20.TabIndex = 23;
             label20.Text = "IBAN";
             // 
@@ -732,7 +708,7 @@
             // 
             txtBoxEmployeeBsn.Location = new Point(480, 111);
             txtBoxEmployeeBsn.Name = "txtBoxEmployeeBsn";
-            txtBoxEmployeeBsn.Size = new Size(152, 25);
+            txtBoxEmployeeBsn.Size = new Size(152, 29);
             txtBoxEmployeeBsn.TabIndex = 22;
             // 
             // dtGrVEmployees
@@ -755,7 +731,7 @@
             // 
             txtBoxEmployeePhoneNum.Location = new Point(639, 37);
             txtBoxEmployeePhoneNum.Name = "txtBoxEmployeePhoneNum";
-            txtBoxEmployeePhoneNum.Size = new Size(152, 25);
+            txtBoxEmployeePhoneNum.Size = new Size(152, 29);
             txtBoxEmployeePhoneNum.TabIndex = 20;
             // 
             // label5
@@ -763,7 +739,7 @@
             label5.AutoSize = true;
             label5.Location = new Point(639, 19);
             label5.Name = "label5";
-            label5.Size = new Size(96, 17);
+            label5.Size = new Size(127, 23);
             label5.TabIndex = 19;
             label5.Text = "Phone Number";
             // 
@@ -771,7 +747,7 @@
             // 
             txtBoxEmployeeAddress.Location = new Point(480, 37);
             txtBoxEmployeeAddress.Name = "txtBoxEmployeeAddress";
-            txtBoxEmployeeAddress.Size = new Size(152, 25);
+            txtBoxEmployeeAddress.Size = new Size(152, 29);
             txtBoxEmployeeAddress.TabIndex = 18;
             // 
             // label49
@@ -779,7 +755,7 @@
             label49.AutoSize = true;
             label49.Location = new Point(480, 19);
             label49.Name = "label49";
-            label49.Size = new Size(56, 17);
+            label49.Size = new Size(70, 23);
             label49.TabIndex = 17;
             label49.Text = "Address";
             // 
@@ -818,7 +794,7 @@
             cmbBoxEmployeeIsActive.FormattingEnabled = true;
             cmbBoxEmployeeIsActive.Location = new Point(797, 111);
             cmbBoxEmployeeIsActive.Name = "cmbBoxEmployeeIsActive";
-            cmbBoxEmployeeIsActive.Size = new Size(133, 25);
+            cmbBoxEmployeeIsActive.Size = new Size(133, 29);
             cmbBoxEmployeeIsActive.TabIndex = 13;
             // 
             // label4
@@ -826,7 +802,7 @@
             label4.AutoSize = true;
             label4.Location = new Point(797, 89);
             label4.Name = "label4";
-            label4.Size = new Size(55, 17);
+            label4.Size = new Size(73, 23);
             label4.TabIndex = 12;
             label4.Text = "Is Active";
             // 
@@ -834,7 +810,7 @@
             // 
             txtBoxEmployeeHourlyWage.Location = new Point(164, 111);
             txtBoxEmployeeHourlyWage.Name = "txtBoxEmployeeHourlyWage";
-            txtBoxEmployeeHourlyWage.Size = new Size(152, 25);
+            txtBoxEmployeeHourlyWage.Size = new Size(152, 29);
             txtBoxEmployeeHourlyWage.TabIndex = 11;
             // 
             // label3
@@ -842,7 +818,7 @@
             label3.AutoSize = true;
             label3.Location = new Point(164, 93);
             label3.Name = "label3";
-            label3.Size = new Size(83, 17);
+            label3.Size = new Size(108, 23);
             label3.TabIndex = 10;
             label3.Text = "Hourly Wage";
             // 
@@ -861,7 +837,7 @@
             lblImage.AutoSize = true;
             lblImage.Location = new Point(797, 19);
             lblImage.Name = "lblImage";
-            lblImage.Size = new Size(44, 17);
+            lblImage.Size = new Size(58, 23);
             lblImage.TabIndex = 8;
             lblImage.Text = "Image";
             // 
@@ -870,7 +846,7 @@
             cmbBoxEmployeeRole.FormattingEnabled = true;
             cmbBoxEmployeeRole.Location = new Point(6, 111);
             cmbBoxEmployeeRole.Name = "cmbBoxEmployeeRole";
-            cmbBoxEmployeeRole.Size = new Size(152, 25);
+            cmbBoxEmployeeRole.Size = new Size(152, 29);
             cmbBoxEmployeeRole.TabIndex = 7;
             // 
             // label1
@@ -878,7 +854,7 @@
             label1.AutoSize = true;
             label1.Location = new Point(6, 93);
             label1.Name = "label1";
-            label1.Size = new Size(34, 17);
+            label1.Size = new Size(43, 23);
             label1.TabIndex = 6;
             label1.Text = "Role";
             // 
@@ -886,7 +862,7 @@
             // 
             txtBoxEmployeePswd.Location = new Point(322, 37);
             txtBoxEmployeePswd.Name = "txtBoxEmployeePswd";
-            txtBoxEmployeePswd.Size = new Size(152, 25);
+            txtBoxEmployeePswd.Size = new Size(152, 29);
             txtBoxEmployeePswd.TabIndex = 5;
             // 
             // lblEmployeePswd
@@ -894,7 +870,7 @@
             lblEmployeePswd.AutoSize = true;
             lblEmployeePswd.Location = new Point(322, 19);
             lblEmployeePswd.Name = "lblEmployeePswd";
-            lblEmployeePswd.Size = new Size(64, 17);
+            lblEmployeePswd.Size = new Size(80, 23);
             lblEmployeePswd.TabIndex = 4;
             lblEmployeePswd.Text = "Password";
             // 
@@ -902,7 +878,7 @@
             // 
             txtBoxEmployeeEmail.Location = new Point(164, 37);
             txtBoxEmployeeEmail.Name = "txtBoxEmployeeEmail";
-            txtBoxEmployeeEmail.Size = new Size(152, 25);
+            txtBoxEmployeeEmail.Size = new Size(152, 29);
             txtBoxEmployeeEmail.TabIndex = 3;
             // 
             // lblEmployeeEmail
@@ -910,7 +886,7 @@
             lblEmployeeEmail.AutoSize = true;
             lblEmployeeEmail.Location = new Point(164, 19);
             lblEmployeeEmail.Name = "lblEmployeeEmail";
-            lblEmployeeEmail.Size = new Size(39, 17);
+            lblEmployeeEmail.Size = new Size(51, 23);
             lblEmployeeEmail.TabIndex = 2;
             lblEmployeeEmail.Text = "Email";
             // 
@@ -918,7 +894,7 @@
             // 
             txtBoxEmployeeName.Location = new Point(6, 37);
             txtBoxEmployeeName.Name = "txtBoxEmployeeName";
-            txtBoxEmployeeName.Size = new Size(152, 25);
+            txtBoxEmployeeName.Size = new Size(152, 29);
             txtBoxEmployeeName.TabIndex = 1;
             // 
             // lblEmployeeName
@@ -926,7 +902,7 @@
             lblEmployeeName.AutoSize = true;
             lblEmployeeName.Location = new Point(6, 19);
             lblEmployeeName.Name = "lblEmployeeName";
-            lblEmployeeName.Size = new Size(43, 17);
+            lblEmployeeName.Size = new Size(56, 23);
             lblEmployeeName.TabIndex = 0;
             lblEmployeeName.Text = "Name";
             // 
@@ -935,9 +911,9 @@
             tabPageDepartment.Controls.Add(label12);
             tabPageDepartment.Controls.Add(groupBox5);
             tabPageDepartment.Controls.Add(listBoxDepartments);
-            tabPageDepartment.Location = new Point(4, 24);
+            tabPageDepartment.Location = new Point(4, 29);
             tabPageDepartment.Name = "tabPageDepartment";
-            tabPageDepartment.Size = new Size(1261, 681);
+            tabPageDepartment.Size = new Size(1261, 676);
             tabPageDepartment.TabIndex = 4;
             tabPageDepartment.Text = "Departments";
             tabPageDepartment.UseVisualStyleBackColor = true;
@@ -948,7 +924,7 @@
             label12.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
             label12.Location = new Point(233, 3);
             label12.Name = "label12";
-            label12.Size = new Size(125, 25);
+            label12.Size = new Size(157, 32);
             label12.TabIndex = 22;
             label12.Text = "Departments";
             // 
@@ -980,7 +956,7 @@
             // 
             txtBoxDepartmentName.Location = new Point(12, 48);
             txtBoxDepartmentName.Name = "txtBoxDepartmentName";
-            txtBoxDepartmentName.Size = new Size(201, 25);
+            txtBoxDepartmentName.Size = new Size(201, 29);
             txtBoxDepartmentName.TabIndex = 18;
             // 
             // btnRemoveDepartment
@@ -998,7 +974,7 @@
             label17.AutoSize = true;
             label17.Location = new Point(12, 28);
             label17.Name = "label17";
-            label17.Size = new Size(43, 17);
+            label17.Size = new Size(56, 23);
             label17.TabIndex = 17;
             label17.Text = "Name";
             // 
@@ -1015,10 +991,10 @@
             // listBoxDepartments
             // 
             listBoxDepartments.FormattingEnabled = true;
-            listBoxDepartments.ItemHeight = 17;
+            listBoxDepartments.ItemHeight = 21;
             listBoxDepartments.Location = new Point(233, 40);
             listBoxDepartments.Name = "listBoxDepartments";
-            listBoxDepartments.Size = new Size(1025, 633);
+            listBoxDepartments.Size = new Size(1025, 613);
             listBoxDepartments.TabIndex = 21;
             listBoxDepartments.SelectedIndexChanged += listBoxDepartments_SelectedIndexChanged;
             // 
@@ -1026,9 +1002,9 @@
             // 
             tabPageStock.Controls.Add(dataGridView1);
             tabPageStock.Controls.Add(groupBox1);
-            tabPageStock.Location = new Point(4, 24);
+            tabPageStock.Location = new Point(4, 29);
             tabPageStock.Name = "tabPageStock";
-            tabPageStock.Size = new Size(1261, 681);
+            tabPageStock.Size = new Size(1261, 676);
             tabPageStock.TabIndex = 2;
             tabPageStock.Text = "Stock";
             tabPageStock.UseVisualStyleBackColor = true;
@@ -1079,7 +1055,7 @@
             // 
             dateTimePickerExperationdate.Location = new Point(19, 377);
             dateTimePickerExperationdate.Name = "dateTimePickerExperationdate";
-            dateTimePickerExperationdate.Size = new Size(139, 25);
+            dateTimePickerExperationdate.Size = new Size(139, 29);
             dateTimePickerExperationdate.TabIndex = 33;
             // 
             // labelExperationdate
@@ -1087,7 +1063,7 @@
             labelExperationdate.AutoSize = true;
             labelExperationdate.Location = new Point(18, 352);
             labelExperationdate.Name = "labelExperationdate";
-            labelExperationdate.Size = new Size(100, 17);
+            labelExperationdate.Size = new Size(130, 23);
             labelExperationdate.TabIndex = 32;
             labelExperationdate.Text = "Experation date";
             // 
@@ -1095,7 +1071,7 @@
             // 
             numericQuantityStore.Location = new Point(18, 187);
             numericQuantityStore.Name = "numericQuantityStore";
-            numericQuantityStore.Size = new Size(140, 25);
+            numericQuantityStore.Size = new Size(140, 29);
             numericQuantityStore.TabIndex = 31;
             // 
             // label2
@@ -1103,7 +1079,7 @@
             label2.AutoSize = true;
             label2.Location = new Point(18, 167);
             label2.Name = "label2";
-            label2.Size = new Size(91, 17);
+            label2.Size = new Size(120, 23);
             label2.TabIndex = 30;
             label2.Text = "Quantity Store";
             // 
@@ -1111,7 +1087,7 @@
             // 
             numericQuantityWarehouse.Location = new Point(18, 136);
             numericQuantityWarehouse.Name = "numericQuantityWarehouse";
-            numericQuantityWarehouse.Size = new Size(140, 25);
+            numericQuantityWarehouse.Size = new Size(140, 29);
             numericQuantityWarehouse.TabIndex = 29;
             // 
             // numericSellPrice
@@ -1120,7 +1096,7 @@
             numericSellPrice.Location = new Point(18, 324);
             numericSellPrice.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
             numericSellPrice.Name = "numericSellPrice";
-            numericSellPrice.Size = new Size(140, 25);
+            numericSellPrice.Size = new Size(140, 29);
             numericSellPrice.TabIndex = 28;
             // 
             // numericWholesalePrice
@@ -1129,7 +1105,7 @@
             numericWholesalePrice.Location = new Point(18, 280);
             numericWholesalePrice.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
             numericWholesalePrice.Name = "numericWholesalePrice";
-            numericWholesalePrice.Size = new Size(140, 25);
+            numericWholesalePrice.Size = new Size(140, 29);
             numericWholesalePrice.TabIndex = 27;
             // 
             // numericSKU
@@ -1137,7 +1113,7 @@
             numericSKU.Location = new Point(18, 92);
             numericSKU.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
             numericSKU.Name = "numericSKU";
-            numericSKU.Size = new Size(140, 25);
+            numericSKU.Size = new Size(140, 29);
             numericSKU.TabIndex = 26;
             // 
             // label10
@@ -1145,7 +1121,7 @@
             label10.AutoSize = true;
             label10.Location = new Point(19, 304);
             label10.Name = "label10";
-            label10.Size = new Size(60, 17);
+            label10.Size = new Size(78, 23);
             label10.TabIndex = 17;
             label10.Text = "Sell Price";
             // 
@@ -1184,7 +1160,7 @@
             label11.AutoSize = true;
             label11.Location = new Point(19, 260);
             label11.Name = "label11";
-            label11.Size = new Size(100, 17);
+            label11.Size = new Size(130, 23);
             label11.TabIndex = 10;
             label11.Text = "Wholesale Price";
             // 
@@ -1195,7 +1171,7 @@
             cbCatergory.Items.AddRange(new object[] { "Books", "Electronic", "Media", "Videogames" });
             cbCatergory.Location = new Point(18, 232);
             cbCatergory.Name = "cbCatergory";
-            cbCatergory.Size = new Size(140, 25);
+            cbCatergory.Size = new Size(140, 29);
             cbCatergory.TabIndex = 7;
             // 
             // label13
@@ -1203,7 +1179,7 @@
             label13.AutoSize = true;
             label13.Location = new Point(18, 212);
             label13.Name = "label13";
-            label13.Size = new Size(61, 17);
+            label13.Size = new Size(79, 23);
             label13.TabIndex = 6;
             label13.Text = "Category";
             // 
@@ -1212,7 +1188,7 @@
             label14.AutoSize = true;
             label14.Location = new Point(18, 116);
             label14.Name = "label14";
-            label14.Size = new Size(125, 17);
+            label14.Size = new Size(166, 23);
             label14.TabIndex = 4;
             label14.Text = "Quantity Warehouse";
             // 
@@ -1221,7 +1197,7 @@
             label15.AutoSize = true;
             label15.Location = new Point(18, 72);
             label15.Name = "label15";
-            label15.Size = new Size(32, 17);
+            label15.Size = new Size(41, 23);
             label15.TabIndex = 2;
             label15.Text = "SKU";
             // 
@@ -1229,7 +1205,7 @@
             // 
             tbNameProduct.Location = new Point(18, 46);
             tbNameProduct.Name = "tbNameProduct";
-            tbNameProduct.Size = new Size(140, 25);
+            tbNameProduct.Size = new Size(140, 29);
             tbNameProduct.TabIndex = 1;
             // 
             // label16
@@ -1237,7 +1213,7 @@
             label16.AutoSize = true;
             label16.Location = new Point(18, 28);
             label16.Name = "label16";
-            label16.Size = new Size(43, 17);
+            label16.Size = new Size(56, 23);
             label16.TabIndex = 0;
             label16.Text = "Name";
             // 
@@ -1246,10 +1222,10 @@
             tabShelfRequest.Controls.Add(groupBox6);
             tabShelfRequest.Controls.Add(dataGridView2);
             tabShelfRequest.Controls.Add(groupBox2);
-            tabShelfRequest.Location = new Point(4, 24);
+            tabShelfRequest.Location = new Point(4, 29);
             tabShelfRequest.Name = "tabShelfRequest";
             tabShelfRequest.Padding = new Padding(3);
-            tabShelfRequest.Size = new Size(1261, 681);
+            tabShelfRequest.Size = new Size(1261, 676);
             tabShelfRequest.TabIndex = 6;
             tabShelfRequest.Text = "Shelf Request";
             tabShelfRequest.UseVisualStyleBackColor = true;
@@ -1270,7 +1246,7 @@
             label41.AutoSize = true;
             label41.Location = new Point(23, 32);
             label41.Name = "label41";
-            label41.Size = new Size(35, 17);
+            label41.Size = new Size(45, 23);
             label41.TabIndex = 27;
             label41.Text = "Type";
             // 
@@ -1280,7 +1256,7 @@
             cmbShelfRequestTypeFilter.Items.AddRange(new object[] { "All", "Inventory", "Warehouse" });
             cmbShelfRequestTypeFilter.Location = new Point(23, 52);
             cmbShelfRequestTypeFilter.Name = "cmbShelfRequestTypeFilter";
-            cmbShelfRequestTypeFilter.Size = new Size(139, 25);
+            cmbShelfRequestTypeFilter.Size = new Size(139, 29);
             cmbShelfRequestTypeFilter.TabIndex = 27;
             cmbShelfRequestTypeFilter.SelectedIndexChanged += cmbShelfRequestTypeFilter_SelectedIndexChanged;
             // 
@@ -1318,7 +1294,7 @@
             cmbShelfRequestType.Items.AddRange(new object[] { "Inventory", "Warehouse" });
             cmbShelfRequestType.Location = new Point(20, 106);
             cmbShelfRequestType.Name = "cmbShelfRequestType";
-            cmbShelfRequestType.Size = new Size(139, 25);
+            cmbShelfRequestType.Size = new Size(139, 29);
             cmbShelfRequestType.TabIndex = 26;
             // 
             // label21
@@ -1326,7 +1302,7 @@
             label21.AutoSize = true;
             label21.Location = new Point(17, 86);
             label21.Name = "label21";
-            label21.Size = new Size(35, 17);
+            label21.Size = new Size(45, 23);
             label21.TabIndex = 25;
             label21.Text = "Type";
             // 
@@ -1334,7 +1310,7 @@
             // 
             numericQuantityShelfRequest.Location = new Point(20, 47);
             numericQuantityShelfRequest.Name = "numericQuantityShelfRequest";
-            numericQuantityShelfRequest.Size = new Size(139, 25);
+            numericQuantityShelfRequest.Size = new Size(139, 29);
             numericQuantityShelfRequest.TabIndex = 24;
             // 
             // btnEditRequest
@@ -1372,7 +1348,7 @@
             label23.AutoSize = true;
             label23.Location = new Point(17, 21);
             label23.Name = "label23";
-            label23.Size = new Size(56, 17);
+            label23.Size = new Size(76, 23);
             label23.TabIndex = 4;
             label23.Text = "Quantity";
             // 
@@ -1389,58 +1365,12 @@
             tabPageShifts.Controls.Add(groupBox9);
             tabPageShifts.Controls.Add(groupBox7);
             tabPageShifts.Controls.Add(groupBox8);
-            tabPageShifts.Location = new Point(4, 26);
+            tabPageShifts.Location = new Point(4, 29);
             tabPageShifts.Name = "tabPageShifts";
-            tabPageShifts.Size = new Size(1261, 679);
+            tabPageShifts.Size = new Size(1261, 676);
             tabPageShifts.TabIndex = 3;
             tabPageShifts.Text = "Shifts";
             tabPageShifts.UseVisualStyleBackColor = true;
-            // 
-            // btnRefreshShiftSchedule
-            // 
-            btnRefreshShiftSchedule.FlatAppearance.BorderSize = 0;
-            btnRefreshShiftSchedule.FlatStyle = FlatStyle.Flat;
-            btnRefreshShiftSchedule.Image = Properties.Resources.refresh_page_option;
-            btnRefreshShiftSchedule.Location = new Point(182, 16);
-            btnRefreshShiftSchedule.Name = "btnRefreshShiftSchedule";
-            btnRefreshShiftSchedule.Size = new Size(25, 25);
-            btnRefreshShiftSchedule.TabIndex = 49;
-            btnRefreshShiftSchedule.UseVisualStyleBackColor = true;
-            btnRefreshShiftSchedule.Click += btnRefreshShiftSchedule_Click;
-            // 
-            // btnNextMonth
-            // 
-            btnNextMonth.FlatAppearance.BorderSize = 0;
-            btnNextMonth.FlatStyle = FlatStyle.Flat;
-            btnNextMonth.Image = (Image)resources.GetObject("btnNextMonth.Image");
-            btnNextMonth.Location = new Point(37, 54);
-            btnNextMonth.Name = "btnNextMonth";
-            btnNextMonth.Size = new Size(25, 25);
-            btnNextMonth.TabIndex = 44;
-            btnNextMonth.UseVisualStyleBackColor = true;
-            btnNextMonth.Click += btnNextMonth_Click;
-            // 
-            // btnPreviousMonth
-            // 
-            btnPreviousMonth.FlatAppearance.BorderSize = 0;
-            btnPreviousMonth.FlatStyle = FlatStyle.Flat;
-            btnPreviousMonth.Image = (Image)resources.GetObject("btnPreviousMonth.Image");
-            btnPreviousMonth.Location = new Point(6, 54);
-            btnPreviousMonth.Name = "btnPreviousMonth";
-            btnPreviousMonth.Size = new Size(25, 25);
-            btnPreviousMonth.TabIndex = 43;
-            btnPreviousMonth.UseVisualStyleBackColor = true;
-            btnPreviousMonth.Click += btnPreviousMonth_Click;
-            // 
-            // lblMonth
-            // 
-            lblMonth.AutoSize = true;
-            lblMonth.Font = new Font("Century Gothic", 18F, FontStyle.Regular, GraphicsUnit.Point);
-            lblMonth.Location = new Point(6, 21);
-            lblMonth.Name = "lblMonth";
-            lblMonth.Size = new Size(102, 30);
-            lblMonth.TabIndex = 40;
-            lblMonth.Text = "MONTH";
             // 
             // label50
             // 
@@ -1448,7 +1378,7 @@
             label50.Font = new Font("Century Gothic", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
             label50.Location = new Point(1136, 14);
             label50.Name = "label50";
-            label50.Size = new Size(80, 22);
+            label50.Size = new Size(100, 30);
             label50.TabIndex = 39;
             label50.Text = "Sunday";
             // 
@@ -1458,7 +1388,7 @@
             label45.Font = new Font("Century Gothic", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
             label45.Location = new Point(856, 14);
             label45.Name = "label45";
-            label45.Size = new Size(65, 22);
+            label45.Size = new Size(83, 30);
             label45.TabIndex = 38;
             label45.Text = "Friday";
             // 
@@ -1468,7 +1398,7 @@
             label43.Font = new Font("Century Gothic", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
             label43.Location = new Point(697, 14);
             label43.Name = "label43";
-            label43.Size = new Size(92, 22);
+            label43.Size = new Size(116, 30);
             label43.TabIndex = 37;
             label43.Text = "Thursday";
             // 
@@ -1478,7 +1408,7 @@
             label9.Font = new Font("Century Gothic", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
             label9.Location = new Point(526, 14);
             label9.Name = "label9";
-            label9.Size = new Size(120, 22);
+            label9.Size = new Size(154, 30);
             label9.TabIndex = 36;
             label9.Text = "Wednesday";
             // 
@@ -1488,7 +1418,7 @@
             label8.Font = new Font("Century Gothic", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
             label8.Location = new Point(388, 14);
             label8.Name = "label8";
-            label8.Size = new Size(86, 22);
+            label8.Size = new Size(110, 30);
             label8.TabIndex = 35;
             label8.Text = "Tuesday";
             // 
@@ -1498,19 +1428,9 @@
             label7.Font = new Font("Century Gothic", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
             label7.Location = new Point(248, 14);
             label7.Name = "label7";
-            label7.Size = new Size(88, 22);
+            label7.Size = new Size(112, 30);
             label7.TabIndex = 34;
             label7.Text = "Monday";
-            // 
-            // btnAutoAssignDate
-            // 
-            btnAutoAssignDate.Location = new Point(147, 21);
-            btnAutoAssignDate.Name = "btnAutoAssignDate";
-            btnAutoAssignDate.Size = new Size(60, 56);
-            btnAutoAssignDate.TabIndex = 6;
-            btnAutoAssignDate.Text = "Auto Assign";
-            btnAutoAssignDate.UseVisualStyleBackColor = true;
-            btnAutoAssignDate.Click += btnAutoAssignDate_Click;
             // 
             // label6
             // 
@@ -1518,7 +1438,7 @@
             label6.Font = new Font("Century Gothic", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
             label6.Location = new Point(986, 14);
             label6.Name = "label6";
-            label6.Size = new Size(94, 22);
+            label6.Size = new Size(116, 30);
             label6.TabIndex = 33;
             label6.Text = "Saturday";
             // 
@@ -1558,7 +1478,7 @@
             label51.AutoSize = true;
             label51.Location = new Point(6, 22);
             label51.Name = "label51";
-            label51.Size = new Size(50, 17);
+            label51.Size = new Size(65, 23);
             label51.TabIndex = 0;
             label51.Text = "Search:";
             // 
@@ -1566,19 +1486,136 @@
             // 
             txtEmployeeSearch.Location = new Point(6, 42);
             txtEmployeeSearch.Name = "txtEmployeeSearch";
-            txtEmployeeSearch.Size = new Size(201, 25);
+            txtEmployeeSearch.Size = new Size(201, 29);
             txtEmployeeSearch.TabIndex = 47;
             txtEmployeeSearch.TextChanged += txtEmployeeSearch_TextChanged;
             // 
             // lstEmployees
             // 
             lstEmployees.FormattingEnabled = true;
-            lstEmployees.ItemHeight = 17;
+            lstEmployees.ItemHeight = 21;
             lstEmployees.Location = new Point(6, 73);
             lstEmployees.Name = "lstEmployees";
-            lstEmployees.Size = new Size(201, 344);
+            lstEmployees.Size = new Size(201, 340);
             lstEmployees.TabIndex = 45;
             lstEmployees.SelectedIndexChanged += lstEmployees_SelectedIndexChanged;
+            // 
+            // groupBox7
+            // 
+            groupBox7.Controls.Add(btnNextMonth);
+            groupBox7.Controls.Add(btnRefreshShiftSchedule);
+            groupBox7.Controls.Add(btnPreviousMonth);
+            groupBox7.Controls.Add(lblMonth);
+            groupBox7.Location = new Point(3, 7);
+            groupBox7.Name = "groupBox7";
+            groupBox7.Size = new Size(213, 88);
+            groupBox7.TabIndex = 50;
+            groupBox7.TabStop = false;
+            groupBox7.Text = "Shift Schedule";
+            // 
+            // btnNextMonth
+            // 
+            btnNextMonth.FlatAppearance.BorderSize = 0;
+            btnNextMonth.FlatStyle = FlatStyle.Flat;
+            btnNextMonth.Image = (Image)resources.GetObject("btnNextMonth.Image");
+            btnNextMonth.Location = new Point(37, 54);
+            btnNextMonth.Name = "btnNextMonth";
+            btnNextMonth.Size = new Size(25, 25);
+            btnNextMonth.TabIndex = 44;
+            btnNextMonth.UseVisualStyleBackColor = true;
+            btnNextMonth.Click += btnNextMonth_Click;
+            // 
+            // btnRefreshShiftSchedule
+            // 
+            btnRefreshShiftSchedule.FlatAppearance.BorderSize = 0;
+            btnRefreshShiftSchedule.FlatStyle = FlatStyle.Flat;
+            btnRefreshShiftSchedule.Image = Properties.Resources.refresh_page_option;
+            btnRefreshShiftSchedule.Location = new Point(182, 16);
+            btnRefreshShiftSchedule.Name = "btnRefreshShiftSchedule";
+            btnRefreshShiftSchedule.Size = new Size(25, 25);
+            btnRefreshShiftSchedule.TabIndex = 49;
+            btnRefreshShiftSchedule.UseVisualStyleBackColor = true;
+            btnRefreshShiftSchedule.Click += btnRefreshShiftSchedule_Click;
+            // 
+            // btnPreviousMonth
+            // 
+            btnPreviousMonth.FlatAppearance.BorderSize = 0;
+            btnPreviousMonth.FlatStyle = FlatStyle.Flat;
+            btnPreviousMonth.Image = (Image)resources.GetObject("btnPreviousMonth.Image");
+            btnPreviousMonth.Location = new Point(6, 54);
+            btnPreviousMonth.Name = "btnPreviousMonth";
+            btnPreviousMonth.Size = new Size(25, 25);
+            btnPreviousMonth.TabIndex = 43;
+            btnPreviousMonth.UseVisualStyleBackColor = true;
+            btnPreviousMonth.Click += btnPreviousMonth_Click;
+            // 
+            // lblMonth
+            // 
+            lblMonth.AutoSize = true;
+            lblMonth.Font = new Font("Century Gothic", 18F, FontStyle.Regular, GraphicsUnit.Point);
+            lblMonth.Location = new Point(6, 21);
+            lblMonth.Name = "lblMonth";
+            lblMonth.Size = new Size(127, 37);
+            lblMonth.TabIndex = 40;
+            lblMonth.Text = "MONTH";
+            // 
+            // groupBox8
+            // 
+            groupBox8.Controls.Add(label30);
+            groupBox8.Controls.Add(dtpAutoAssignTo);
+            groupBox8.Controls.Add(label22);
+            groupBox8.Controls.Add(dtpAutoAssignFrom);
+            groupBox8.Controls.Add(btnAutoAssignDate);
+            groupBox8.Location = new Point(3, 101);
+            groupBox8.Name = "groupBox8";
+            groupBox8.Size = new Size(213, 85);
+            groupBox8.TabIndex = 51;
+            groupBox8.TabStop = false;
+            groupBox8.Text = "Auto Assign";
+            // 
+            // label30
+            // 
+            label30.AutoSize = true;
+            label30.Location = new Point(6, 58);
+            label30.Name = "label30";
+            label30.Size = new Size(31, 23);
+            label30.TabIndex = 10;
+            label30.Text = "To:";
+            // 
+            // dtpAutoAssignTo
+            // 
+            dtpAutoAssignTo.Format = DateTimePickerFormat.Short;
+            dtpAutoAssignTo.Location = new Point(53, 52);
+            dtpAutoAssignTo.Name = "dtpAutoAssignTo";
+            dtpAutoAssignTo.Size = new Size(88, 29);
+            dtpAutoAssignTo.TabIndex = 9;
+            // 
+            // label22
+            // 
+            label22.AutoSize = true;
+            label22.Location = new Point(6, 27);
+            label22.Name = "label22";
+            label22.Size = new Size(53, 23);
+            label22.TabIndex = 8;
+            label22.Text = "From:";
+            // 
+            // dtpAutoAssignFrom
+            // 
+            dtpAutoAssignFrom.Format = DateTimePickerFormat.Short;
+            dtpAutoAssignFrom.Location = new Point(53, 21);
+            dtpAutoAssignFrom.Name = "dtpAutoAssignFrom";
+            dtpAutoAssignFrom.Size = new Size(88, 29);
+            dtpAutoAssignFrom.TabIndex = 7;
+            // 
+            // btnAutoAssignDate
+            // 
+            btnAutoAssignDate.Location = new Point(147, 21);
+            btnAutoAssignDate.Name = "btnAutoAssignDate";
+            btnAutoAssignDate.Size = new Size(60, 56);
+            btnAutoAssignDate.TabIndex = 6;
+            btnAutoAssignDate.Text = "Auto Assign";
+            btnAutoAssignDate.UseVisualStyleBackColor = true;
+            btnAutoAssignDate.Click += btnAutoAssignDate_Click;
             // 
             // DaysOffRequestTab
             // 
@@ -1587,10 +1624,10 @@
             DaysOffRequestTab.Controls.Add(label38);
             DaysOffRequestTab.Controls.Add(btRemoveDaysOffRequest);
             DaysOffRequestTab.Controls.Add(dataGridViewDaysOffRequest);
-            DaysOffRequestTab.Location = new Point(4, 24);
+            DaysOffRequestTab.Location = new Point(4, 29);
             DaysOffRequestTab.Name = "DaysOffRequestTab";
             DaysOffRequestTab.Padding = new Padding(3);
-            DaysOffRequestTab.Size = new Size(1261, 681);
+            DaysOffRequestTab.Size = new Size(1261, 676);
             DaysOffRequestTab.TabIndex = 5;
             DaysOffRequestTab.Text = "Days Off Request";
             DaysOffRequestTab.UseVisualStyleBackColor = true;
@@ -1621,7 +1658,7 @@
             label38.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
             label38.Location = new Point(6, 17);
             label38.Name = "label38";
-            label38.Size = new Size(168, 25);
+            label38.Size = new Size(211, 32);
             label38.TabIndex = 8;
             label38.Text = "Days Off Requests";
             // 
@@ -1638,87 +1675,27 @@
             // dataGridViewDaysOffRequest
             // 
             dataGridViewDaysOffRequest.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Window;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-            dataGridViewDaysOffRequest.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Window;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle1.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dataGridViewDaysOffRequest.DefaultCellStyle = dataGridViewCellStyle1;
             dataGridViewDaysOffRequest.Location = new Point(3, 57);
             dataGridViewDaysOffRequest.MultiSelect = false;
             dataGridViewDaysOffRequest.Name = "dataGridViewDaysOffRequest";
             dataGridViewDaysOffRequest.ReadOnly = true;
+            dataGridViewDaysOffRequest.RowHeadersWidth = 51;
             dataGridViewDaysOffRequest.RowTemplate.Height = 25;
             dataGridViewDaysOffRequest.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridViewDaysOffRequest.Size = new Size(1252, 616);
             dataGridViewDaysOffRequest.TabIndex = 0;
             // 
-            // groupBox7
-            // 
-            groupBox7.Controls.Add(btnNextMonth);
-            groupBox7.Controls.Add(btnRefreshShiftSchedule);
-            groupBox7.Controls.Add(btnPreviousMonth);
-            groupBox7.Controls.Add(lblMonth);
-            groupBox7.Location = new Point(3, 7);
-            groupBox7.Name = "groupBox7";
-            groupBox7.Size = new Size(213, 88);
-            groupBox7.TabIndex = 50;
-            groupBox7.TabStop = false;
-            groupBox7.Text = "Shift Schedule";
-            // 
-            // groupBox8
-            // 
-            groupBox8.Controls.Add(label30);
-            groupBox8.Controls.Add(dtpAutoAssignTo);
-            groupBox8.Controls.Add(label22);
-            groupBox8.Controls.Add(dtpAutoAssignFrom);
-            groupBox8.Controls.Add(btnAutoAssignDate);
-            groupBox8.Location = new Point(3, 101);
-            groupBox8.Name = "groupBox8";
-            groupBox8.Size = new Size(213, 85);
-            groupBox8.TabIndex = 51;
-            groupBox8.TabStop = false;
-            groupBox8.Text = "Auto Assign";
-            // 
-            // dtpAutoAssignFrom
-            // 
-            dtpAutoAssignFrom.Format = DateTimePickerFormat.Short;
-            dtpAutoAssignFrom.Location = new Point(53, 21);
-            dtpAutoAssignFrom.Name = "dtpAutoAssignFrom";
-            dtpAutoAssignFrom.Size = new Size(88, 25);
-            dtpAutoAssignFrom.TabIndex = 7;
-            // 
-            // label22
-            // 
-            label22.AutoSize = true;
-            label22.Location = new Point(6, 27);
-            label22.Name = "label22";
-            label22.Size = new Size(41, 17);
-            label22.TabIndex = 8;
-            label22.Text = "From:";
-            // 
-            // label30
-            // 
-            label30.AutoSize = true;
-            label30.Location = new Point(6, 58);
-            label30.Name = "label30";
-            label30.Size = new Size(25, 17);
-            label30.TabIndex = 10;
-            label30.Text = "To:";
-            // 
-            // dtpAutoAssignTo
-            // 
-            dtpAutoAssignTo.Format = DateTimePickerFormat.Short;
-            dtpAutoAssignTo.Location = new Point(53, 52);
-            dtpAutoAssignTo.Name = "dtpAutoAssignTo";
-            dtpAutoAssignTo.Size = new Size(88, 25);
-            dtpAutoAssignTo.TabIndex = 9;
-            // 
             // MainControl
             // 
-            AutoScaleDimensions = new SizeF(7F, 17F);
+            AutoScaleDimensions = new SizeF(9F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(tabControMain);
             Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
@@ -1760,13 +1737,13 @@
             tabPageShifts.PerformLayout();
             groupBox9.ResumeLayout(false);
             groupBox9.PerformLayout();
-            DaysOffRequestTab.ResumeLayout(false);
-            DaysOffRequestTab.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridViewDaysOffRequest).EndInit();
             groupBox7.ResumeLayout(false);
             groupBox7.PerformLayout();
             groupBox8.ResumeLayout(false);
             groupBox8.PerformLayout();
+            DaysOffRequestTab.ResumeLayout(false);
+            DaysOffRequestTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewDaysOffRequest).EndInit();
             ResumeLayout(false);
         }
 
@@ -1797,11 +1774,9 @@
         private Label label29;
         private Label lbEmployeeEmail;
         private PictureBox pbEmployeeImage;
-        private Label label28;
         private Label label27;
         private Label label26;
         private Label label25;
-        private Label lbEmployeeAttendance;
         private Label lbEmployeeName;
         private GroupBox groupBox3;
         private Label label48;

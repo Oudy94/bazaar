@@ -104,7 +104,6 @@ namespace TheSandwichMakersHardwareStoreSolution
 
             pbEmployeeImage.ImageLocation = string.Empty;
 
-            lbEmployeeAttendance.Text = string.Empty;
             lbEmployeeMorning.Text = string.Empty;
             lbEmployeeEvening.Text = string.Empty;
             lbEmployeeTotal.Text = string.Empty;
@@ -112,12 +111,13 @@ namespace TheSandwichMakersHardwareStoreSolution
 
         private void cmbRoleList_SelectedIndexChanged(object sender, EventArgs e)
         {
+            lstBoxFilteredEmployees.Items.Clear();
+
             if (cmbDepartmentList.SelectedItem is Department department)
             {
                 // Filter employees by role and department and display them in the lstBoxFilteredEmployees
                 if (cmbRoleList.SelectedItem is RoleEnum role)
                 {
-                    lstBoxFilteredEmployees.Items.Clear();
                     try
                     {
                         foreach (Employee employee in EmployeeManager.GetEmployeesByRoleAndDepartment(role, department))
@@ -129,12 +129,10 @@ namespace TheSandwichMakersHardwareStoreSolution
                     {
                         MessageBox.Show(ex.Message);
                     }
-                    lblFilteredCount.Text = lstBoxFilteredEmployees.Items.Count.ToString();
                 }
                 else
                 {
                     // Filter employees by role and display them in the lstBoxFilteredEmployees
-                    lstBoxFilteredEmployees.Items.Clear();
                     try
                     {
                         foreach (Employee employee in EmployeeManager.GetEmployeesByDepartment(department))
@@ -146,7 +144,6 @@ namespace TheSandwichMakersHardwareStoreSolution
                     {
                         MessageBox.Show(ex.Message);
                     }
-                    lblFilteredCount.Text = lstBoxFilteredEmployees.Items.Count.ToString();
                 }
             }
             else
@@ -154,7 +151,6 @@ namespace TheSandwichMakersHardwareStoreSolution
                 // Filter employees by role and display them in the lstBoxFilteredEmployees
                 if (cmbRoleList.SelectedItem is RoleEnum role)
                 {
-                    lstBoxFilteredEmployees.Items.Clear();
                     try
                     {
                         foreach (Employee employee in EmployeeManager.GetEmployeesByRole(role))
@@ -166,30 +162,30 @@ namespace TheSandwichMakersHardwareStoreSolution
                     {
                         MessageBox.Show(ex.Message);
                     }
-                    lblFilteredCount.Text = lstBoxFilteredEmployees.Items.Count.ToString();
                 }
                 else
                 {
                     // Display all if none is selected
-                    lstBoxFilteredEmployees.Items.Clear();
                     foreach (Employee employee in EmployeeManager.GetEmployees())
                     {
                         lstBoxFilteredEmployees.Items.Add(employee);
                     }
-                    lblFilteredCount.Text = lstBoxFilteredEmployees.Items.Count.ToString();
                 }
             }
+
+            lblFilteredCount.Text = lstBoxFilteredEmployees.Items.Count.ToString();
         }
 
         private void cmbDepartmentList_SelectedIndexChanged(object sender, EventArgs e)
         {
+            lstBoxFilteredEmployees.Items.Clear();
+
             // Check if a Role is selected
             if (cmbRoleList.SelectedItem is RoleEnum role)
             {
                 // Filter employees by role and department and display them in the lstBoxFilteredEmployees
                 if (cmbDepartmentList.SelectedItem is Department department)
                 {
-                    lstBoxFilteredEmployees.Items.Clear();
                     foreach (Employee employee in EmployeeManager.GetEmployeesByRoleAndDepartment(role, department))
                     {
                         lstBoxFilteredEmployees.Items.Add(employee);
@@ -197,8 +193,6 @@ namespace TheSandwichMakersHardwareStoreSolution
                 }
                 else
                 {
-                    // Filter employees by department and display them in the lstBoxFilteredEmployees
-                    lstBoxFilteredEmployees.Items.Clear();
                     try
                     {
                         foreach (Employee employee in EmployeeManager.GetEmployeesByRole(role))
@@ -216,7 +210,6 @@ namespace TheSandwichMakersHardwareStoreSolution
             {
                 if (cmbDepartmentList.SelectedItem is Department department)
                 {
-                    lstBoxFilteredEmployees.Items.Clear();
                     try
                     {
                         foreach (Employee employee in EmployeeManager.GetEmployeesByDepartment(department))
@@ -224,6 +217,7 @@ namespace TheSandwichMakersHardwareStoreSolution
                             lstBoxFilteredEmployees.Items.Add(employee);
                         }
                     }
+
                     catch (Exception ex)
                     {
                         MessageBox.Show(ex.Message);
@@ -239,6 +233,8 @@ namespace TheSandwichMakersHardwareStoreSolution
                     }
                 }
             }
+
+            lblFilteredCount.Text = lstBoxFilteredEmployees.Items.Count.ToString();
         }
 
         // Once employee selected, display the details
@@ -259,9 +255,6 @@ namespace TheSandwichMakersHardwareStoreSolution
                 List<Shift> shifts = ShiftManager.GetEmployeeShifts(employee);
 
                 // Display shifts info in labels
-
-                // Display employee attendence % past 30 days
-                lbEmployeeAttendance.Text = ShiftManager.GetEmployeeAttendancePercentage(employee).ToString("P");
 
                 // All the other shift info
                 lbEmployeeMorning.Text = shifts.Count(s => s.ShiftType == ShiftTypeEnum.Morning).ToString();
@@ -326,21 +319,21 @@ namespace TheSandwichMakersHardwareStoreSolution
         // On Manage click in Shelf requests
         private void button2_Click(object sender, EventArgs e)
         {
-
-            int selectedItem = Convert.ToInt32(listBox2.SelectedItem);
-
-            tabControMain.SelectedTab = tabPageStock;
+            string selectedItemName = listBox2.SelectedItem.ToString();
 
             dataGridView2.ClearSelection();
 
             foreach (DataGridViewRow row in dataGridView2.Rows)
             {
-                if (Convert.ToInt32(row.Cells["Quantity"].Value) == selectedItem)
+                if (row.Cells["ItemName"].Value.ToString() == selectedItemName)
                 {
+                    MessageBox.Show("Found the item!");
                     row.Selected = true;
                     break;
                 }
             }
+
+            tabControMain.SelectedTab = tabPageStock;
         }
 
         // Attaching Image For User
@@ -902,11 +895,15 @@ namespace TheSandwichMakersHardwareStoreSolution
             int shelfRequestSelectedIndex = cmbShelfRequestTypeFilter.SelectedIndex;
             ShelfRequestType? type = shelfRequestSelectedIndex > 0 ? (ShelfRequestType)cmbShelfRequestTypeFilter.SelectedIndex - 1 : null;
 
-            dataGridView2.DataSource = StockManager.GetShelfRequests(type);
+            var requests = StockManager.GetShelfRequests(type);
+
+            dataGridView2.DataSource = requests;
+            
             listBox2.Items.Clear();
-            foreach (ShelfRequest request in StockManager.GetShelfRequests())
+
+            foreach (ShelfRequest request in requests)
             {
-                listBox2.Items.Add(request.Quantity);
+                listBox2.Items.Add(request.ItemName);
             }
         }
 

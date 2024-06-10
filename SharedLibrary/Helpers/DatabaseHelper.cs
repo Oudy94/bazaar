@@ -870,7 +870,7 @@ namespace SharedLibrary.Helpers
             string query = @"
                 SELECT s.*, i.id as item_id, i.name as item_name
                 FROM shelf_request s
-                LEFT JOIN item i ON s.item_id = i.id;
+                LEFT JOIN item i ON s.item_id = i.id
             ";
 
             if (type != null)

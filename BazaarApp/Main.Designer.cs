@@ -28,29 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
-            pnlMain = new Panel();
             SuspendLayout();
-            // 
-            // pnlMain
-            // 
-            pnlMain.Location = new Point(3, 2);
-            pnlMain.Name = "pnlMain";
-            pnlMain.Size = new Size(1280, 720);
-            pnlMain.TabIndex = 0;
             // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1284, 721);
-            Controls.Add(pnlMain);
             Name = "Main";
             Text = "Hardware Store Admin";
             ResumeLayout(false);
         }
 
         #endregion
-
-        private Panel pnlMain;
     }
 }

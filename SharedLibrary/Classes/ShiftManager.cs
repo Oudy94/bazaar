@@ -127,28 +127,6 @@ namespace SharedLibrary.Classes
             }
         }
 
-        // Get Employee attendance percentage
-        public double GetEmployeeAttendancePercentage(Employee employee)
-        {
-            double attendancePercentage = 0;
-
-            try
-            {
-                _dbHelper.OpenConnection();
-                attendancePercentage = _dbHelper.GetEmployeeAttendancePercentageFromDB(employee.Id);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-            finally
-            {
-                _dbHelper.CloseConnection();
-            }
-
-            return attendancePercentage;
-        }
-
         // Get GetEmployeeShiftsOnDate
         public List<Shift> GetEmployeeShiftsOnDate(Employee employee, DateOnly date)
         {

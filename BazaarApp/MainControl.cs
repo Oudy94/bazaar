@@ -861,15 +861,61 @@ namespace TheSandwichMakersHardwareStoreSolution
         private void btAddShelfRequest_Click(object sender, EventArgs e)
         {
             int itemId = GetIdSelectedRow();
-            StockManager.AddShelfRequest(itemId, Convert.ToInt16(numericQuantityShelfRequest.Value), (ShelfRequestType)cmbShelfRequestType.SelectedIndex);
+            if (itemId == -1)
+            {
+                MessageBox.Show("Please select an item.");
+                return;
+            }
+
+            int quantity = Convert.ToInt16(numericQuantityShelfRequest.Value);
+            if (quantity <= 0)
+            {
+                MessageBox.Show("Quantity must be greater than zero.");
+                return;
+            }
+
+            ShelfRequestType requestType = (ShelfRequestType)cmbShelfRequestType.SelectedIndex;
+            if (!Enum.IsDefined(typeof(ShelfRequestType), requestType))
+            {
+                MessageBox.Show("Please select a valid shelf request type.");
+                return;
+            }
+
+            StockManager.AddShelfRequest(itemId, quantity, requestType);
             RefreshShelfRequestDisplay();
         }
 
         private void btnEditRequest_Click(object sender, EventArgs e)
         {
             int id = GetIdSelectedRowShelfRequest();
+            if (id == -1)
+            {
+                MessageBox.Show("Please select a shelf request to edit.");
+                return;
+            }
+
             int itemId = GetIdSelectedRow();
-            StockManager.EditShelfRequest(id, itemId, Convert.ToInt16(numericQuantityShelfRequest.Value), (ShelfRequestType)cmbShelfRequestType.SelectedIndex);
+            if (itemId == -1)
+            {
+                MessageBox.Show("Please select an item.");
+                return;
+            }
+
+            int quantity = Convert.ToInt16(numericQuantityShelfRequest.Value);
+            if (quantity <= 0)
+            {
+                MessageBox.Show("Quantity must be greater than zero.");
+                return;
+            }
+
+            ShelfRequestType requestType = (ShelfRequestType)cmbShelfRequestType.SelectedIndex;
+            if (!Enum.IsDefined(typeof(ShelfRequestType), requestType))
+            {
+                MessageBox.Show("Please select a valid shelf request type.");
+                return;
+            }
+
+            StockManager.EditShelfRequest(id, itemId, quantity, requestType);
             RefreshShelfRequestDisplay();
         }
 
@@ -1105,8 +1151,8 @@ namespace TheSandwichMakersHardwareStoreSolution
                 ShiftManager.UnassignEmployeeFromShift(employee, date, shiftType);
             }
 
-            MessageBox.Show("New Shifts assignment updated successfully.");
             ShowShiftCalendar(_month, _year);
+            MessageBox.Show("New Shifts assignment updated successfully.");
         }
 
         private void btnRefreshShiftSchedule_Click(object sender, EventArgs e)

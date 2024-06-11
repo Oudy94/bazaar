@@ -15,13 +15,15 @@ namespace TheSandwichMakersHardwareStoreSolution
             this.LoginFormControl = new LoginFormControl(this);
             this.MainControl = new MainControl();
 
-            pnlMain.Controls.Add(LoginFormControl);
+            LoginFormControl.Dock = DockStyle.Fill;
+            Controls.Add(LoginFormControl);
         }
 
         public void HandleLogin(string email)
         {
-            pnlMain.Controls.Clear();
-            pnlMain.Controls.Add(MainControl);
+            Controls.Clear();
+            MainControl.Dock = DockStyle.Fill;
+            Controls.Add(MainControl);
             MainControl.AuthenticatedEmployee(email);
         }
     }

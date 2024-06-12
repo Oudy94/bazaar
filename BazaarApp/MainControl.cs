@@ -860,7 +860,7 @@ namespace TheSandwichMakersHardwareStoreSolution
 
         private void btAddShelfRequest_Click(object sender, EventArgs e)
         {
-            int itemId = GetIdSelectedRow();
+            int itemId = GetIdSelectedItemShelfRequestTab();
             if (itemId == -1)
             {
                 MessageBox.Show("Please select an item.");
@@ -894,7 +894,7 @@ namespace TheSandwichMakersHardwareStoreSolution
                 return;
             }
 
-            int itemId = GetIdSelectedRow();
+            int itemId = GetIdSelectedItemShelfRequestTab();
             if (itemId == -1)
             {
                 MessageBox.Show("Please select an item.");
@@ -951,8 +951,23 @@ namespace TheSandwichMakersHardwareStoreSolution
             {
                 listBox2.Items.Add(request.ItemName);
             }
+            comboBoxSelectItemShelfRequest.Items.Clear();
+            foreach (Item item in StockManager.GetItems())
+            {
+                comboBoxSelectItemShelfRequest.Items.Add(item.Id + "-" + item.Name);
+            }
         }
-
+        private int GetIdSelectedItemShelfRequestTab()
+        {
+            string temporary = comboBoxSelectItemShelfRequest.Text;
+            if (temporary != "")
+            {
+                string[] temporarySplit = temporary.Split("-");
+                int id = int.Parse(temporarySplit[0]);
+                return id;
+            }
+            return -1;
+        }
         private int GetIdSelectedRowShelfRequest()
         {
             if (dataGridView1.SelectedRows.Count > 0)

@@ -944,7 +944,7 @@ namespace TheSandwichMakersHardwareStoreSolution
             var requests = StockManager.GetShelfRequests(type);
 
             dataGridView2.DataSource = requests;
-            
+
             listBox2.Items.Clear();
 
             foreach (ShelfRequest request in requests)
@@ -1223,6 +1223,31 @@ namespace TheSandwichMakersHardwareStoreSolution
         {
             dataGridViewDaysOffRequest.DataSource = null;
             dataGridViewDaysOffRequest.DataSource = DaysOffRequestManager.GetDaysOffRequest();
+
+            dataGridViewDaysOffRequest.DataBindingComplete += new DataGridViewBindingCompleteEventHandler(dataGridViewDaysOffRequest_DataBindingComplete);
+        }
+
+        private void dataGridViewDaysOffRequest_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            // Apply conditional formatting after the data binding is complete
+            foreach (DataGridViewRow row in dataGridViewDaysOffRequest.Rows)
+            {
+                string status = row.Cells["Status"].Value.ToString();
+                DataGridViewCellStyle cellStyle = row.Cells["Status"].Style;
+
+                if (status == "aproved")
+                {
+                    cellStyle.BackColor = Color.LightGreen;
+                }
+                else if (status == "pending")
+                {
+                    cellStyle.BackColor = Color.FromArgb(255, 240, 128);
+                }
+                else if (status == "declined")
+                {
+                    cellStyle.BackColor = Color.LightCoral;
+                }
+            }
         }
 
         private int GetIdSelectedRowDaysOffRequest()

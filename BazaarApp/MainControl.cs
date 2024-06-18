@@ -319,21 +319,27 @@ namespace TheSandwichMakersHardwareStoreSolution
         // On Manage click in Shelf requests
         private void button2_Click(object sender, EventArgs e)
         {
-            string selectedItemName = listBox2.SelectedItem.ToString();
+            string selectedItem = listBox2.SelectedItem?.ToString();
 
-            dataGridView2.ClearSelection();
-
-            foreach (DataGridViewRow row in dataGridView2.Rows)
+            if (selectedItem != null)
             {
-                if (row.Cells["ItemName"].Value.ToString() == selectedItemName)
+                string[] parts = selectedItem.Split('-');
+                string itemName = parts[0].Trim();
+                int quantity = Convert.ToInt32(parts[1].Trim());
+
+                dataGridView2.ClearSelection();
+
+                foreach (DataGridViewRow row in dataGridView2.Rows)
                 {
-                    MessageBox.Show("Found the item!");
-                    row.Selected = true;
-                    break;
+                    if (row.Cells["ItemName"].Value.ToString() == itemName && row.Cells["Quantity"].Value.ToString() == quantity.ToString())
+                    {
+                        row.Selected = true;
+                        break;
+                    }
                 }
             }
 
-            tabControMain.SelectedTab = tabPageStock;
+            tabControMain.SelectedTab = tabShelfRequest;
         }
 
         // Attaching Image For User
@@ -949,8 +955,11 @@ namespace TheSandwichMakersHardwareStoreSolution
 
             foreach (ShelfRequest request in requests)
             {
-                listBox2.Items.Add(request.ItemName);
+                listBox2.Items.Add($"{request.ItemName} - {request.Quantity}");
             }
+
+            label48.Text = requests.Count.ToString();
+
             comboBoxSelectItemShelfRequest.Items.Clear();
             foreach (Item item in StockManager.GetItems())
             {

@@ -951,7 +951,6 @@ namespace TheSandwichMakersHardwareStoreSolution
             {
                 listBox2.Items.Add(request.ItemName);
             }
-<<<<<<< Updated upstream
             comboBoxSelectItemShelfRequest.Items.Clear();
             foreach (Item item in StockManager.GetItems())
             {
@@ -968,11 +967,9 @@ namespace TheSandwichMakersHardwareStoreSolution
                 return id;
             }
             return -1;
-=======
 
-            label48.Text = requests.Count.ToString();
->>>>>>> Stashed changes
         }
+
         private int GetIdSelectedRowShelfRequest()
         {
             if (dataGridView1.SelectedRows.Count > 0)

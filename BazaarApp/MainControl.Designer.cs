@@ -1066,15 +1066,12 @@
             // 
             tabPageStock.Controls.Add(dataGridView1);
             tabPageStock.Controls.Add(groupBox1);
-<<<<<<< Updated upstream
             tabPageStock.Location = new Point(4, 24);
             tabPageStock.Name = "tabPageStock";
             tabPageStock.Size = new Size(1261, 681);
-=======
             tabPageStock.Location = new Point(4, 29);
             tabPageStock.Name = "tabPageStock";
             tabPageStock.Size = new Size(1261, 676);
->>>>>>> Stashed changes
             tabPageStock.TabIndex = 2;
             tabPageStock.Text = "Stock";
             tabPageStock.UseVisualStyleBackColor = true;
@@ -1499,15 +1496,12 @@
             tabPageShifts.Controls.Add(groupBox9);
             tabPageShifts.Controls.Add(groupBox7);
             tabPageShifts.Controls.Add(groupBox8);
-<<<<<<< Updated upstream
             tabPageShifts.Location = new Point(4, 26);
             tabPageShifts.Name = "tabPageShifts";
             tabPageShifts.Size = new Size(1261, 679);
-=======
             tabPageShifts.Location = new Point(4, 29);
             tabPageShifts.Name = "tabPageShifts";
             tabPageShifts.Size = new Size(1261, 676);
->>>>>>> Stashed changes
             tabPageShifts.TabIndex = 3;
             tabPageShifts.Text = "Shifts";
             tabPageShifts.UseVisualStyleBackColor = true;

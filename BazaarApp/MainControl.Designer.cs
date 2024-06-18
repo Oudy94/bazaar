@@ -45,7 +45,6 @@
             label44 = new Label();
             lblFilteredCount = new Label();
             groupBox4 = new GroupBox();
-            button4 = new Button();
             label42 = new Label();
             lbEmployeeTotal = new Label();
             label40 = new Label();
@@ -292,7 +291,6 @@
             // 
             // groupBox4
             // 
-            groupBox4.Controls.Add(button4);
             groupBox4.Controls.Add(label42);
             groupBox4.Controls.Add(lbEmployeeTotal);
             groupBox4.Controls.Add(label40);
@@ -320,21 +318,6 @@
             groupBox4.TabIndex = 22;
             groupBox4.TabStop = false;
             groupBox4.Text = "Employee Information";
-            // 
-            // button4
-            // 
-            button4.BackColor = Color.FromArgb(20, 102, 167);
-            button4.FlatAppearance.BorderSize = 0;
-            button4.FlatStyle = FlatStyle.Flat;
-            button4.Font = new Font("Segoe UI Semibold", 15.75F, FontStyle.Bold, GraphicsUnit.Point);
-            button4.ForeColor = SystemColors.ControlLightLight;
-            button4.Location = new Point(702, 332);
-            button4.Name = "button4";
-            button4.Size = new Size(159, 51);
-            button4.TabIndex = 47;
-            button4.Text = "Manage";
-            button4.UseVisualStyleBackColor = false;
-            button4.Click += button4_Click;
             // 
             // label42
             // 
@@ -581,11 +564,11 @@
             button2.FlatStyle = FlatStyle.Flat;
             button2.Font = new Font("Segoe UI Semibold", 15.75F, FontStyle.Bold, GraphicsUnit.Point);
             button2.ForeColor = SystemColors.ControlLightLight;
-            button2.Location = new Point(702, 61);
+            button2.Location = new Point(656, 43);
             button2.Name = "button2";
-            button2.Size = new Size(159, 51);
+            button2.Size = new Size(260, 88);
             button2.TabIndex = 46;
-            button2.Text = "Manage";
+            button2.Text = "Go to Shelf Requests";
             button2.UseVisualStyleBackColor = false;
             button2.Click += button2_Click;
             // 
@@ -1083,9 +1066,15 @@
             // 
             tabPageStock.Controls.Add(dataGridView1);
             tabPageStock.Controls.Add(groupBox1);
+<<<<<<< Updated upstream
             tabPageStock.Location = new Point(4, 24);
             tabPageStock.Name = "tabPageStock";
             tabPageStock.Size = new Size(1261, 681);
+=======
+            tabPageStock.Location = new Point(4, 29);
+            tabPageStock.Name = "tabPageStock";
+            tabPageStock.Size = new Size(1261, 676);
+>>>>>>> Stashed changes
             tabPageStock.TabIndex = 2;
             tabPageStock.Text = "Stock";
             tabPageStock.UseVisualStyleBackColor = true;
@@ -1510,9 +1499,15 @@
             tabPageShifts.Controls.Add(groupBox9);
             tabPageShifts.Controls.Add(groupBox7);
             tabPageShifts.Controls.Add(groupBox8);
+<<<<<<< Updated upstream
             tabPageShifts.Location = new Point(4, 26);
             tabPageShifts.Name = "tabPageShifts";
             tabPageShifts.Size = new Size(1261, 679);
+=======
+            tabPageShifts.Location = new Point(4, 29);
+            tabPageShifts.Name = "tabPageShifts";
+            tabPageShifts.Size = new Size(1261, 676);
+>>>>>>> Stashed changes
             tabPageShifts.TabIndex = 3;
             tabPageShifts.Text = "Shifts";
             tabPageShifts.UseVisualStyleBackColor = true;
@@ -1712,7 +1707,7 @@
             lblMonth.ForeColor = Color.FromArgb(20, 102, 167);
             lblMonth.Location = new Point(6, 21);
             lblMonth.Name = "lblMonth";
-            lblMonth.Size = new Size(102, 30);
+            lblMonth.Size = new Size(127, 37);
             lblMonth.TabIndex = 40;
             lblMonth.Text = "MONTH";
             // 
@@ -1735,7 +1730,7 @@
             label30.AutoSize = true;
             label30.Location = new Point(6, 58);
             label30.Name = "label30";
-            label30.Size = new Size(25, 17);
+            label30.Size = new Size(31, 23);
             label30.TabIndex = 10;
             label30.Text = "To:";
             // 
@@ -1744,7 +1739,7 @@
             dtpAutoAssignTo.Format = DateTimePickerFormat.Short;
             dtpAutoAssignTo.Location = new Point(53, 52);
             dtpAutoAssignTo.Name = "dtpAutoAssignTo";
-            dtpAutoAssignTo.Size = new Size(88, 25);
+            dtpAutoAssignTo.Size = new Size(88, 29);
             dtpAutoAssignTo.TabIndex = 9;
             // 
             // label22
@@ -1752,7 +1747,7 @@
             label22.AutoSize = true;
             label22.Location = new Point(6, 27);
             label22.Name = "label22";
-            label22.Size = new Size(41, 17);
+            label22.Size = new Size(53, 23);
             label22.TabIndex = 8;
             label22.Text = "From:";
             // 
@@ -1761,7 +1756,7 @@
             dtpAutoAssignFrom.Format = DateTimePickerFormat.Short;
             dtpAutoAssignFrom.Location = new Point(53, 21);
             dtpAutoAssignFrom.Name = "dtpAutoAssignFrom";
-            dtpAutoAssignFrom.Size = new Size(88, 25);
+            dtpAutoAssignFrom.Size = new Size(88, 29);
             dtpAutoAssignFrom.TabIndex = 7;
             // 
             // btnAutoAssignDate
@@ -1971,7 +1966,6 @@
         private Label label44;
         private Label lblFilteredCount;
         private GroupBox groupBox4;
-        private Button button4;
         private Label label42;
         private Label lbEmployeeTotal;
         private Label label40;

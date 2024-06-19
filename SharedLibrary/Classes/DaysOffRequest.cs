@@ -19,6 +19,6 @@ public class DaysOffRequest
 	public DateTime StartDate { get; set; }
 	public DateTime EndDate { get; set; }
 	public string Description { get; set; }
-	public string Status { get; set; } //0 pending, 1 aprove, 2 declined 
+	public string Status { get; set; } // 0 pending, 1 aprove, 2 declined 
 	public string Type { get; set; }
 }

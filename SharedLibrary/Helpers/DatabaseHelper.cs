@@ -434,6 +434,13 @@ namespace SharedLibrary.Helpers
                     INNER JOIN shift s ON se.shift_id = s.id
                     WHERE se.employee_id = e.id
                     AND s.date = @Date
+                )
+                AND NOT EXISTS (
+                    SELECT 1
+                    FROM dayoffrequest dor
+                    WHERE dor.employee_id = e.id
+                    AND dor.status = 1
+                    AND @Date BETWEEN dor.start_date AND dor.end_date
                 );
             ";
 
@@ -1574,15 +1581,33 @@ namespace SharedLibrary.Helpers
 
         public void ChangeStatusDaysOffRequest(int id, int status)
         {
-            string query = @"UPDATE dayoffrequest 
-                            SET status = @Status
-                            WHERE id = @Id";
-            using (SqlCommand cmd = new SqlCommand(query, connection))
-            {
-                cmd.Parameters.AddWithValue("@Id", id);
-                cmd.Parameters.AddWithValue("@Status", status);
+            string updateQuery = @"UPDATE dayoffrequest 
+                                   SET status = @Status
+                                   WHERE id = @Id";
 
-                cmd.ExecuteNonQuery();
+            using (SqlCommand updateCmd = new SqlCommand(updateQuery, connection))
+            {
+                updateCmd.Parameters.AddWithValue("@Id", id);
+                updateCmd.Parameters.AddWithValue("@Status", status);
+
+                updateCmd.ExecuteNonQuery();
+            }
+
+            if (status == 1)
+            {
+                string deleteQuery = @"DELETE se
+                                        FROM shift_employee se
+                                        INNER JOIN shift s ON se.shift_id = s.id
+                                        INNER JOIN dayoffrequest dor ON se.employee_id = dor.employee_id
+                                        WHERE dor.id = @Id
+                                        AND s.date BETWEEN dor.start_date AND dor.end_date";
+
+                using (SqlCommand deleteCmd = new SqlCommand(deleteQuery, connection))
+                {
+                    deleteCmd.Parameters.AddWithValue("@Id", id);
+
+                    deleteCmd.ExecuteNonQuery();
+                }
             }
         }
 

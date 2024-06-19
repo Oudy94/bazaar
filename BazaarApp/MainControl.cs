@@ -1277,6 +1277,9 @@ namespace TheSandwichMakersHardwareStoreSolution
             int id = GetIdSelectedRowDaysOffRequest();
             DaysOffRequestManager.AproveDaysOffRequest(id);
             RefreshDaysOffRequest();
+
+            RefreshShiftUI();
+            ShowShiftCalendar(_month, _year);
         }
 
         private void btDeclineDaysOffRequest_Click(object sender, EventArgs e)

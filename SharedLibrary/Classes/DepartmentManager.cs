@@ -12,8 +12,8 @@ namespace SharedLibrary.Classes
     {
         private readonly DatabaseHelper _dbHelper;
 
-        public DepartmentManager() 
-        { 
+        public DepartmentManager()
+        {
             this._dbHelper = new DatabaseHelper();
         }
 
@@ -96,5 +96,23 @@ namespace SharedLibrary.Classes
                 _dbHelper.CloseConnection();
             }
         }
+
+        public bool DepartmentExists(string name)
+        {
+            try
+            {
+                _dbHelper.OpenConnection();
+                return _dbHelper.DepartmentExistsInDB(name);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
+            }
+        }
+
     }
 }

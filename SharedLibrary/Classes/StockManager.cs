@@ -185,15 +185,15 @@ namespace SharedLibrary.Classes
             try
             {
                 _dbHelper.OpenConnection();
-                if (_dbHelper.ListItemIdInDatabase().Contains( id))
+                if (_dbHelper.ListItemIdInDatabase().Contains(id))
                 {
                     return true;
                 }
-                else 
+                else
                 {
                     return false;
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -203,7 +203,13 @@ namespace SharedLibrary.Classes
             {
                 _dbHelper.CloseConnection();
             }
-            
+
         }
+
+        public bool ItemNameExists(string name)
+        {
+            return _dbHelper.ItemNameExistsInDB(name);
+        }
+
     }
 }

@@ -97,6 +97,9 @@ namespace TheSandwichMakersHardwareStoreSolution
             chbMorningShift.Checked = false;
             chbEveningShift.Checked = false;
             suppressCheckedChangedEvent = false;
+            EmployeeHasMorningShift = false;
+            EmployeeHasEveningShift = false;
+            this.BackColor = Color.DarkGray;
         }
 
         public void CheckMorningShift()

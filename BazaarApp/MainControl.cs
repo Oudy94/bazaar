@@ -1058,10 +1058,10 @@ namespace TheSandwichMakersHardwareStoreSolution
             _month = month;
             _year = year;
 
-            Dictionary<Tuple<DateOnly, ShiftTypeEnum>, int> employeeCountByShift = ShiftManager.GetShiftEmployeeCountForMonth(month, year);
-
             string monthName = new DateTimeFormatInfo().GetMonthName(month);
             lblMonth.Text = monthName.ToUpper() + " " + year;
+
+            Dictionary<Tuple<DateOnly, ShiftTypeEnum>, int> employeeCountByShift = ShiftManager.GetShiftEmployeeCountForMonth(month, year);
 
             DateTime startOfTheMonth = new DateTime(year, month, 1);
             int daysInMonth = DateTime.DaysInMonth(year, month);

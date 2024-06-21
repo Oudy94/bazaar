@@ -133,7 +133,16 @@ namespace TheSandwichMakersHardwareStoreSolution
         {
             try
             {
-                _shiftManager.AddOrUpdateShift(_date, ShiftTypeEnum.Morning, dtpMorningShiftStartTime.Value, dtpMorningShiftEndTime.Value);
+                DateTime startTime = dtpMorningShiftStartTime.Value;
+                DateTime endTime = dtpMorningShiftEndTime.Value;
+
+                if (startTime > endTime)
+                {
+                    MessageBox.Show("Start time must be less than or equal to end time.");
+                    return;
+                }
+
+                _shiftManager.AddOrUpdateShift(_date, ShiftTypeEnum.Morning, startTime, endTime);
             }
             catch (Exception ex)
             {
@@ -147,7 +156,16 @@ namespace TheSandwichMakersHardwareStoreSolution
         {
             try
             {
-                _shiftManager.AddOrUpdateShift(_date, ShiftTypeEnum.Evening, dtpEveningShiftStartTime.Value, dtpEveningShiftEndTime.Value);
+                DateTime startTime = dtpEveningShiftStartTime.Value;
+                DateTime endTime = dtpEveningShiftEndTime.Value;
+
+                if (startTime > endTime)
+                {
+                    MessageBox.Show("Start time must be less than or equal to end time.");
+                    return;
+                }
+
+                _shiftManager.AddOrUpdateShift(_date, ShiftTypeEnum.Evening, startTime, endTime);
             }
             catch (Exception ex)
             {

@@ -434,6 +434,13 @@ namespace SharedLibrary.Helpers
                     INNER JOIN shift s ON se.shift_id = s.id
                     WHERE se.employee_id = e.id
                     AND s.date = @Date
+                )
+                AND NOT EXISTS (
+                    SELECT 1
+                    FROM dayoffrequest dor
+                    WHERE dor.employee_id = e.id
+                    AND dor.status = 1
+                    AND @Date BETWEEN dor.start_date AND dor.end_date
                 );
             ";
 
@@ -751,22 +758,22 @@ namespace SharedLibrary.Helpers
             {
                 cmd.Parameters.AddWithValue("@ItemId", itemId);
                 cmd.Parameters.AddWithValue("@Quantity", quantity);
-                cmd.Parameters.AddWithValue("@Type",  (int)type);
+                cmd.Parameters.AddWithValue("@Type", (int)type);
 
                 cmd.ExecuteNonQuery();
             }
         }
 
         public void UpdateShelfRequest(int id, int itemId, int quantity, ShelfRequestType type)
-		{
+        {
             string query = "UPDATE shelf_request SET item_id = @ItemId, quantity = @Quantity, type = @Type WHERE id = @Id";
 
             using (SqlCommand cmd = new SqlCommand(query, connection))
             {
                 cmd.Parameters.AddWithValue("@ItemId", itemId);
                 cmd.Parameters.AddWithValue("@Quantity", quantity);
-				cmd.Parameters.AddWithValue("@Type", (int)type);
-				cmd.Parameters.AddWithValue("@Id", id);
+                cmd.Parameters.AddWithValue("@Type", (int)type);
+                cmd.Parameters.AddWithValue("@Id", id);
 
                 cmd.ExecuteNonQuery();
             }
@@ -792,49 +799,49 @@ namespace SharedLibrary.Helpers
                         {
                             int itemId = reader.GetInt32(reader.GetOrdinal("item_id"));
                             int quantityToAdd = reader.GetInt32(reader.GetOrdinal("quantity"));
-							ShelfRequestType type = (ShelfRequestType)reader.GetInt32(reader.GetOrdinal("type"));
+                            ShelfRequestType type = (ShelfRequestType)reader.GetInt32(reader.GetOrdinal("type"));
 
                             reader.Close();
 
                             if (type == ShelfRequestType.INVENTORY)
                             {
-								string checkQuantityQuery = "SELECT quantity_warehouse FROM item WHERE id = @ItemId";
-								cmd.CommandText = checkQuantityQuery;
-								cmd.Parameters.Clear();
-								cmd.Parameters.AddWithValue("@ItemId", itemId);
-								int warehouseQuantity = Convert.ToInt32(cmd.ExecuteScalar());
+                                string checkQuantityQuery = "SELECT quantity_warehouse FROM item WHERE id = @ItemId";
+                                cmd.CommandText = checkQuantityQuery;
+                                cmd.Parameters.Clear();
+                                cmd.Parameters.AddWithValue("@ItemId", itemId);
+                                int warehouseQuantity = Convert.ToInt32(cmd.ExecuteScalar());
 
-								if (warehouseQuantity < quantityToAdd)
-								{
-									transaction.Rollback();
-									throw new Exception("Not enough items in the warehouse.");
-								}
+                                if (warehouseQuantity < quantityToAdd)
+                                {
+                                    transaction.Rollback();
+                                    throw new Exception("Not enough items in the warehouse.");
+                                }
 
-								string updateQuery = @"
+                                string updateQuery = @"
                                 UPDATE item 
                                 SET 
                                 quantity_warehouse = quantity_warehouse - @QuantityToAdd,
                                 quantity_store = quantity_store + @QuantityToAdd 
                                 WHERE id = @ItemId";
-								cmd.CommandText = updateQuery;
-								cmd.Parameters.Clear();
-								cmd.Parameters.AddWithValue("@QuantityToAdd", quantityToAdd);
-								cmd.Parameters.AddWithValue("@ItemId", itemId);
-								cmd.ExecuteNonQuery();
-							}
+                                cmd.CommandText = updateQuery;
+                                cmd.Parameters.Clear();
+                                cmd.Parameters.AddWithValue("@QuantityToAdd", quantityToAdd);
+                                cmd.Parameters.AddWithValue("@ItemId", itemId);
+                                cmd.ExecuteNonQuery();
+                            }
                             else if (type == ShelfRequestType.WAREHOUSE)
                             {
-								string updateQuery = @"
+                                string updateQuery = @"
                                 UPDATE item 
                                 SET 
                                 quantity_warehouse = quantity_warehouse + @QuantityToAdd
                                 WHERE id = @ItemId";
-								cmd.CommandText = updateQuery;
-								cmd.Parameters.Clear();
-								cmd.Parameters.AddWithValue("@QuantityToAdd", quantityToAdd);
-								cmd.Parameters.AddWithValue("@ItemId", itemId);
-								cmd.ExecuteNonQuery();
-							}
+                                cmd.CommandText = updateQuery;
+                                cmd.Parameters.Clear();
+                                cmd.Parameters.AddWithValue("@QuantityToAdd", quantityToAdd);
+                                cmd.Parameters.AddWithValue("@ItemId", itemId);
+                                cmd.ExecuteNonQuery();
+                            }
                         }
                         else
                         {
@@ -863,9 +870,9 @@ namespace SharedLibrary.Helpers
         }
 
 
-		public List<ShelfRequest> GetShelfRequestFromDB(ShelfRequestType? type = null)
-		{
-			List<ShelfRequest> shelfRequests = new List<ShelfRequest>();
+        public List<ShelfRequest> GetShelfRequestFromDB(ShelfRequestType? type = null)
+        {
+            List<ShelfRequest> shelfRequests = new List<ShelfRequest>();
 
             string query = @"
                 SELECT s.*, i.id as item_id, i.name as item_name
@@ -876,16 +883,16 @@ namespace SharedLibrary.Helpers
             if (type != null)
             {
                 query += " WHERE type = @Type";
-			}
+            }
 
             using (SqlCommand cmd = new SqlCommand(query, connection))
             {
                 if (type != null)
-                { 
+                {
                     cmd.Parameters.AddWithValue("@Type", type);
                 }
 
-				using (SqlDataReader reader = cmd.ExecuteReader())
+                using (SqlDataReader reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
                     {
@@ -1420,8 +1427,8 @@ namespace SharedLibrary.Helpers
             }
 
             return shifts;
-        }        
-        
+        }
+
         public List<Shift> GetEmployeeShiftsOnMonthFromDB(int employeeId, int month, int year)
         {
             List<Shift> shifts = new List<Shift>();
@@ -1485,7 +1492,7 @@ namespace SharedLibrary.Helpers
                     while (reader.Read())
                     {
                         DateTime dateTime = reader.GetDateTime(0);
-                        ShiftTypeEnum shiftType = (ShiftTypeEnum)reader.GetInt32(1) -1;
+                        ShiftTypeEnum shiftType = (ShiftTypeEnum)reader.GetInt32(1) - 1;
                         int shiftCount = reader.GetInt32(2);
 
                         DateOnly shiftDate = new DateOnly(dateTime.Year, dateTime.Month, dateTime.Day);
@@ -1508,7 +1515,7 @@ namespace SharedLibrary.Helpers
                 SELECT d.*, e.id as employee_id, e.name as employee_name
                 FROM dayoffrequest d
                 LEFT JOIN employee e ON d.employee_id = e.id;
-            " ;
+            ";
 
             using (SqlCommand cmd = new SqlCommand(query, connection))
             {
@@ -1574,15 +1581,33 @@ namespace SharedLibrary.Helpers
 
         public void ChangeStatusDaysOffRequest(int id, int status)
         {
-            string query = @"UPDATE dayoffrequest 
-                            SET status = @Status
-                            WHERE id = @Id";
-            using (SqlCommand cmd = new SqlCommand(query, connection))
-            {
-                cmd.Parameters.AddWithValue("@Id", id);
-                cmd.Parameters.AddWithValue("@Status", status);
+            string updateQuery = @"UPDATE dayoffrequest 
+                                   SET status = @Status
+                                   WHERE id = @Id";
 
-                cmd.ExecuteNonQuery();
+            using (SqlCommand updateCmd = new SqlCommand(updateQuery, connection))
+            {
+                updateCmd.Parameters.AddWithValue("@Id", id);
+                updateCmd.Parameters.AddWithValue("@Status", status);
+
+                updateCmd.ExecuteNonQuery();
+            }
+
+            if (status == 1)
+            {
+                string deleteQuery = @"DELETE se
+                                        FROM shift_employee se
+                                        INNER JOIN shift s ON se.shift_id = s.id
+                                        INNER JOIN dayoffrequest dor ON se.employee_id = dor.employee_id
+                                        WHERE dor.id = @Id
+                                        AND s.date BETWEEN dor.start_date AND dor.end_date";
+
+                using (SqlCommand deleteCmd = new SqlCommand(deleteQuery, connection))
+                {
+                    deleteCmd.Parameters.AddWithValue("@Id", id);
+
+                    deleteCmd.ExecuteNonQuery();
+                }
             }
         }
 
@@ -1675,5 +1700,33 @@ namespace SharedLibrary.Helpers
             }
             return EmployeeSchedule;
         }
+
+        public bool DepartmentExistsInDB(string name)
+        {
+            string query = "SELECT COUNT(*) FROM department_list WHERE name = @Name;";
+
+            using (SqlCommand cmd = new SqlCommand(query, connection))
+            {
+                cmd.Parameters.AddWithValue("@Name", name);
+                int count = (int)cmd.ExecuteScalar();
+
+                return count > 0;
+            }
+        }
+
+        public bool ItemNameExistsInDB(string name)
+        {
+            string query = "SELECT COUNT(*) FROM item WHERE name = @Name;";
+
+            using (SqlCommand cmd = new SqlCommand(query, connection))
+            {
+                cmd.Parameters.AddWithValue("@Name", name);
+                int count = (int)cmd.ExecuteScalar();
+
+                return count > 0;
+            }
+        }
+
+
     }
 }

@@ -24,12 +24,12 @@
                 <form method="post" class="form-group">
                     <div class="mb-3">
                         <label class="form-label">Start Date</label>
-                        <input asp-for="temporaryData.StartDate" class="form-control">
+                        <input asp-for="temporaryData.StartDate" class="form-control" type="date">
                         <span asp-validation-for="temporaryData.StartDate" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">End Date</label>
-                        <input asp-for="temporaryData.EndDate" class="form-control">
+                        <input asp-for="temporaryData.EndDate" class="form-control" type="date">
                         <span asp-validation-for="temporaryData.EndDate" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
@@ -70,8 +70,8 @@
                             <td>@request.EndDate.ToShortDateString()</td>
                             <td>@request.Description</td>
                             <td>@request.Type</td>
-                            <td style="color:@(request.Status == "1" ? "green" : request.Status == "2" ? "red": "#e38800")">
-                                @(request.Status == "1" ? "Approved" : request.Status == "2" ? "Not Approved" : "Pending")
+                            <td style="color:@(request.Status == "aproved" ? "green" : request.Status == "declined" ? "red": "#e38800"); text-transform: capitalize;">
+                                @request.Status
                             </td>
                         </tr>
                     }

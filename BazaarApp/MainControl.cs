@@ -684,6 +684,12 @@ namespace TheSandwichMakersHardwareStoreSolution
             }
             if (!string.IsNullOrWhiteSpace(txtBoxDepartmentName.Text))
             {
+                if (DepartmentManager.DepartmentExists(txtBoxDepartmentName.Text))
+                {
+                    MessageBox.Show("Department already exists.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
                 try
                 {
                     DepartmentManager.AddDepartment(txtBoxDepartmentName.Text);
@@ -716,6 +722,18 @@ namespace TheSandwichMakersHardwareStoreSolution
             }
             if (listBoxDepartments.SelectedItem is Department selectedDepartment)
             {
+                if (string.IsNullOrWhiteSpace(txtBoxDepartmentName.Text))
+                {
+                    MessageBox.Show("Please enter a name for the department.");
+                    return;
+                }
+
+                if (DepartmentManager.DepartmentExists(txtBoxDepartmentName.Text) && selectedDepartment.Name != txtBoxDepartmentName.Text)
+                {
+                    MessageBox.Show("Another department with this name already exists.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
                 try
                 {
                     DepartmentManager.UpdateDepartment(selectedDepartment.Id, txtBoxDepartmentName.Text);
@@ -735,6 +753,7 @@ namespace TheSandwichMakersHardwareStoreSolution
                 MessageBox.Show("Please select a department to edit.");
             }
         }
+
 
         // Modify the btnRemoveDepartment_Click event to check for selection
         private void btnRemoveDepartment_Click(object sender, EventArgs e)
@@ -812,17 +831,53 @@ namespace TheSandwichMakersHardwareStoreSolution
 
         private void btnNewProduct_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(tbNameProduct.Text) ||
+                numericSKU.Value <= 0 ||
+                numericQuantityWarehouse.Value < 0 ||
+                numericQuantityStore.Value < 0 ||
+                numericWholesalePrice.Value <= 0 ||
+                numericSellPrice.Value <= 0)
+            {
+                MessageBox.Show("All product fields must be filled with valid values.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (StockManager.ItemNameExists(tbNameProduct.Text))
+            {
+                MessageBox.Show("A product with this name already exists.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             StockManager.AddNewItem(Convert.ToInt16(numericSKU.Value), tbNameProduct.Text, Convert.ToInt16(numericQuantityWarehouse.Value), Convert.ToInt16(numericQuantityStore.Value), (CategoryEnum)cbCatergory.SelectedIndex, Convert.ToDouble(numericWholesalePrice.Value), Convert.ToDouble(numericSellPrice.Value), dateTimePickerExperationdate.Value);
             RefreshProductInfoDisplay();
-
         }
 
         private void btnEditProduct_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(tbNameProduct.Text) ||
+                numericSKU.Value <= 0 ||
+                numericQuantityWarehouse.Value < 0 ||
+                numericQuantityStore.Value < 0 ||
+                numericWholesalePrice.Value <= 0 ||
+                numericSellPrice.Value <= 0)
+            {
+                MessageBox.Show("All product fields must be filled with valid values.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             int id = GetIdSelectedRow();
+            var currentProduct = StockManager.GetItemById(id);
+
+            if (currentProduct != null && !string.Equals(currentProduct.Name, tbNameProduct.Text, StringComparison.OrdinalIgnoreCase) && StockManager.ItemNameExists(tbNameProduct.Text))
+            {
+                MessageBox.Show("A product with this name already exists.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             StockManager.EditItem(id, Convert.ToInt16(numericSKU.Value), tbNameProduct.Text, Convert.ToInt16(numericQuantityWarehouse.Value), Convert.ToInt16(numericQuantityStore.Value), (CategoryEnum)cbCatergory.SelectedIndex, Convert.ToDouble(numericWholesalePrice.Value), Convert.ToDouble(numericSellPrice.Value), dateTimePickerExperationdate.Value);
             RefreshProductInfoDisplay();
         }
+
 
         private void btnRemoveProduct_Click(object sender, EventArgs e)
         {
@@ -1003,10 +1058,10 @@ namespace TheSandwichMakersHardwareStoreSolution
             _month = month;
             _year = year;
 
-            Dictionary<Tuple<DateOnly, ShiftTypeEnum>, int> employeeCountByShift = ShiftManager.GetShiftEmployeeCountForMonth(month, year);
-
             string monthName = new DateTimeFormatInfo().GetMonthName(month);
             lblMonth.Text = monthName.ToUpper() + " " + year;
+
+            Dictionary<Tuple<DateOnly, ShiftTypeEnum>, int> employeeCountByShift = ShiftManager.GetShiftEmployeeCountForMonth(month, year);
 
             DateTime startOfTheMonth = new DateTime(year, month, 1);
             int daysInMonth = DateTime.DaysInMonth(year, month);
@@ -1222,6 +1277,9 @@ namespace TheSandwichMakersHardwareStoreSolution
             int id = GetIdSelectedRowDaysOffRequest();
             DaysOffRequestManager.AproveDaysOffRequest(id);
             RefreshDaysOffRequest();
+
+            RefreshShiftUI();
+            ShowShiftCalendar(_month, _year);
         }
 
         private void btDeclineDaysOffRequest_Click(object sender, EventArgs e)

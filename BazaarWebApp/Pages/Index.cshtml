@@ -78,10 +78,8 @@
                                 <td>@request.EndDate.ToShortDateString()</td>
                                 <td>@request.Description</td>
                                 <td>@request.Type</td>
-                                <td
-                                    style="color:@(request.Status == "1" ? "green" : request.Status == "2" ? "red" : "#e38800")">
-                                    @(request.Status == "1" ? "Approved" : request.Status == "2" ? "Not Approved" :
-                                        "Pending")
+                                <td style="color:@(request.Status == "aproved" ? "green" : request.Status == "declined" ? "red": "#e38800"); text-transform: capitalize;">
+                                    @request.Status
                                 </td>
                             </tr>
                         }

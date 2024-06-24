@@ -208,7 +208,28 @@ namespace SharedLibrary.Classes
 
         public bool ItemNameExists(string name)
         {
-            return _dbHelper.ItemNameExistsInDB(name);
+            try
+            {
+                _dbHelper.OpenConnection();
+                if (_dbHelper.ItemNameExistsInDB(name))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                _dbHelper.CloseConnection();
+            }
+            
         }
 
     }

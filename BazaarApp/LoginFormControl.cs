@@ -27,11 +27,6 @@ namespace TheSandwichMakersHardwareStoreSolution
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-
-            MessageBox.Show("Login succefully.");
-            main.HandleLogin("saoud@test.com");
-            return;
-
             string email = txtEmail.Text;
             string password = txtPassword.Text;
 

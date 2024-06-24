@@ -324,7 +324,7 @@
             label42.AutoSize = true;
             label42.Font = new Font("Segoe UI", 11F, FontStyle.Bold, GraphicsUnit.Point);
             label42.ForeColor = Color.FromArgb(20, 102, 167);
-            label42.Location = new Point(17, 370);
+            label42.Location = new Point(168, 383);
             label42.Name = "label42";
             label42.Size = new Size(109, 25);
             label42.TabIndex = 43;
@@ -334,7 +334,7 @@
             // 
             lbEmployeeTotal.AutoSize = true;
             lbEmployeeTotal.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            lbEmployeeTotal.Location = new Point(151, 391);
+            lbEmployeeTotal.Location = new Point(168, 408);
             lbEmployeeTotal.Name = "lbEmployeeTotal";
             lbEmployeeTotal.Size = new Size(171, 23);
             lbEmployeeTotal.TabIndex = 42;
@@ -345,7 +345,7 @@
             label40.AutoSize = true;
             label40.Font = new Font("Segoe UI", 11F, FontStyle.Bold, GraphicsUnit.Point);
             label40.ForeColor = Color.FromArgb(20, 102, 167);
-            label40.Location = new Point(185, 370);
+            label40.Location = new Point(230, 326);
             label40.Name = "label40";
             label40.Size = new Size(142, 25);
             label40.TabIndex = 41;
@@ -355,7 +355,7 @@
             // 
             lbEmployeeEvening.AutoSize = true;
             lbEmployeeEvening.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            lbEmployeeEvening.Location = new Point(230, 342);
+            lbEmployeeEvening.Location = new Point(230, 351);
             lbEmployeeEvening.Name = "lbEmployeeEvening";
             lbEmployeeEvening.Size = new Size(258, 23);
             lbEmployeeEvening.TabIndex = 40;
@@ -377,7 +377,7 @@
             label37.AutoSize = true;
             label37.Font = new Font("Segoe UI", 11F, FontStyle.Bold, GraphicsUnit.Point);
             label37.ForeColor = Color.FromArgb(20, 102, 167);
-            label37.Location = new Point(185, 319);
+            label37.Location = new Point(17, 326);
             label37.Name = "label37";
             label37.Size = new Size(150, 25);
             label37.TabIndex = 38;
@@ -387,7 +387,7 @@
             // 
             lbEmployeeMorning.AutoSize = true;
             lbEmployeeMorning.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            lbEmployeeMorning.Location = new Point(17, 342);
+            lbEmployeeMorning.Location = new Point(17, 351);
             lbEmployeeMorning.Name = "lbEmployeeMorning";
             lbEmployeeMorning.Size = new Size(263, 23);
             lbEmployeeMorning.TabIndex = 37;
